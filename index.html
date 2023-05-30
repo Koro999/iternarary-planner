@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerary planner</title>
+
+    <!--Stylesheets-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" />
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+    <section class = "hero is-info is-bold">
+        <div class="hero-head">
+          <nav class="navbar">
+            <div class="container">
+              <div class="navbar-brand">
+                  <img src="Assets/tourisme-voyage.jpg" alt="Logo", height='10px', width='200px'>
+                <span class="navbar-burger burger" data-target="navbarMenuHeroA">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </div>
+              <div id="navbarMenuHeroA" class="navbar-menu">
+                <div class="navbar-end">
+                  <span class="navbar-item">
+                    <a href="https://github.com/pra18apr?tab=repositories" class="button is-primary is-inverted">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Repository</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+      <div class = "hero-body">
+          <div class = "container has-text-centered">
+              <h1 class = "title">
+                  Get Out and Explore the World!
+              </h1>
+              <h2 class = "subtitle">
+                  Search for places, plan every trip, go shopping, and go out eating.
+              </h2>
+          </div>
+      </div>
+  </section>
+
+
+    <div class="columns is-centered">
+        <!--Sidebar with search function and saved locations-->
+        <div class="column is-2 is-centered">
+            <aside class = "location"> 
+                <ul class="location-list"> 
+                    <li>
+                        <form>
+                            <div class="field" id="location-search-field">
+                                <label class="label">Search:</label>
+                                <div class="control">
+                                    <input id="search-input" class="input is-info is-rounded" type="text" placeholder="search here">
+                                </div>
+                                <div class="control">
+                                    
+                                    <button type="submit" class = "button is-info is-light is-rounded" id="location-search-button" value="Search for a location"><span class = "icon" id="location-search-icon"><i class = "fas fa-search"></i></span><span>Search for a location</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                <p class="location-label">
+                    Saved searchs
+                </p>
+                <ul class="location-list" id="saved-location-list"></ul>
+            </aside>
+        </div>
+        <!--Location Search Content-->
+        <div class="column is-6">
+            <section class = "section pt-1">
+                <div class = "container" id = "location-search-header"></div>
+                <div class = "container" id = "location-content"></div>
+            </section>
+            <!--Location Detail Modal-->
+                <div class="modal" id="location-modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                      <header class="modal-card-head">
+                        <p class="modal-card-title" id="modal-location-title"></p>
+                        <button class="delete" id="close-modal-one"></button>
+                      </header>
+                      <section class="modal-card-body">
+                        <div id="modal-location"></div>
+                        <div id="modal-location-instructions"></div>
+                      </section>
+                      <footer class="modal-card-foot">
+                        <button class="button" id="modal-back-button">Previous</button>
+                        <button class="button" id="modal-next-button">Next</button>
+                        <button class="button is-success" id="modal-save-location">Save Location</button>
+                        <button class="button is-danger" id="modal-remove-location">Remove Location</button>
+                        <button class="button" id="modal-add">Add to List</button>
+                        <button class="button is-danger is-light" id="close-modal-two">Cancel</button>
+                      </footer>
+                    </div>
+                  </div>
+            </section>
+        </div>
+        <!--Location List and Map-->
+        <div class="column is-3">
+            <section class = "section pt-1">
+                <h3 class = "is-size-4">Location List</h3>
+                <div class = "container" id = "location-form">
+                    <form>
+                        <div class="field" id="add-item-field">
+                            <label class="label">Add a place of your choice:</label>
+                            <div class="control">
+                                <input id="item-input" class="input is-info is-rounded" type="text" placeholder="enter a location here">
+                            </div>
+                            <div class="control">
+                                <button type="submit" class = "button is-info is-light is-rounded" id="add-location-button"><span class = "icon" id="add-location-icon"><i class = "fas fa-plus"></i></span><span>Add Location</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class = "container" id = "location-list-container"></div>
+                <div class="field" id="remove-items-field">
+                    <div class="control">
+                        <button class = "button is-small is-danger is-rounded mt-5" id = "remove-all-locations"><span class = "icon" id = "remove-all-locations-icon"><i class="fas fa-times"></i></span><span>Remove All Locations</span></button>
+                    </div>
+                </div>
+            </section>
+            <section class = "section">
+                <h3 class = "is-size-4">Location</h3>
+                <iframe width="450" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22" allowfullscreen></iframe></figure>
+                
+
+                </div>
+            </section>
+        </div>
+
+        <!--Error Handling Modal-->
+        <div class="modal" id="error-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title" id="modal-error-title">Error</p>
+                <button class="delete" id="close-modal-error-one"></button>
+              </header>
+              <section class="modal-card-body">
+                <div id="modal-error-content">sample content</div>
+              </section>
+              <footer class="modal-card-foot">
+                <button class="button is-danger is-light" id="close-modal-error-two">OK</button>
+              </footer>
+            </div>
+          </div>
+    </div>
+
+   <!--Footer with attributions-->
+   <footer class="footer has-background-info has-text-centered is-small has-text-white has-text-weight-bold">
+    <div class = "container">
+        <div class="content">
+            <p style="display: inline-flex">
+                Locations provided by <a href="https://wikipedia.com/" target="_blank">wikipedia
+                    <figure class="image is-32x32 ml-1" style="display: inline-flex; vertical-align: middle;">
+                        <img src="Assets/Wikipedia logo.jfif" alt="wikipedia Logo" width = "32" height="32" />
+                    </figure>
+                </a>
+            </p>
+            <p style="display:inline-flex">
+                Map data provided by <a href = "https://developers.google.com/maps/documentation/embed/get-started" target = "_blank"> Google's Maps Embed API
+                    <figure class="image is-32x32 ml-1" style="display: inline-flex; vertical-align: middle;">
+                        <img src="Assets/Maps_logo.jpg" alt="Google Maps Logo" width = "32" height="32" />
+                    </figure>
+                </a>
+            </p>
+            <p style="display:inline-flex">
+                Created by <a href = "https://github.com/" target = "_blank"> Carlos</a>,
+                <a href = "https://github.com/koro999" target = "_blank">Chris</a>, 
+                <a href = "https://github.com/" target = "_blank">Mahmud</a>,
+                <a href = "https://github.com/pra18apr" target = "_blank">Pradeep</a>, and 
+                <a href = "https://github.com/" target = "_blank">Yago</a>.    
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+
+<!--Script Links-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script defer src="assets/script.js"></script>
+</body>
+</html>
