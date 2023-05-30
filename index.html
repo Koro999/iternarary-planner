@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cook Something Good!</title>
+    <title>Itinerary planner</title>
 
     <!--Stylesheets-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
@@ -54,7 +54,7 @@
 
 
     <div class="columns is-centered">
-      
+        <!--Sidebar with search function and saved locations-->
         <div class="column is-2 is-centered">
             <aside class = "location"> 
                 <ul class="location-list"> 
@@ -66,7 +66,7 @@
                                     <input id="search-input" class="input is-info is-rounded" type="text" placeholder="search here">
                                 </div>
                                 <div class="control">
-                                  
+                                    
                                     <button type="submit" class = "button is-info is-light is-rounded" id="location-search-button" value="Search for a location"><span class = "icon" id="location-search-icon"><i class = "fas fa-search"></i></span><span>Search for a location</span></button>
                                 </div>
                             </div>
@@ -134,8 +134,9 @@
                 </div>
             </section>
             <section class = "section">
-                <h3 class = "is-size-4">Your Location</h3>
-                <div class = "content" id = "map-container">
+                <h3 class = "is-size-4">Location</h3>
+                <iframe width="450" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22" allowfullscreen></iframe></figure>
+                
 
                 </div>
             </section>
@@ -158,3 +159,44 @@
             </div>
           </div>
     </div>
+
+   <!--Footer with attributions-->
+   <footer class="footer has-background-info has-text-centered is-small has-text-white has-text-weight-bold">
+    <div class = "container">
+        <div class="content">
+            <p style="display: inline-flex">
+                Locations provided by <a href="https://wikipedia.com/" target="_blank">wikipedia
+                    <figure class="image is-32x32 ml-1" style="display: inline-flex; vertical-align: middle;">
+                        <img src="Assets/Wikipedia logo.jfif" alt="wikipedia Logo" width = "32" height="32" />
+                    </figure>
+                </a>
+            </p>
+            <p style="display:inline-flex">
+                Map data provided by <a href = "https://developers.google.com/maps/documentation/embed/get-started" target = "_blank"> Google's Maps Embed API
+                    <figure class="image is-32x32 ml-1" style="display: inline-flex; vertical-align: middle;">
+                        <img src="Assets/Maps_logo.jpg" alt="Google Maps Logo" width = "32" height="32" />
+                    </figure>
+                </a>
+            </p>
+            <p style="display:inline-flex">
+                Created by <a href = "https://github.com/" target = "_blank"> Carlos</a>,
+                <a href = "https://github.com/koro999" target = "_blank">Chris</a>, 
+                <a href = "https://github.com/" target = "_blank">Mahmud</a>,
+                <a href = "https://github.com/pra18apr" target = "_blank">Pradeep</a>, and 
+                <a href = "https://github.com/" target = "_blank">Yago</a>.    
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+
+<!--Script Links-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script defer src="assets/script.js"></script>
+</body>
+</html>
