@@ -1,4 +1,13 @@
-.IteneraryCardsBtn{
+.Itenerary{
     width: 100%;
-    display: none;
+    border: 4px solid;
+}
+.dropdown-trigger{
+    width: 100%;
+}
+button{
+    width: 100%;
+}
+.IteneraryCards{
+    width: 100%;
 }

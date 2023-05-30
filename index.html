@@ -8,7 +8,12 @@
     <title>Itenerary Planner</title>
 
     <link rel="stylesheet" href="assets/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
 </head>
 
@@ -32,31 +37,37 @@
                 </div>
             </div>
             <hr class="my-2">
-            <div class="control has-text-centered">
+            <div class="control has-text-centered my-2">
                 <!--add an onClick event to clear itenerary using the 'clear' class-->
                 <button class="button is-primary clear">Clear</button>
             </div>
+            <div class="dropdown Itenerary is-active">
+                <div class="dropdown-trigger">
+                    <button class="button Itenerary3">
+                        <span id="Itenerary3Title">Itenerary 4</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down"></i>
+                        </span>
+                    </button>
 
-            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
-            <div class="Itenerary box has-border" id="Itenerary0">
-                <h2>Itenerary <span class="ItenerarySpan1">1</span></h2>
-                <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn0"> card</button>
-            </div>
-
-            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
-            <div class="Itenerary box has-border" id="Itenerary1">
-                <h2>Itenerary <span class="ItenerarySpan2">2</span></h2>
-                <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn1"> card</button>
-            </div>
-
-            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
-            <div class="Itenerary box has-border " id="Itenerary2">
-                <h2>Itenerary <span class="ItenerarySpan3">3</span></h2>
-                <div class="IteneraryCards">
-                    <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn2"> card</button>
+                    <div class="dropdown-menu IteneraryCards" id="Itenerary3Cards" role="menu">
+                        <div class="dropdown-content">
+                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
+                                Card 0
+                            </button>
+                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
+                                Card 1
+                            </button>
+                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
+                                Card 2
+                            </button>
+                            <!-- more dropdown items here -->
+                        </div>
+                    </div>
                 </div>
 
             </div>
+
 
         </aside>
 
@@ -76,6 +87,7 @@
                     lobortis nulla lorem non felis. Nulla sapien diam, consectetur non er
                 </article>
             </div>
+
 
 
 
