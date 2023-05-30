@@ -20,42 +20,49 @@
                 <h1 class="is-size-4 has-text-centered">Itinerary Planner</h1>
                 <div class="field">
                     <div class="control">
+                        <!--store the value of the .input class for locations-->
                         <input type="text" class="input" placeholder="Type here">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control has-text-centered">
-                        <button class="button is-primary">Search</button>
+                        <!--add an onClick event to search a location using the 'search' class-->
+                        <button class="button is-primary search">Search</button>
                     </div>
                 </div>
             </div>
             <hr class="my-2">
             <div class="control has-text-centered">
-                <button class="button is-primary">Clear</button>
+                <!--add an onClick event to clear itenerary using the 'clear' class-->
+                <button class="button is-primary clear">Clear</button>
             </div>
 
-            <div class="Itenerary box has-border" id="Itenerary1">
+            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
+            <div class="Itenerary box has-border" id="Itenerary0">
                 <h2>Itenerary <span class="ItenerarySpan1">1</span></h2>
-                <button class="IteneraryCards button">card</button>
+                <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn0"> card</button>
             </div>
 
-
-            <div class="Itenerary box has-border" id="Itenerary2">
+            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
+            <div class="Itenerary box has-border" id="Itenerary1">
                 <h2>Itenerary <span class="ItenerarySpan2">2</span></h2>
-                <button class="IteneraryCards button">card</button>
+                <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn1"> card</button>
             </div>
 
-
-            <div class="Itenerary box has-border " id="Itenerary3">
+            <!--Itenerary divs and IteneraryCardsBtn will be dynamically added on JS-->
+            <div class="Itenerary box has-border " id="Itenerary2">
                 <h2>Itenerary <span class="ItenerarySpan3">3</span></h2>
-                <button class="IteneraryCards button">card</button>
+                <div class="IteneraryCards">
+                    <button class="IteneraryCardsBtn button" id="IteneraryCardsBtn2"> card</button>
+                </div>
+
             </div>
 
         </aside>
 
 
-        <main class="column is-8 menu p-4 ">
-            <div class="content box has-border">
+        <main class="column is-8 menu p-4 content">
+            <div class="box has-border">
                 <h2 class="has-text-centered is-size-3 ">Your Location</h2>
                 <iframe class="embed-responsive-item" src="" allowfullscreen></iframe>
             </div>
