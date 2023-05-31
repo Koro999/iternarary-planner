@@ -4,18 +4,54 @@ var searchedCity = $('.input');
 var screenMap = $('#map-container');
 var carlosKey = 'AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE';
 
+var map;
+var service;
 
 function searchPlace(city) {
-    console.log(city);
-    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${carlosKey}&address=${city}`;
-fetch(geocodeApiUrl)
-.then(response => {
-    return response.json();
-})
-.then(data => {
-    console.log(data);
-})
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${carlosKey}&address=${city}`;    //api url to search for a location's latlng
+    var placeLat;
+    var placeLon;
+
+    fetch(geocodeApiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP status ${response.status} occurred while fetching data.`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
+                placeLat = data.results[0].geometry.location.lat;
+                placeLon = data.results[0].geometry.location.lng;
+                var cityLatLng = new google.maps.LatLng(placeLat, placeLon);
+
+                map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 15 });    //creates a new Map object, and displayed in #map-container in html
+
+                var request = {
+                    location: cityLatLng,
+                    radius: 500,
+                    type: ['restaurant'] //type should be defined, example 'restaurant'
+                };
+                service = new google.maps.places.PlacesService(map);
+                service.nearbySearch(request, callback);
+            }
+        })
+        .catch(error => console.error(error));
 }
+
+function callback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        var place = results[i];
+            console.log(place.name);
+      }
+    } else {
+        console.log('Place search did not return any results.');
+    }
+}
+
+
+
 
 
 $('.search').on('click', () => {
@@ -23,17 +59,17 @@ $('.search').on('click', () => {
 })
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Assigns an on click event to the dropdown button
-    $(document).on('click', '.Itenerary .dropdown-trigger button', function(event) {
+    $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
         event.stopPropagation();
 
         var allActiveIteneraries = $(".Itenerary.is-active");   // stores all active Itenerary elements in variable
         var currentItenerary = $(this).closest('.Itenerary');   // goes through clicked element's parents that matches 'Itenerary'
 
         // Remove 'is-active' class from all active Iteneraries that aren't the current one]
-        allActiveIteneraries.each(function() {  //.each() loops all active itenerary queries
+        allActiveIteneraries.each(function () {  //.each() loops all active itenerary queries
             if (!$(this).is(currentItenerary)) {    // checks if if the 'currentItenerary' is not the same as the element in current iteration
                 $(this).removeClass('is-active');
             }
