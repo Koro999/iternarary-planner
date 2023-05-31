@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -122,35 +123,39 @@
         <main class="column is-8 menu p-4 content">
             <div class="box has-border">
                 <h2 class="has-text-centered is-size-3 ">Location</h2>
-                <section class = "section"> 
-                    <iframe id="map-container" class="embed-responsive-item" width="450" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22" allowfullscreen></iframe>
+                <section class="section">
+                    <iframe id="map-container" class="embed-responsive-item" width="450" height="450" frameborder="0"
+                        style="border:0"
+                        src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22"
+                        allowfullscreen></iframe>
                     <!--src="" allowfullscreen  loading="lazy"-->
-                  </div>
-              </section>
             </div>
-
+            </section>
             <div class="p-4 box has-border">
-                <h2 class="has-text-left column is-size-8">Name of Card</h2>
-                <article>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id eros et tellus ullamcorper
-                    pretium non eleifend odio. Integer laoreet porta sodales. Nullam lorem urna, sollicitudin vel nisl
-                    et, finibus tempus nisi. Donec consectetur, risus vel tempor mattis, sem enim convallis massa, id
-                    lobortis nulla lorem non felis. Nulla sapien diam, consectetur non er
-                </article>
+                <h2 class="column is-one-third" id="wikipediaDiv">Wikipedia Article Results:<ul id="wiki-results"></ul>
+            </div> <!-- Div to display Wiki result links -->
+            <div class="column is-two-thirds box has-border" id="video-results">Bing Video Results:<ul id="videos"></ul>
+                <!-- Div to display Bing Videos -->
             </div>
-            <div class="columns">
+            <div class="columns is-flex is-justify-content-center">
                 <button class="column is-2 clear">clear</button>
                 <button class="column is-2 save">save</button>
             </div>
+    </div>
 
-        </main>
+
+
+
+    </main>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script>
     <script src="script.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace" type="text/javascript">
-    </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace"
+        type="text/javascript">
+        </script>
 </body>
+
 </html>
