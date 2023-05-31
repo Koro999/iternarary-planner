@@ -11,4 +11,8 @@ button{
 .IteneraryCards{
     width: 100%;
 }
+#map-container{
+    border: 4px solid;
+    width: 100%;
+}
 

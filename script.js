@@ -1,3 +1,28 @@
+// Working search bar, that interacts with the google API (Carlos)
+// -location is picked. and information can be pulled
+var searchedCity = $('.input');
+var screenMap = $('#map-container');
+var carlosKey = 'AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE';
+
+
+function searchPlace(city) {
+    console.log(city);
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${carlosKey}&address=${city}`;
+fetch(geocodeApiUrl)
+.then(response => {
+    return response.json();
+})
+.then(data => {
+    console.log(data);
+})
+}
+
+
+$('.search').on('click', () => {
+    searchPlace(searchedCity[0].value);
+})
+
+
 $(document).ready(function() {
 
     // Assigns an on click event to the dropdown button
