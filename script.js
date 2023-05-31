@@ -7,7 +7,7 @@ var carlosKey = 'AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE';
 var map;
 var service;
 
-function searchPlace(city) {
+window.searchPlace = function (city) {
     var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${carlosKey}&address=${city}`;    //api url to search for a location's latlng
     var placeLat;
     var placeLon;
@@ -29,15 +29,15 @@ function searchPlace(city) {
 
                 var request = {
                     location: cityLatLng,
-                    radius: 500,
-                    type: ['restaurant'] //type should be defined, example 'restaurant'
+                    radius: '500',     //radius of location in m
+                    types: ['museum'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
                 };
                 service = new google.maps.places.PlacesService(map);
                 service.nearbySearch(request, callback);
             }
         })
         .catch(error => console.error(error));
-}
+};
 
 function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
