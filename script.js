@@ -30,7 +30,7 @@ window.searchPlace = function (city) {
                 var request = {
                     location: cityLatLng,
                     radius: '500',     //radius of location in m
-                    types: [] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
+                    types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
                 };
                 service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
                 service.nearbySearch(request, callback);    // calls 'nearbySearch' method on the 'PlacesService' instance
@@ -43,18 +43,14 @@ function callback(results, status) {
 
     //If the status of the Places API request is OK, it logs the name of each place in the console. If the status is not OK, it logs a message saying that no results were returned.
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        var place = results[i];
+        for (var i = 0; i < results.length; i++) {
+            var place = results[i];
             console.log(place.name);
-      }
+        }
     } else {
         console.log('Place search did not return any results.');
     }
 }
-
-
-
-
 
 $('.search').on('click', () => {
     searchPlace(searchedCity[0].value);
