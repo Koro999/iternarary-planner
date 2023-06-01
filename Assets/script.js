@@ -1,110 +1,49 @@
-var searchForm = document.querySelector('#search-form') //Getting Variables From HTML Page
-var qInput = document.querySelector('#q');
-var videosList = document.getElementById('videos');
-var wikipediaDiv = document.getElementById('wikipediaDiv');
-var wikiResults = document.getElementById('wiki-results');
-
-var wikiHandleSearch = function (event) { //Function to fetch from WikiPedia
-    event.preventDefault(); //Prevents page from resetting on submission
-
-    var q = qInput.value.trim(); //Turns user search input into variable "q"
-
-    if (!q) {
-        return;
-    }
-
-    var baseURL = 'https://en.wikipedia.org/w/api.php?origin=*&action=';
-    var apiURL = baseURL + 'opensearch&search=' + q + '&limit=8&namespace=0&format=json';
-
-    fetch(apiURL)
-        .then(function (response) {
-            return response.json();
-            
-        })
-        .then(function (data) { //Iterates through data and appends Wikipedia URLs onto page
-            // console.log(data)
-            var results = data[1];
-            var links = data[3];
-            var html = '<ul>';
-
-            for (var i = 0; i < results.length; i++) {
-                html += `<li><a href="${links[i]}" target="_blank">${results[i]}</a></li>`;
-            }
-            html += '</ul>';
-            wikiResults.innerHTML = html;
-        
-            localStorage.setItem('wikiResultsData', JSON.stringify(data)); //Sets wiki local storage
-        })
-        .catch(function (err) { //Catching and console logging errors
-            console.log(err);
-        });
-};
-
-searchForm.addEventListener('submit', wikiHandleSearch); //Event listener for submission button
-
-var bingOptions = { //Sets Bing API Key and Host
-    method: 'GET',
-    headers: {
-        'X-RapidAPI-Key': '168a4d3a4cmsh9a1eadacaa150cap199683jsn69b0a6c3e172',
-        'X-RapidAPI-Host': 'bing-video-search1.p.rapidapi.com'
-    }
-};
-
-searchForm.addEventListener('submit', function (event) { //Function for Bing Videos
-    event.preventDefault(); //Prevents page from resetting on submission
-
-    var q = qInput.value.trim(); //Takes user search input and makes into a variable trimming off whitespace
-
-    fetch(`https://bing-video-search1.p.rapidapi.com/videos/search?count=3&q=${q}`, bingOptions) //Fetches Bing with search input as "q"
-        .then(response => response.json())
+// Working search bar, that interacts with the google API (Carlos)
+// -location is picked. and information can be pulled
+var searchedCity = $('.input');
+var screenMap = $('#map-container');
+var carlosKey = 'AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE';
+var map;
+var service;
+window.searchPlace = function (city) {
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${carlosKey}&address=${city}`;    //api url to search for a location's latlng
+    var placeLat;
+    var placeLon;
+    fetch(geocodeApiUrl)
         .then(response => {
-            // console.log(response)
-            videosList.innerHTML = '';
-            var videos = response.value;
-        
-            for (var i = 0; i < videos.length; i++) { // Iterating through data to display video and video title as clickable links
-                var video = videos[i];
-                var li = document.createElement('li');
-
-                li.innerHTML = `<div><a href="${video.contentUrl}" target="_blank"><h3>${video.name}</h3></a></div> 
-                <div><a href="${video.contentUrl}" target="_blank"><img src="${video.thumbnailUrl}" alt="${video.name}"></a></div>`;
-
-                videosList.appendChild(li);
+            if (!response.ok) {
+                throw new Error(`HTTP status ${response.status} occurred while fetching data.`);
             }
-            
-            localStorage.setItem('bingVideosData', JSON.stringify(response)); //Sets local storage for Bing
+            return response.json();
         })
-        .catch(err => console.error(err));
-});
-
-var bingData = localStorage.getItem('bingVideosData'); //Gets local storage for Bing
-
-if (bingData) {
-    var data = JSON.parse(bingData);
-    var videos = data.value;
-    videosList.innerHTML = '';
-
-    for (var i = 0; i < videos.length; i++) { //Reappends data to page on refresh using local storage
-        var video = videos[i]; 
-        var li = document.createElement('li');
-        li.innerHTML = `<div><a href="${video.contentUrl}" target="_blank"><h3>${video.name}</h3></a></div> 
-        <div><a href="${video.contentUrl}" target="_blank"><img src="${video.thumbnailUrl}" alt="${video.name}"></a></div>`;
-        videosList.appendChild(li);
+        .then(data => {
+            if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
+                placeLat = data.results[0].geometry.location.lat;
+                placeLon = data.results[0].geometry.location.lng;
+                var cityLatLng = new google.maps.LatLng(placeLat, placeLon);
+                map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 15 });    //creates a new Map object, and displayed in #map-container in html
+                var request = {
+                    location: cityLatLng,
+                    radius: '500',     //radius of location in m
+                    types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
+                };
+                service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
+                service.nearbySearch(request, callback);    // calls 'nearbySearch' method on the 'PlacesService' instance
+            }
+        })
+        .catch(error => console.error(error));
+};
+function callback(results, status) {
+    //If the status of the Places API request is OK, it logs the name of each place in the console. If the status is not OK, it logs a message saying that no results were returned.
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            console.log(place);
+        }
+    } else {
+        console.log('Place search did not return any results.');
     }
 }
-
-var wikiData = localStorage.getItem('wikiResultsData'); //Gets local storage for Wiki
-
-if (wikiData) {
-    var data = JSON.parse(wikiData);
-    var results = data[1];
-    var links = data[3];
-    var html = '<ul>';
-
-    for (var i = 0; i < results.length; i++) {  //Reappends data to page on refresh using local storage
-        html += `<li><a href="${links[i]}" target="_blank">${results[i]}</a></li>`;
-    }
-
-    html += '</ul>';
-    wikiResults.innerHTML = html;
-}
+$('.search').on('click', () => {
+    searchPlace(searchedCity[0].value);
+})
