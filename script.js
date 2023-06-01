@@ -43,7 +43,7 @@ function callback(results, status) {
     //If the status of the Places API request is OK, it logs the name of each place in the console. If the status is not OK, it logs a message saying that no results were returned.
     if (status === google.maps.places.PlacesServiceStatus.OK) {
 
-        connectPlacetoWikipedia(results[5].name);
+        connectPlacetoWikiandBing(results[5].name);
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
             console.log(place.name);
@@ -57,9 +57,10 @@ function callback(results, status) {
 //once markers have been added to the map, an on click function will be created for each marker
 //if a marker is clicked, the location will be passed to connectPlacetoWikipedia(place), and a card will be created for that place
 //if one of those cards are clicked, they will also pass the location to connectPlacetoWikipedia(place)
-function connectPlacetoWikipedia(place) {
+function connectPlacetoWikiandBing(place) {
 
     wikiHandleSearch(place);
+    bingVideos(place);
 
 }
 

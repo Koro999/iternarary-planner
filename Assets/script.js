@@ -54,11 +54,11 @@ var bingOptions = { //Sets Bing API Key and Host
     }
 };
 
-searchForm.on('click', function (event) { //Function for Bing Videos
-
-    event.preventDefault(); //Prevents page from resetting on submission
-
-    var q = qInput.value.trim(); //Takes user search input and makes into a variable trimming off whitespace
+ function bingVideos(place, event) { //Function for Bing Videos
+    if (event) {
+        event.preventDefault(); //Prevents page from resetting on submission
+    }
+    var q = place; //Takes user search input and makes into a variable trimming off whitespace
    
 
     fetch(`https://bing-video-search1.p.rapidapi.com/videos/search?count=3&q=${q}`, bingOptions) //Fetches Bing with search input as "q"
@@ -81,7 +81,7 @@ searchForm.on('click', function (event) { //Function for Bing Videos
             localStorage.setItem('bingVideosData', JSON.stringify(response)); //Sets local storage for Bing
         })
         .catch(err => console.error(err));
-});
+}
 
 var bingData = localStorage.getItem('bingVideosData'); //Gets local storage for Bing
 
