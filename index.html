@@ -144,9 +144,35 @@
     </div>
 
 
+   
+   
+    <h1>Card Collection</h1>
+  
+    <div id="cardContainer">
+      <!-- Card elements will be dynamically added here -->
+    </div>
+  
+    <div id="controls">
+      <input type="text" id="cardTitleInput" placeholder="Card Title">
+      <textarea id="cardContentInput" placeholder="Card Content"></textarea>
+      <button onclick="addCard()">Add Card</button>
+      <button onclick="saveCollection()">Save Collection</button>
+      <select id="collectionSelect" onchange="changeCollection()">
+        <option value="1">Collection 1</option>
+        <option value="2">Collection 2</option>
+        <!-- Add more collections as needed -->
+      </select>
+    </div>
+
+
+  
+
+
+
 
 
     </main>
+
 
     </div>
 
