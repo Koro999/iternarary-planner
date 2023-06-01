@@ -1,13 +1,17 @@
-var searchForm = document.querySelector('#search-form') //Getting Variables From HTML Page
-var qInput = document.querySelector('#q');
+var searchForm = $('.search') //Getting Variables From HTML Page
+var qInput = document.querySelector('#q'); //line 29 in html
 var videosList = document.getElementById('videos');
 var wikipediaDiv = document.getElementById('wikipediaDiv');
 var wikiResults = document.getElementById('wiki-results');
 
-var wikiHandleSearch = function (event) { //Function to fetch from WikiPedia
-    event.preventDefault(); //Prevents page from resetting on submission
 
-    var q = qInput.value.trim(); //Turns user search input into variable "q"
+
+var wikiHandleSearch = function (place, event) { //Function to fetch from WikiPedia
+    if (event) {
+        event.preventDefault(); //Prevents page from resetting on submission
+    }
+    // var q = qInput.value.trim(); //Turns user search input into variable "q"
+    var q = place;
 
     if (!q) {
         return;
@@ -40,7 +44,7 @@ var wikiHandleSearch = function (event) { //Function to fetch from WikiPedia
         });
 };
 
-searchForm.addEventListener('submit', wikiHandleSearch); //Event listener for submission button
+searchForm.on('click', wikiHandleSearch); //Event listener for submission button
 
 var bingOptions = { //Sets Bing API Key and Host
     method: 'GET',
@@ -50,10 +54,12 @@ var bingOptions = { //Sets Bing API Key and Host
     }
 };
 
-searchForm.addEventListener('submit', function (event) { //Function for Bing Videos
+searchForm.on('click', function (event) { //Function for Bing Videos
+
     event.preventDefault(); //Prevents page from resetting on submission
 
     var q = qInput.value.trim(); //Takes user search input and makes into a variable trimming off whitespace
+   
 
     fetch(`https://bing-video-search1.p.rapidapi.com/videos/search?count=3&q=${q}`, bingOptions) //Fetches Bing with search input as "q"
         .then(response => response.json())
