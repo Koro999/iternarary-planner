@@ -26,13 +26,13 @@
                 <div class="field">
                     <div class="control">
                         <!--store the value of the .input class for locations-->
-                        <input type="text" class="input" placeholder="Location" value="">
+                        <input type="text" class="input" placeholder="Location" value="" id="q">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control has-text-centered">
                         <!--add an onClick event to search a location using the 'search' class-->
-                        <button class="button is-primary search">Search</button>
+                        <button class="button is-primary search" type="submit">Search</button>
                     </div>
                 </div>
             </div>
@@ -178,6 +178,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script>
     <script src="script.js"></script>
+    <script src="./assets/script.js"></script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace"
         type="text/javascript">
