@@ -12,67 +12,41 @@ function addCard() {
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
 
-    
+
 }
 
 function createCardElement(title, content) {
     console.log(cardId);
-    var iteneraryCardsParent = $(  `#Itenerary3Cards`); //change collection
+    var iteneraryCardsParent = $(`#Itenerary2Cards`); //change collection
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
-    
+
     var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
     cardContainer.append(IteneraryCardDiv);
-    
+
     var cardTitle = $(`<h3 class="title">${title}</h3>`);
     IteneraryCardDiv.append(cardTitle);
-    
+
     var cardP = $(`<p class="paragraph">${content}</p>`);
     IteneraryCardDiv.append(cardP);
-    
+
     var buttonContainer = $('<div class="buttons has-addons"></div>');
     IteneraryCardDiv.append(buttonContainer);
-    
+
     var editButton = $('<button class="button">Edit</button>');
     editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
     buttonContainer.append(editButton);
-    
-    var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteCard( `cardContainer${cardId}`));
-    buttonContainer.append(deleteButton);
-    
 
+    var deleteButton = $('<button class="button">Delete</button>');
+    deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
+    buttonContainer.append(deleteButton);
+
+
+    //this search bar has a value of the location name
+    //when search button clicked, will call the google map api and wiki api with its value as a parameter
     var cardSearch = $('<button class="button">Search</button>');
     // cardSearch.on('click', () => deleteCard(card.id));
     buttonContainer.append(cardSearch);
-    
-    
-
-
-
-
-    //   const card = document.createElement('div');
-    //   card.className = 'card';
-    //   card.id = `card-${cardId}`;
-
-    //   const titleElement = document.createElement('h3');
-    //   titleElement.textContent = title;
-
-    //   const contentElement = document.createElement('p');
-    //   contentElement.textContent = content;
-
-    //   const editButton = document.createElement('button');
-    //   editButton.textContent = 'Edit';
-    //   editButton.onclick = () => editCard(card.id);
-
-    //   const deleteButton = document.createElement('button');
-    //   deleteButton.textContent = 'Delete';
-    //   deleteButton.onclick = () => deleteCard(card.id);
-
-    //   card.appendChild(titleElement);
-    //   card.appendChild(contentElement);
-    //   card.appendChild(editButton);
-    //   card.appendChild(deleteButton);
 
     return iteneraryCardsParent;
 }
@@ -93,8 +67,9 @@ function deleteCard(cardsId) {
     const card = $(`.${cardsId}`);
     console.log(card);
     card.remove();
-    cardId --;
+    cardId--;
     console.log(cardId);
+    console.log(card);
 }
 
 function saveCollection() {
@@ -111,6 +86,48 @@ function changeCollection() {
 
     // Code to switch to the selected collection goes here...
     alert(`Switched to Collection ${selectedCollection}!`);
+}
+
+//when function is called, another itenerary div will be dynamically added
+//the value of an option is the id of the itenerary div
+var IteneraryNum = 1;
+function addItenerary() {
+    IteneraryNum++;
+    var collectionSelect = $('#collectionSelect');
+    var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
+    newOption.val(`Itenerary${IteneraryNum}Cards`);
+    collectionSelect.append(newOption);
+
+    //creates a new Itenerary div
+    var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
+    $('aside').append(dropdownDiv);
+
+    var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
+    dropdownDiv.append(dropdownTriggerDiv);
+
+    var button = $('<button></button>').addClass(`button  Itenerary${IteneraryNum}`);
+    dropdownTriggerDiv.append(button);
+
+    var titleSpan = $('<span></span>').attr('id', `Itenerary${IteneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
+    button.append(titleSpan);
+
+    var iconSpan = $('<span></span>').addClass('icon');
+    button.append(iconSpan);
+
+    var icon = $('<i></i>').addClass('fas fa-angle-down');
+    iconSpan.append(icon);
+
+    var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
+    dropdownTriggerDiv.append(dropdownMenuDiv);
+
+    var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
+    dropdownMenuDiv.append(dropdownContentDiv);
+
+
+
+
+
+
 }
 
 // Working search bar, that interacts with the google API (Carlos)
@@ -170,7 +187,7 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
-            
+
         }
         console.log(place[1]);
     } else {
