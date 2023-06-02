@@ -71,32 +71,31 @@ function createCardElement(title, content, itenerary) {
     var id = `IteneraryCard${cardId}`;
     savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
         [id]: {
-            element: IteneraryCardDiv,
+            element: IteneraryCardDiv.html(),
             children: {
                 cardTitle: {
-                    element: cardTitle
+                    element: cardTitle.html()
                 },
                 cardP: {
-                    element: cardP
+                    element: cardP.html()
                 },
                 buttonContainer: {
-                    element: buttonContainer,
+                    element: buttonContainer.html(),
                     children: {
                         editButton: {
-                            element: editButton
+                            element: editButton.html()
                         },
                         deleteButton: {
-                            element: deleteButton
+                            element: deleteButton.html()
                         },
                         cardSearch: {
-                            element: cardSearch
+                            element: cardSearch.html()
                         }
                     }
                 }
             }
         }
     }
-    console.log(savedCards[getIteneraryNum(selectedItenerary)]);
 
 
     return iteneraryCardsParent;
@@ -121,8 +120,17 @@ function deleteCard(cardsId) {
 }
 
 function saveCollection() {
-    localStorage.setItem('itenerary', JSON.stringify(savedCards));
-}
+    var data = savedCards;
+    console.log(data);
+    localStorage.setItem('itenerary', JSON.stringify(data));
+    renderSaved();
+  }
+  
+  function renderSaved() {
+    var storedData = JSON.parse(localStorage.getItem('itenerary'));
+    console.log('assa');
+    console.log(storedData);
+  }
 
 
 
@@ -185,32 +193,32 @@ function addItenerary() {
     dropdownMenuDiv.append(dropdownContentDiv);
 
     var container = {
-        element: dropdownDiv,
+        element: dropdownDiv.html(),
         children: {
             trigger: {
-                element: dropdownTriggerDiv,
+                element: dropdownTriggerDiv.html(),
                 children: {
                     iteneraryBtn: {
-                        element: button,
+                        element: button.html(),
                         children: {
                             spanTitle: {
-                                element: titleSpan
+                                element: titleSpan.html()
                             },
                             spanIcon: {
-                                element: iconSpan,
+                                element: iconSpan.html(),
                                 children: {
                                     icon: {
-                                        element: icon
+                                        element: icon.html()
                                     }
                                 }
                             }
                         }
                     },
                     dropdownMenu: {
-                        element: dropdownDiv,
+                        element: dropdownDiv.html(),
                         children: {
                             dropdownContent: {
-                                element: dropdownContentDiv,
+                                element: dropdownContentDiv.html(),
                                 children: {
                                 }
                             }
