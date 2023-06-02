@@ -7,7 +7,7 @@ function addCard() {
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
-    createCardElement(title, content);
+    createCardElement(title, content, changeCollection());
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
@@ -15,9 +15,9 @@ function addCard() {
 
 }
 
-function createCardElement(title, content) {
-    console.log(cardId);
-    var iteneraryCardsParent = $(`#Itenerary2Cards`); //change collection
+function createCardElement(title, content, itenerary) {
+    console.log(itenerary);
+    var iteneraryCardsParent = $(`#${itenerary}`); //change collection
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
 
@@ -76,16 +76,23 @@ function saveCollection() {
     const collectionSelect = document.getElementById('collectionSelect');
     const selectedCollection = collectionSelect.value;
 
+    createCardElement(selectedCollection);
+
     // Code to save the collection goes here...
     alert(`Collection ${selectedCollection} saved!`);
+
+    return selectedCollection;
 }
 
 function changeCollection() {
     const collectionSelect = document.getElementById('collectionSelect');
     const selectedCollection = collectionSelect.value;
+    console.log(selectedCollection);
+
 
     // Code to switch to the selected collection goes here...
     alert(`Switched to Collection ${selectedCollection}!`);
+    return selectedCollection;
 }
 
 //when function is called, another itenerary div will be dynamically added
