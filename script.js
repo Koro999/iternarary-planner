@@ -51,62 +51,53 @@ function createCardElement(title, content, itenerary) {
     deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
     buttonContainer.append(deleteButton);
 
+    //this search bar has a value of the location name
+    //when search button clicked, will call the google map api and wiki api with its value as a parameter
+    var cardSearch = $('<button class="button">Search</button>');
+    // cardSearch.on('click', () => deleteCard(card.id));
+    buttonContainer.append(cardSearch);
 
 
     //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
     //for ex. savedCards[0] will point to the first itenerary object in the savedCards array.
     // savedCards[1] will point to the second itenerary object in the savedCards object.
-    console.log(savedCards[getIteneraryNum(selectedItenerary)]);
 
 
     //dropdownContentChildren is the object in the savedCards array that contains all the cards to the itenerary.
     //we will append each card we create to this object. 
     //similarly, we can delete cards from this object in the deleteCard function
-    var dropdownContentChildren = savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children;
 
 
     var id = `IteneraryCard${cardId}`;
-    dropdownContentChildren= {
+    savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
         [id]: {
-            element:IteneraryCardDiv,
+            element: IteneraryCardDiv,
             children: {
-                cardTitle:{
+                cardTitle: {
                     element: cardTitle
                 },
-                cardP:{
+                cardP: {
                     element: cardP
                 },
-                buttonContainer:{
+                buttonContainer: {
                     element: buttonContainer,
                     children: {
-                        editButton:{
+                        editButton: {
                             element: editButton
                         },
-                        deleteButton:{
+                        deleteButton: {
                             element: deleteButton
                         },
-                        cardSearch:{
+                        cardSearch: {
                             element: cardSearch
                         }
                     }
                 }
             }
         }
-
     }
+    console.log(savedCards[getIteneraryNum(selectedItenerary)]);
 
-    console.log(dropdownContentChildren);
-
-
-
-
-
-
-    //this search bar has a value of the location name
-    //when search button clicked, will call the google map api and wiki api with its value as a parameter
-    var cardSearch = $('<button class="button">Search</button>');
-    // cardSearch.on('click', () => deleteCard(card.id));
-    buttonContainer.append(cardSearch);
 
     return iteneraryCardsParent;
 }
@@ -130,16 +121,11 @@ function deleteCard(cardsId) {
 }
 
 function saveCollection() {
-    const collectionSelect = document.getElementById('collectionSelect');
-    const selectedCollection = collectionSelect.value;
-
-    createCardElement(selectedCollection);
-
-    // Code to save the collection goes here...
-    alert(`Collection ${selectedCollection} saved!`);
-
-    return selectedCollection;
+    localStorage.setItem('itenerary', JSON.stringify(savedCards));
 }
+
+
+
 
 function changeCollection() {
     var collectionSelect = $('#collectionSelect');
