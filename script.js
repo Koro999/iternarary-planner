@@ -16,7 +16,7 @@ function addCard() {
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
-    createCardElement(title, content, changeCollection());
+    createCardElement(title, content, changeCollection(), getIteneraryNum());
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
@@ -25,7 +25,8 @@ function addCard() {
 }
 
 function createCardElement(title, content, itenerary) {
-    var iteneraryCardsParent = $(`#${itenerary}`); //change collection
+    console.log(itenerary);
+    var iteneraryCardsParent = $(`#${itenerary}`);
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
 
@@ -48,6 +49,10 @@ function createCardElement(title, content, itenerary) {
     var deleteButton = $('<button class="button">Delete</button>');
     deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
     buttonContainer.append(deleteButton);
+
+
+
+
 
 
     //this search bar has a value of the location name
@@ -90,13 +95,16 @@ function saveCollection() {
 }
 
 function changeCollection() {
-    const collectionSelect = document.getElementById('collectionSelect');
-    const selectedCollection = collectionSelect.value;
+    var collectionSelect = $('#collectionSelect');
+    var selectedOption = collectionSelect.find(':selected');
+    
+    var val1 = selectedOption.data('value1');
+    var val2 = selectedOption.data('value2');
+    //the value is the id of the container
 
 
     // Code to switch to the selected collection goes here...
-    alert(`Switched to Collection ${selectedCollection}!`);
-    return selectedCollection;
+    return val1;
 }
 
 //when function is called, another itenerary div will be dynamically added
@@ -107,7 +115,8 @@ function addItenerary() {
     var collectionSelect = $('#collectionSelect');
     var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
     newOption.val(`Itenerary${IteneraryNum}Cards`);
-    console.log(IteneraryNum);
+    newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
+    newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
     collectionSelect.append(newOption);
 
 
@@ -165,6 +174,11 @@ function addItenerary() {
                             dropdownContent: {
                                 element: dropdownContentDiv,
                                 children: {
+                                    card1: {
+                                    },
+                                    card2: {
+
+                                    }
 
                                 }
                             }
@@ -179,9 +193,12 @@ function addItenerary() {
     addIteneraryNum();
 
 }
-
+function getIteneraryNum(){
+    return IteneraryNum;
+}
 function addIteneraryNum() {
     IteneraryNum++;
+    
 }
 
 // Working search bar, that interacts with the google API (Carlos)
