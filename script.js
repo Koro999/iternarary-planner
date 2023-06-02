@@ -2,6 +2,7 @@
 let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
 var IteneraryNum = 0;
+var selectedItenerary;
 
 
 //will be an object of objects.
@@ -16,7 +17,8 @@ function addCard() {
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
-    createCardElement(title, content, changeCollection(), getIteneraryNum());
+
+    createCardElement(title, content, changeCollection());
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
@@ -24,8 +26,7 @@ function addCard() {
 
 }
 
-function createCardElement(title, content, itenerary, val2) {
-    console.log(val2);
+function createCardElement(title, content, itenerary) {
     var iteneraryCardsParent = $(`#${itenerary}`);
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
@@ -49,6 +50,52 @@ function createCardElement(title, content, itenerary, val2) {
     var deleteButton = $('<button class="button">Delete</button>');
     deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
     buttonContainer.append(deleteButton);
+
+
+
+    //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
+    //for ex. savedCards[0] will point to the first itenerary object in the savedCards array.
+    // savedCards[1] will point to the second itenerary object in the savedCards object.
+    console.log(savedCards[getIteneraryNum(selectedItenerary)]);
+
+
+    //dropdownContentChildren is the object in the savedCards array that contains all the cards to the itenerary.
+    //we will append each card we create to this object. 
+    //similarly, we can delete cards from this object in the deleteCard function
+    var dropdownContentChildren = savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children;
+
+
+    var id = `IteneraryCard${cardId}`;
+    dropdownContentChildren= {
+        [id]: {
+            element:IteneraryCardDiv,
+            children: {
+                cardTitle:{
+                    element: cardTitle
+                },
+                cardP:{
+                    element: cardP
+                },
+                buttonContainer:{
+                    element: buttonContainer,
+                    children: {
+                        editButton:{
+                            element: editButton
+                        },
+                        deleteButton:{
+                            element: deleteButton
+                        },
+                        cardSearch:{
+                            element: cardSearch
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    console.log(dropdownContentChildren);
 
 
 
@@ -97,15 +144,15 @@ function saveCollection() {
 function changeCollection() {
     var collectionSelect = $('#collectionSelect');
     var selectedOption = collectionSelect.find(':selected');
-    
+
     var val1 = selectedOption.data('value1');
     var val2 = selectedOption.data('value2');
-    console.log(val2);
-    getIteneraryNum(val2);
-    //the value is the id of the container
 
 
-    // Code to switch to the selected collection goes here...
+    selectedItenerary = val2;
+    getIteneraryNum(selectedItenerary);     //if the val1 of the selected option in Itenerary0Cards, the val2 will pass 0 to getIteneraryNum function
+    //this is to accurately select the current itenerary from the savedCards array.
+
     return val1;
 }
 
@@ -113,13 +160,15 @@ function changeCollection() {
 //the value of an option is the id of the itenerary div
 
 function addItenerary() {
-    
+
     var collectionSelect = $('#collectionSelect');
     var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
     newOption.val(`Itenerary${IteneraryNum}Cards`);
     newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
     newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
-    console.log(newOption.data('value2'));
+
+    selectedItenerary = newOption.data('value2');
+    getIteneraryNum(selectedItenerary);
     collectionSelect.append(newOption);
 
 
@@ -153,7 +202,7 @@ function addItenerary() {
         element: dropdownDiv,
         children: {
             trigger: {
-                element:dropdownTriggerDiv,
+                element: dropdownTriggerDiv,
                 children: {
                     iteneraryBtn: {
                         element: button,
@@ -171,37 +220,32 @@ function addItenerary() {
                             }
                         }
                     },
-                    dropdownMenu:{
+                    dropdownMenu: {
                         element: dropdownDiv,
                         children: {
                             dropdownContent: {
                                 element: dropdownContentDiv,
                                 children: {
-                                    card1: {
-                                    },
-                                    card2: {
-
-                                    }
-
                                 }
                             }
                         }
                     }
-                } 
+                }
             }
         }
     };
     savedCards.push(container);
-    console.log(savedCards);
     addIteneraryNum();
 
 }
-function getIteneraryNum(val2){
-    return val2;
+//this is for the savedCards array
+//
+function getIteneraryNum(selectedItenerary) {
+    return selectedItenerary;
 }
 function addIteneraryNum() {
     IteneraryNum++;
-    
+
 }
 
 // Working search bar, that interacts with the google API (Carlos)
