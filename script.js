@@ -63,11 +63,6 @@ function createCardElement(title, content, itenerary) {
     // savedCards[1] will point to the second itenerary object in the savedCards object.
 
 
-    //dropdownContentChildren is the object in the savedCards array that contains all the cards to the itenerary.
-    //we will append each card we create to this object. 
-    //similarly, we can delete cards from this object in the deleteCard function
-
-
     var id = `IteneraryCard${cardId}`;
     savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
         [id]: {
@@ -192,6 +187,8 @@ function addItenerary() {
     var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
     dropdownMenuDiv.append(dropdownContentDiv);
 
+
+    //this stores the whole itenerary html to the savedCards array to be able to save them later.
     var container = {
         element: dropdownDiv.html(),
         children: {
