@@ -22,13 +22,13 @@ function createCardElement(title, content) {
     var cardContainer = $('<div class="dropdown-content"></div>');
     iteneraryCardsParent.append(cardContainer);
     
-    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item button IteneraryCardsBtn card is-flex-direction-column is-justify-content-space-between"></div>`);
+    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
     cardContainer.append(IteneraryCardDiv);
     
-    var cardTitle = $(`<h3>${title}</h3>`);
+    var cardTitle = $(`<h3 class="title">${title}</h3>`);
     IteneraryCardDiv.append(cardTitle);
     
-    var cardP = $(`<p class="wrap-word">${content}</p>`);
+    var cardP = $(`<p class="paragraph">${content}</p>`);
     IteneraryCardDiv.append(cardP);
     
     var buttonContainer = $('<div class="buttons has-addons"></div>');
