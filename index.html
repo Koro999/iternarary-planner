@@ -111,7 +111,6 @@
                             <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
                                 Card 2
                             </button>
-                            <!-- more dropdown items here -->
                         </div>
                     </div>
                 </div>
@@ -144,31 +143,42 @@
     </div>
 
 
-   
-   
+
+
     <h1>Card Collection</h1>
-  
+
     <div id="cardContainer">
-      <!-- Card elements will be dynamically added here -->
+        <!-- Card elements will be dynamically added here -->
     </div>
-  
+
     <div id="controls">
-      <input type="text" id="cardTitleInput" placeholder="Card Title">
-      <textarea id="cardContentInput" placeholder="Card Content"></textarea>
-      <button onclick="addCard()">Add Card</button>
-      <button onclick="saveCollection()">Save Collection</button>
-      <select id="collectionSelect" onchange="changeCollection()">
-        <option value="1">Collection 1</option>
-        <option value="2">Collection 2</option>
-        <!-- Add more collections as needed -->
-      </select>
+        <input type="text" id="cardTitleInput" placeholder="Card Title">
+        <textarea id="cardContentInput" placeholder="Card Content"></textarea>
+        <button onclick="addCard()">Add Card</button>
+        <button onclick="saveCollection()">Save Collection</button>
+        <select id="collectionSelect" onchange="changeCollection()">
+            <option value="1">Collection 1</option>
+            <option value="2">Collection 2</option>
+            <!-- Add more collections as needed -->
+        </select>
     </div>
 
-
-  
-
-
-
+    <!-- <div class="dropdown-menu IteneraryCards" id="Itenerary3Cards" role="menu">
+        <div class="dropdown-content">
+            <div id="IteneraryCard0Div">
+                <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
+                Card 0
+            </button>
+            </div>
+            
+            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
+                Card 1
+            </button>
+            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
+                Card 2
+            </button>
+        </div>
+    </div> -->
 
 
     </main>
