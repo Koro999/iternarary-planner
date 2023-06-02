@@ -2,6 +2,14 @@
 let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
 
+
+//will be an object of objects.
+//if the user adds an itenerary, a new itenerary property will be created
+//if a user adds cards, 
+var savedCards = [
+
+]
+
 function addCard() {
     cardId++;
     const title = document.getElementById('cardTitleInput').value;
@@ -105,6 +113,8 @@ function addItenerary() {
     newOption.val(`Itenerary${IteneraryNum}Cards`);
     collectionSelect.append(newOption);
 
+
+
     //creates a new Itenerary div
     var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
     $('aside').append(dropdownDiv);
@@ -130,10 +140,61 @@ function addItenerary() {
     var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
     dropdownMenuDiv.append(dropdownContentDiv);
 
+    var container = {
+        element: dropdownDiv,
+        children: {
+            trigger: {
+                element:dropdownTriggerDiv,
+                children: {
+                    iteneraryBtn: {
+                        element: button,
+                        children: {
+                            spanTitle: {
+                                element: titleSpan
+                            },
+                            spanIcon: {
+                                element: iconSpan,
+                                children: {
+                                    icon: {
+                                        element: icon
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    dropdownMenu:{
+                        element: dropdownDiv,
+                        children: {
+                            dropdownContent: {
+                                element: dropdownContentDiv,
+                                children: {
+
+                                }
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+    };
+    savedCards.push(container);
+    
 
 
+//savedCards = {
 
 
+    //container
+        //trigger
+            //iteneraryBtn
+                //spanTitle
+                //spanIcon
+                    //icon
+            //dropdownMenu
+                //dropdownContent
+                    //card0Btn
+                    //card1Btn
+//}
 
 }
 
