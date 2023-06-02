@@ -1,6 +1,6 @@
 // Working search bar, that interacts with the google API (Carlos)
 // -location is picked. and information can be pulled
-var searchedCity = $('.input');
+var searchedCity = $('.input'); //listener for the form 
 var screenMap = $('#map-container');
 var Key = 'AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY';
 
@@ -8,67 +8,76 @@ var map;
 var service;
 
 //map variables 
+//lat lons originally start with no value 
 var lat;
 var lon;
 var poiArray;
 var poiLatLon;
 
 //event listener for the search button 
-$('.search').on('click', () => {
-    searchPlace(searchedCity[0].value);//grab the lat and lon of w.e is inputted
-    console.log(lat)
-    console.log(lon)
-
-    pointsOfInterest(lat,lon) //enter lats and lon to search points of interest 
-    updateMap(lat,lon); //update the map with the location searched
+//you NEED to use async/await here to have the desired order of operations, otherwise everything executes in the wrong order 
+$('.search').on('click', async () => {
+    //searchPlace function called, form input is entered
+    await searchPlace(searchedCity[0].value);
+    await pointsOfInterest(lat, lon)
+    //await pointsOfInterest(lat,lon)
+    await updateMap(lat,lon); //update the map with the location searched
     console.log(poiArray)
 })
 
-//function calls the google geocoder api to grab the lat and lon
-window.searchPlace = function (city) {
-    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;    //api url to search for a location's latlng
-    
 
+//function calls the google geocoder api to grab the lat and lon
+window.searchPlace = async function (city) {
+    //api url to search for a location's lat lng
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;    
     //calls the google geocoding api to grab lat lon of location searched 
-    fetch(geocodeApiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP status ${response.status} occurred while fetching data.`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
-                lat = data.results[0].geometry.location.lat;
-                lon = data.results[0].geometry.location.lng;
-            }
-        })
-        .catch(error => console.error(error));
+    const response = await fetch(geocodeApiUrl)
+    if (!response.ok) {
+        throw new Error(`HTTP status ${response.status} occurred while fetching data.`);
+    }
+    const data = await response.json();
+    if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
+                
+        //assigns lat and lon values
+        lat = data.results[0].geometry.location.lat;
+        lon = data.results[0].geometry.location.lng;
+        //console.log(data.status)
+        //console.log(lat)//these are defined
+        //console.log(lon)//these are defined
+        
+    }
 };
 
 //generate points of interest at the location entered in search bar 
-function pointsOfInterest(lat,lon){
+async function pointsOfInterest(lat,lon){
     var cityLatLng = new google.maps.LatLng(lat, lon);
-                console.log(cityLatLng)
-                //creates a new Map object, and displayed in #map-container in html
-                map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 15 });   
+    //this syntax loads libraries as you need them https://developers.google.com/maps/documentation/javascript/libraries
+    const { places } = await google.maps.importLibrary("places")
+    
+    //sets the map element with the latlng grabbed from the geocoder api 
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 8 });   
 
-                var request = {
-                    location: cityLatLng,
-                    radius: '500',     //radius of location in m
-                    types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
-                };
+    var request = {
+        location: cityLatLng,
+        radius: '500', //radius of location in m
+        types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
+    };
 
-                service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
-                service.nearbySearch(request, callback);    // calls 'nearbySearch' method on the 'PlacesService' instance
+    service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
+    service.nearbySearch(request, callback)    // calls 'nearbySearch' method on the 'PlacesService' instance
 }
 
+//callback function is required for the usage of the nearbySearch service
 function callback(results, status) {
     //If the status of the Places API request is OK, it logs the name of each place in the console. If the status is not OK, it logs a message saying that no results were returned.
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         poiArray = results; 
+        console.log(poiArray)
+        //service = new google.maps.places.PlacesService(map);
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
+
+            //createMarker(place);
             console.log(place.name);
         }
     } else {
@@ -134,6 +143,7 @@ async function updateMap (lat,lon) {
     //calls the map-container element in the html
     map = new Map(document.getElementById('map-container'), options);
 
+    /*
     const infoWindow = new google.maps.InfoWindow({
         content: "",
         disableAutoPan: true,
@@ -162,7 +172,7 @@ async function updateMap (lat,lon) {
 
     for (let index = 0; index < array.length; index++) {
         
-    }
+    }*/
 }
 
 
