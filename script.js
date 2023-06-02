@@ -3,23 +3,22 @@ let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
 
 function addCard() {
+    cardId++;
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
-    const card = createCardElement(title, content);
-
-    const cardContainer = document.getElementById('cardContainer');
-    cardContainer.appendChild(card);
+    createCardElement(title, content);
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
 
-    cardId++;
+    
 }
 
 function createCardElement(title, content) {
-    var iteneraryCardsParent = $('#Itenerary3Cards');
-    var cardContainer = $('<div class="dropdown-content"></div>');
+    console.log(cardId);
+    var iteneraryCardsParent = $(  `#Itenerary3Cards`); //change collection
+    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
     
     var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
@@ -35,12 +34,18 @@ function createCardElement(title, content) {
     IteneraryCardDiv.append(buttonContainer);
     
     var editButton = $('<button class="button">Edit</button>');
-    editButton.on('click', () => editCard(card.id));
+    editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
     buttonContainer.append(editButton);
     
     var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteCard(card.id));
+    deleteButton.on('click', () => deleteCard( `cardContainer${cardId}`));
     buttonContainer.append(deleteButton);
+    
+
+    var cardSearch = $('<button class="button">Search</button>');
+    // cardSearch.on('click', () => deleteCard(card.id));
+    buttonContainer.append(cardSearch);
+    
     
 
 
@@ -84,9 +89,12 @@ function editCard(cardId) {
     contentElement.textContent = newContent;
 }
 
-function deleteCard(cardId) {
-    const card = document.getElementById(cardId);
+function deleteCard(cardsId) {
+    const card = $(`.${cardsId}`);
+    console.log(card);
     card.remove();
+    cardId --;
+    console.log(cardId);
 }
 
 function saveCollection() {
