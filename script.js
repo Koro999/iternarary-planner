@@ -18,30 +18,30 @@ function addCard() {
 }
 
 function createCardElement(title, content) {
-
     var iteneraryCardsParent = $('#Itenerary3Cards');
     var cardContainer = $('<div class="dropdown-content"></div>');
     iteneraryCardsParent.append(cardContainer);
-
-    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item button IteneraryCardsBtn card"></div>`);
+    
+    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item button IteneraryCardsBtn card is-flex-direction-column is-justify-content-space-between"></div>`);
     cardContainer.append(IteneraryCardDiv);
-
+    
     var cardTitle = $(`<h3>${title}</h3>`);
     IteneraryCardDiv.append(cardTitle);
-
-    var cardP = $(`<p>${content}</p>`);
+    
+    var cardP = $(`<p class="wrap-word">${content}</p>`);
     IteneraryCardDiv.append(cardP);
-
-    var editButton = $('<button></button>'); // Creates a new button element
-    editButton.text('Edit'); // Sets the text content of the button
-    editButton.on('click', () => editCard(card.id)); // Sets the click event handler of the button
-    IteneraryCardDiv.append(editButton);
-
-    var deleteButton = $('<button></button>'); // Creates a new button element
-    deleteButton.text('Delete'); // Sets the text content of the button
-    deleteButton.on('click', () => deleteCard(card.id)); // Sets the click event handler of the button
-    IteneraryCardDiv.append(deleteButton);
-
+    
+    var buttonContainer = $('<div class="buttons has-addons"></div>');
+    IteneraryCardDiv.append(buttonContainer);
+    
+    var editButton = $('<button class="button">Edit</button>');
+    editButton.on('click', () => editCard(card.id));
+    buttonContainer.append(editButton);
+    
+    var deleteButton = $('<button class="button">Delete</button>');
+    deleteButton.on('click', () => deleteCard(card.id));
+    buttonContainer.append(deleteButton);
+    
 
 
 
@@ -130,21 +130,31 @@ window.searchPlace = function (city) {
             if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
                 placeLat = data.results[0].geometry.location.lat;
                 placeLon = data.results[0].geometry.location.lng;
-                var cityLatLng = new google.maps.LatLng(placeLat, placeLon);
-
-                map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 15 });    //creates a new Map object, and displayed in #map-container in html
-
-                var request = {
-                    location: cityLatLng,
-                    radius: '500',     //radius of location in m
-                    types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
-                };
-                service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
-                service.nearbySearch(request, callback);    // calls 'nearbySearch' method on the 'PlacesService' instance
+                test(placeLat, placeLon);
             }
         })
         .catch(error => console.error(error));
 };
+
+function test(placeLat, placeLon) {
+    var cityLatLng = new google.maps.LatLng(placeLat, placeLon);
+    console.log(placeLat);
+    console.log(placeLon);
+
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 15 });    //creates a new Map object, and displayed in #map-container in html
+
+    var request = {
+        location: cityLatLng,
+        radius: '500',     //radius of location in m
+        types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
+    };
+    service = new google.maps.places.PlacesService(map);
+
+    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
+    service.nearbySearch(request, callback);    // calls 'nearbySearch' method on the 'PlacesService' instance
+}
+
+
 
 function callback(results, status) {
 
@@ -152,8 +162,9 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
-            console.log(place.name);
+            
         }
+        console.log(place[1]);
     } else {
         console.log('Place search did not return any results.');
     }

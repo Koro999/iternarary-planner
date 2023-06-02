@@ -34,6 +34,10 @@ body {
   #controls button {
     margin-right: 10px;
   }
+  .wrap-word {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
   
 
 .Itenerary{
