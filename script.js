@@ -1,6 +1,7 @@
 
 let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
+var IteneraryNum = 0;
 
 
 //will be an object of objects.
@@ -24,7 +25,6 @@ function addCard() {
 }
 
 function createCardElement(title, content, itenerary) {
-    console.log(itenerary);
     var iteneraryCardsParent = $(`#${itenerary}`); //change collection
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
@@ -73,11 +73,8 @@ function editCard(cardId) {
 
 function deleteCard(cardsId) {
     const card = $(`.${cardsId}`);
-    console.log(card);
     card.remove();
     cardId--;
-    console.log(cardId);
-    console.log(card);
 }
 
 function saveCollection() {
@@ -95,7 +92,6 @@ function saveCollection() {
 function changeCollection() {
     const collectionSelect = document.getElementById('collectionSelect');
     const selectedCollection = collectionSelect.value;
-    console.log(selectedCollection);
 
 
     // Code to switch to the selected collection goes here...
@@ -105,12 +101,13 @@ function changeCollection() {
 
 //when function is called, another itenerary div will be dynamically added
 //the value of an option is the id of the itenerary div
-var IteneraryNum = 1;
+
 function addItenerary() {
-    IteneraryNum++;
+    
     var collectionSelect = $('#collectionSelect');
     var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
     newOption.val(`Itenerary${IteneraryNum}Cards`);
+    console.log(IteneraryNum);
     collectionSelect.append(newOption);
 
 
@@ -178,24 +175,13 @@ function addItenerary() {
         }
     };
     savedCards.push(container);
-    
+    console.log(savedCards);
+    addIteneraryNum();
 
+}
 
-//savedCards = {
-
-
-    //container
-        //trigger
-            //iteneraryBtn
-                //spanTitle
-                //spanIcon
-                    //icon
-            //dropdownMenu
-                //dropdownContent
-                    //card0Btn
-                    //card1Btn
-//}
-
+function addIteneraryNum() {
+    IteneraryNum++;
 }
 
 // Working search bar, that interacts with the google API (Carlos)
