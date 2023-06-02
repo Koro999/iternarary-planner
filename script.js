@@ -24,8 +24,8 @@ function addCard() {
 
 }
 
-function createCardElement(title, content, itenerary) {
-    console.log(itenerary);
+function createCardElement(title, content, itenerary, val2) {
+    console.log(val2);
     var iteneraryCardsParent = $(`#${itenerary}`);
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
@@ -100,6 +100,8 @@ function changeCollection() {
     
     var val1 = selectedOption.data('value1');
     var val2 = selectedOption.data('value2');
+    console.log(val2);
+    getIteneraryNum(val2);
     //the value is the id of the container
 
 
@@ -117,6 +119,7 @@ function addItenerary() {
     newOption.val(`Itenerary${IteneraryNum}Cards`);
     newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
     newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
+    console.log(newOption.data('value2'));
     collectionSelect.append(newOption);
 
 
@@ -193,8 +196,8 @@ function addItenerary() {
     addIteneraryNum();
 
 }
-function getIteneraryNum(){
-    return IteneraryNum;
+function getIteneraryNum(val2){
+    return val2;
 }
 function addIteneraryNum() {
     IteneraryNum++;
