@@ -6,13 +6,13 @@ var Key = 'AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY';
 
 var map;
 var service;
+var infoWindow;
 
 //map variables 
 //lat lons originally start with no value 
 var lat;
 var lon;
 var poiArray;
-var poiLatLon;
 
 //event listener for the search button 
 //you NEED to use async/await here to have the desired order of operations, otherwise everything executes in the wrong order 
@@ -21,8 +21,6 @@ $('.search').on('click', async () => {
     await searchPlace(searchedCity[0].value);
     await pointsOfInterest(lat, lon)
     //await pointsOfInterest(lat,lon)
-    await updateMap(lat,lon); //update the map with the location searched
-    console.log(poiArray)
 })
 
 
@@ -53,40 +51,56 @@ async function pointsOfInterest(lat,lon){
     var cityLatLng = new google.maps.LatLng(lat, lon);
     //this syntax loads libraries as you need them https://developers.google.com/maps/documentation/javascript/libraries
     const { places } = await google.maps.importLibrary("places")
-    
+    infoWindow = new google.maps.InfoWindow();
     //sets the map element with the latlng grabbed from the geocoder api 
-    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 8 });   
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });   
 
     var request = {
         location: cityLatLng,
         radius: '500', //radius of location in m
         types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
     };
-
+    //console.log('trainStart')
     service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
-    service.nearbySearch(request, callback)    // calls 'nearbySearch' method on the 'PlacesService' instance
-}
+    //WHY IS THIS FUNCTION SPECIFICALLY ACTIVATING AFTER
+    //the 2nd parameter is the callback
+    //callback will finish whenever the api finishes returning information
+    //everything that needs to be done with the callback information must be done within the callback function
+    service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            poiArray = results; 
+        //loop through the array 
+            for (let i = 0; i < results.length; i++) {
+                //console.log all the locations
+                place = results[i]
+                console.log(place.name)
 
-//callback function is required for the usage of the nearbySearch service
-function callback(results, status) {
-    //If the status of the Places API request is OK, it logs the name of each place in the console. If the status is not OK, it logs a message saying that no results were returned.
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-        poiArray = results; 
-        console.log(poiArray)
-        //service = new google.maps.places.PlacesService(map);
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-
-            //createMarker(place);
-            console.log(place.name);
+                createMarker(results[i]);
+            }
+        } else {
+            console.log('Place search did not return any results.');
         }
-    } else {
-        console.log('Place search did not return any results.');
-    }
+    })
+
+    function createMarker(place) {
+        if (!place.geometry || !place.geometry.location) return;
+      
+        const marker = new google.maps.Marker({
+          map,
+          position: place.geometry.location,
+        });
+      
+        google.maps.event.addListener(marker, "click", () => {
+          infoWindow.setContent(place.name || "");
+          infoWindow.open(map, marker);
+        });
+      }
+
 }
+
+
 
 $(document).ready(function () {
-
     // Assigns an on click event to the dropdown button
     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
         event.stopPropagation();
@@ -100,7 +114,6 @@ $(document).ready(function () {
                 $(this).removeClass('is-active');
             }
         });
-
         currentItenerary.toggleClass('is-active'); // Toggle the current dropdown
     });
 });
@@ -143,36 +156,7 @@ async function updateMap (lat,lon) {
     //calls the map-container element in the html
     map = new Map(document.getElementById('map-container'), options);
 
-    /*
-    const infoWindow = new google.maps.InfoWindow({
-        content: "",
-        disableAutoPan: true,
-    });
-      // Create an array of alphabetical characters used to label the markers.
-    const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      // Add some markers to the map.
-    const markers = locations.map((position, i) => {
-    const label = labels[i % labels.length];
-    const marker = new google.maps.Marker({
-          position,
-          label,
-        });
-    
-        // markers can only be keyboard focusable when they have click listeners
-        // open info window when marker is clicked
-    marker.addListener("click", () => {
-          infoWindow.setContent(label);
-          infoWindow.open(map, marker);
-    });
-    return marker;
-    });
-    
-      // Add a marker clusterer to manage the markers.
-      new MarkerClusterer({ markers, map });
 
-    for (let index = 0; index < array.length; index++) {
-        
-    }*/
 }
 
 
