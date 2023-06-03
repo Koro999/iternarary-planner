@@ -13,5 +13,6 @@ button{
 }
 #map-container{
     border: 4px solid;
+    height: 450px;
     width: 100%;
 }
