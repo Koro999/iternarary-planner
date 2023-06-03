@@ -344,6 +344,7 @@ async function pointsOfInterest(lat,lon){
 
         //when the marker is clicked it should save to itinerary
         google.maps.event.addListener(marker, "click", () => {
+            storedPlaceName =place.name;
             
         });
       }
@@ -393,3 +394,7 @@ async function initMap () {
 }
 
 initMap();
+
+
+//map and wikipedia generation to card 
+
