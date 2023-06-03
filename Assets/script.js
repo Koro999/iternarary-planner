@@ -4,6 +4,7 @@ var searchedCity = $('.input'); //listener for the form
 var screenMap = $('#map-container');
 var Key = 'AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY';
 
+//google map api variables 
 var map;
 var service;
 var infoWindow;
@@ -82,6 +83,7 @@ async function pointsOfInterest(lat,lon){
         }
     })
 
+    //function creates all the markers of the points of interest into map
     function createMarker(place) {
         if (!place.geometry || !place.geometry.location) return;
       
@@ -104,8 +106,6 @@ async function pointsOfInterest(lat,lon){
       }
 
 }
-
-
 
 $(document).ready(function () {
     // Assigns an on click event to the dropdown button
