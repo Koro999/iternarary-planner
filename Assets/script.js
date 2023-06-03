@@ -1,3 +1,245 @@
+let currentCollection = 1;
+let cardId = -1; //changed from 1 to -1
+var IteneraryNum = 0;
+var selectedItenerary;
+
+
+//will be an object of objects.
+//if the user adds an itenerary, a new itenerary property will be created
+//if a user adds cards, 
+var savedCards = [
+
+]
+
+function addCard() {
+    cardId++;
+    const title = document.getElementById('cardTitleInput').value;
+    const content = document.getElementById('cardContentInput').value;
+
+
+    createCardElement(title, content, changeCollection());
+
+    document.getElementById('cardTitleInput').value = '';
+    document.getElementById('cardContentInput').value = '';
+
+
+}
+
+function createCardElement(title, content, itenerary) {
+    var iteneraryCardsParent = $(`#${itenerary}`);
+    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
+    iteneraryCardsParent.append(cardContainer);
+
+    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+    cardContainer.append(IteneraryCardDiv);
+
+    var cardTitle = $(`<h3 class="title">${title}</h3>`);
+    IteneraryCardDiv.append(cardTitle);
+
+    var cardP = $(`<p class="paragraph">${content}</p>`);
+    IteneraryCardDiv.append(cardP);
+
+    var buttonContainer = $('<div class="buttons has-addons"></div>');
+    IteneraryCardDiv.append(buttonContainer);
+
+    var editButton = $('<button class="button">Edit</button>');
+    editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
+    buttonContainer.append(editButton);
+
+    var deleteButton = $('<button class="button">Delete</button>');
+    deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
+    buttonContainer.append(deleteButton);
+
+    //this search bar has a value of the location name
+    //when search button clicked, will call the google map api and wiki api with its value as a parameter
+    var cardSearch = $('<button class="button">Search</button>');
+    // cardSearch.on('click', () => deleteCard(card.id));
+    buttonContainer.append(cardSearch);
+
+
+    //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
+    //for ex. savedCards[0] will point to the first itenerary object in the savedCards array.
+    // savedCards[1] will point to the second itenerary object in the savedCards object.
+
+
+    var id = `IteneraryCard${cardId}`;
+    savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
+        [id]: {
+            element: IteneraryCardDiv.html(),
+            children: {
+                cardTitle: {
+                    element: cardTitle.html()
+                },
+                cardP: {
+                    element: cardP.html()
+                },
+                buttonContainer: {
+                    element: buttonContainer.html(),
+                    children: {
+                        editButton: {
+                            element: editButton.html()
+                        },
+                        deleteButton: {
+                            element: deleteButton.html()
+                        },
+                        cardSearch: {
+                            element: cardSearch.html()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    return iteneraryCardsParent;
+}
+
+function editCard(cardId) {
+    const card = document.getElementById(cardId);
+    const titleElement = card.querySelector('h3');
+    const contentElement = card.querySelector('p');
+
+    const newTitle = prompt('Enter a new title:', titleElement.textContent);
+    const newContent = prompt('Enter new content:', contentElement.textContent);
+
+    titleElement.textContent = newTitle;
+    contentElement.textContent = newContent;
+}
+
+function deleteCard(cardsId) {
+    const card = $(`.${cardsId}`);
+    card.remove();
+    cardId--;
+}
+
+function saveCollection() {
+    var data = savedCards;
+    console.log(data);
+    localStorage.setItem('itenerary', JSON.stringify(data));
+    renderSaved();
+  }
+  
+  function renderSaved() {
+    var storedData = JSON.parse(localStorage.getItem('itenerary'));
+    console.log('assa');
+    console.log(storedData);
+  }
+
+
+
+
+function changeCollection() {
+    var collectionSelect = $('#collectionSelect');
+    var selectedOption = collectionSelect.find(':selected');
+
+    var val1 = selectedOption.data('value1');
+    var val2 = selectedOption.data('value2');
+
+
+    selectedItenerary = val2;
+    getIteneraryNum(selectedItenerary);     //if the val1 of the selected option in Itenerary0Cards, the val2 will pass 0 to getIteneraryNum function
+    //this is to accurately select the current itenerary from the savedCards array.
+
+    return val1;
+}
+
+//when function is called, another itenerary div will be dynamically added
+//the value of an option is the id of the itenerary div
+
+function addItenerary() {
+
+    var collectionSelect = $('#collectionSelect');
+    var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
+    newOption.val(`Itenerary${IteneraryNum}Cards`);
+    newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
+    newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
+
+    selectedItenerary = newOption.data('value2');
+    getIteneraryNum(selectedItenerary);
+    collectionSelect.append(newOption);
+
+
+
+    //creates a new Itenerary div
+    var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
+    $('aside').append(dropdownDiv);
+
+    var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
+    dropdownDiv.append(dropdownTriggerDiv);
+
+    var button = $('<button></button>').addClass(`button  Itenerary${IteneraryNum}`);
+    dropdownTriggerDiv.append(button);
+
+    var titleSpan = $('<span></span>').attr('id', `Itenerary${IteneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
+    button.append(titleSpan);
+
+    var iconSpan = $('<span></span>').addClass('icon');
+    button.append(iconSpan);
+
+    var icon = $('<i></i>').addClass('fas fa-angle-down');
+    iconSpan.append(icon);
+
+    var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
+    dropdownTriggerDiv.append(dropdownMenuDiv);
+
+    var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
+    dropdownMenuDiv.append(dropdownContentDiv);
+
+
+    //this stores the whole itenerary html to the savedCards array to be able to save them later.
+    var container = {
+        element: dropdownDiv.html(),
+        children: {
+            trigger: {
+                element: dropdownTriggerDiv.html(),
+                children: {
+                    iteneraryBtn: {
+                        element: button.html(),
+                        children: {
+                            spanTitle: {
+                                element: titleSpan.html()
+                            },
+                            spanIcon: {
+                                element: iconSpan.html(),
+                                children: {
+                                    icon: {
+                                        element: icon.html()
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    dropdownMenu: {
+                        element: dropdownDiv.html(),
+                        children: {
+                            dropdownContent: {
+                                element: dropdownContentDiv.html(),
+                                children: {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+    savedCards.push(container);
+    addIteneraryNum();
+
+}
+//this is for the savedCards array
+//
+function getIteneraryNum(selectedItenerary) {
+    return selectedItenerary;
+}
+function addIteneraryNum() {
+    IteneraryNum++;
+
+}
+
+//map and API code 
+
 // Working search bar, that interacts with the google API (Carlos)
 // -location is picked. and information can be pulled
 var searchedCity = $('.input'); //listener for the form 
@@ -14,6 +256,7 @@ var infoWindow;
 var lat;
 var lon;
 var poiArray;
+var storedPlaceName;
 
 //event listener for the search button 
 //you NEED to use async/await here to have the desired order of operations, otherwise everything executes in the wrong order 
@@ -148,22 +391,5 @@ async function initMap () {
         title: 'Toronto'
     });*/
 }
-/*
-//function that updates the map when an item is entered into the search bar 
-async function updateMap (lat,lon) {
-    const { Map } = await google.maps.importLibrary("maps");
-
-    //options for the map
-    var options = {
-        zoom: 8,
-        center: {lat:lat, lng:lon},
-        mapId: '813a59388c1fe9ed'
-    }
-
-    //calls the map-container element in the html
-    map = new Map(document.getElementById('map-container'), options);
-}*/
-
-
 
 initMap();

@@ -16,7 +16,6 @@
 </head>
 
 <body>
-
     <div class="columns">
         <aside class="menu px-4 column is-4">
             <div class="content my-0 searchDiv">
@@ -39,82 +38,6 @@
                 <!--add an onClick event to clear itenerary using the 'clear' class-->
                 <button class="button is-primary clear">Clear</button>
             </div>
-
-            <!-- change the  is-active class for the display options for dropdown menu
-            dynamically add these elements in JS
-        All itenerary dropdown menus should be deleted-->
-            <div class="dropdown Itenerary Itenerary0">
-                <div class="dropdown-trigger">
-                    <button class="button Itenerary0">
-                        <span id="Itenerary1Title">Itenerary 1</span>
-                        <span class="icon">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu IteneraryCards" id="Itenerary0Cards" role="menu">
-                        <div class="dropdown-content">
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
-                                Card 0
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
-                                Card 1
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
-                                Card 2
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="dropdown Itenerary Itenerary1">
-                <div class="dropdown-trigger">
-                    <button class="button Itenerary3">
-                        <span id="Itenerary3Title">Itenerary 1</span>
-                        <span class="icon">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu IteneraryCards" id="Itenerary3Cards" role="menu">
-                        <div class="dropdown-content">
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
-                                Card 0
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
-                                Card 1
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
-                                Card 2
-                            </button>
-                            <!-- more dropdown items here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="dropdown Itenerary Itenerary2">
-                <div class="dropdown-trigger">
-                    <button class="button Itenerary3">
-                        <span id="Itenerary3Title">Itenerary 1</span>
-                        <span class="icon">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu IteneraryCards" id="Itenerary3Cards" role="menu">
-                        <div class="dropdown-content">
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
-                                Card 0
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
-                                Card 1
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
-                                Card 2
-                            </button>
-                            <!-- more dropdown items here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </aside>
 
 
@@ -122,32 +45,40 @@
             <div class="box has-border">
                 <h2 class="has-text-centered is-size-3 ">Location</h2>
                 <section class="section">
-                  <div id="map-container"></div>
-                  <!--
-                    <iframe id="map-container" class="embed-responsive-item" width="450" height="450" frameborder="0"
-                        style="border:0"
-                        src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22"
-                        allowfullscreen></iframe>-->
-                    <!--src="" allowfullscreen  loading="lazy"-->
+                    <div id="map-container"></div>
             </div>
             </section>
             <div class="p-4 box has-border">
-                <h2 class="column is-one-third" id="wikipediaDiv">Wikipedia Article Results:<ul id="wiki-results"></ul>
-            </div> <!-- Div to display Wiki result links -->
-            <div class="column is-two-thirds box has-border" id="video-results">Bing Video Results:<ul id="videos"></ul>
-                <!-- Div to display Bing Videos -->
+                <p class="column is-one-third" id="wikipediaDiv">Wikipedia Article Results:
+                <ul id="wiki-results">
+                  
+                </ul>
             </div>
-            <div class="columns is-flex is-justify-content-center">
+            <div>
                 <button class="column is-2 clear">clear</button>
                 <button class="column is-2 save">save</button>
             </div>
-    </div>
 
+            <h1>Card Collection</h1>
 
+            <div id="cardContainer">
+                <!-- Card elements will be dynamically added here -->
+            </div>
 
+            <div id="controls">
+                <input type="text" id="cardTitleInput" placeholder="Card Title">
+                <textarea id="cardContentInput" placeholder="Card Content"></textarea>
+                <button onclick="addCard()">Add Card</button>
+                <button onclick="saveCollection()">Save Collection</button>
+                <div class="is-flex-direction-column ">
+                    <select id="collectionSelect" onchange="changeCollection()">
+                        <!-- Add more collections as needed -->
 
-    </main>
-
+                    </select>
+                    <button class="addItenerary" onclick="addItenerary()">add</button>
+                </div>
+            </div>
+        </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
