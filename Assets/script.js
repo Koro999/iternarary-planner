@@ -131,15 +131,17 @@ var selectedItenerary;
 var savedCards = [
 
 ]
+//an object that stores all the itenerary html
+var iteneraryHTML = {
+
+}
 
 function addCard() {
     cardId++;
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
-
     createCardElement(title, content, changeCollection());
-
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
 
@@ -177,50 +179,24 @@ function createCardElement(title, content, itenerary) {
     // cardSearch.on('click', () => deleteCard(card.id));
     buttonContainer.append(cardSearch);
 
-    addCardstoArray(IteneraryCardDiv, cardTitle, cardP, buttonContainer, editButton, deleteButton, cardSearch);
+    // stores each element's html to object
+    iteneraryHTML[`IteneraryCardDiv`] = IteneraryCardDiv;
+    iteneraryHTML[`cardTitle`] = cardTitle;
+    iteneraryHTML[`cardP`] = cardP;
+    iteneraryHTML[`buttonContainer`] = buttonContainer;
+    iteneraryHTML[`editButton`] = editButton;
+    iteneraryHTML[`deleteButton`] = deleteButton;
+    iteneraryHTML[`cardSearch`] = cardSearch;
 
-    getCardsHtml(iteneraryCardsParent.html());
-    console.log(iteneraryCardsParent.html())
+
+    addCardstoArray(IteneraryCardDiv, cardTitle, cardP, buttonContainer, editButton, deleteButton, cardSearch);
     return iteneraryCardsParent;
 }
 
+function setCardsHtml() {
 
-function addCardstoArray(IteneraryCardDiv, cardTitle, cardP, buttonContainer, editButton, deleteButton, cardSearch) {
-    //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
-    //for ex. savedCards[0] will point to the first itenerary object in the savedCards array.
-    // savedCards[1] will point to the second itenerary object in the savedCards object.
-
-    var id = `IteneraryCard${cardId}`;
-    savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
-        [id]: {
-            element: IteneraryCardDiv.html(),
-            children: {
-                cardTitle: {
-                    element: cardTitle.html()
-                },
-                cardP: {
-                    element: cardP.html()
-                },
-                buttonContainer: {
-                    element: buttonContainer.html(),
-                    children: {
-                        editButton: {
-                            element: editButton.html()
-                        },
-                        deleteButton: {
-                            element: deleteButton.html()
-                        },
-                        cardSearch: {
-                            element: cardSearch.html()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return 
 }
+
 function getCardsHtml(iteneraryCardsParent) {
     return iteneraryCardsParent;
 }
@@ -307,50 +283,83 @@ function addItenerary() {
     var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
     dropdownMenuDiv.append(dropdownContentDiv);
 
+    iteneraryHTML[`dropdownDiv`] = dropdownDiv;
+    iteneraryHTML[`dropdownTriggerDiv`] = dropdownTriggerDiv;
+    iteneraryHTML[`button`] = button;
+    iteneraryHTML[`titleSpan`] = titleSpan;
+    iteneraryHTML[`iconSpan`] = iconSpan;
+    iteneraryHTML[`icon`] = icon;
+    iteneraryHTML[`dropdownMenuDiv`] = dropdownMenuDiv;
+    iteneraryHTML[`dropdownContentDiv`] = dropdownContentDiv;
 
-    addItenerarytoArray (dropdownDiv, dropdownTriggerDiv, button, titleSpan, iconSpan, icon);
     addIteneraryNum();
-
 }
-function addItenerarytoArray (dropdownDiv, dropdownTriggerDiv, button, titleSpan, iconSpan, icon, dropdownMenuDiv, dropdownContentDiv) {
-   //this stores the whole itenerary html to the savedCards array to be able to save them later.
-   var container = {
-    element: dropdownDiv.html(),
-    children: {
-        trigger: {
-            element: dropdownTriggerDiv.html(),
-            children: {
-                iteneraryBtn: {
-                    element: button.html(),
-                    children: {
-                        spanTitle: {
-                            element: titleSpan.html()
-                        },
-                        spanIcon: {
-                            element: iconSpan.html(),
-                            children: {
-                                icon: {
-                                    element: icon.html()
+
+function addItenerarytoArray() {
+    //this stores the whole itenerary html to the savedCards array to be able to save them later.
+    var container = {
+        element: iteneraryHTML.dropdownDiv.html(),
+        children: {
+            trigger: {
+                element: iteneraryHTML.dropdownTriggerDiv.html(),
+                children: {
+                    iteneraryBtn: {
+                        element: iteneraryHTML.button.html(),
+                        children: {
+                            spanTitle: {
+                                element: iteneraryHTML.titleSpan.html()
+                            },
+                            spanIcon: {
+                                element: iteneraryHTML.iconSpan.html(),
+                                children: {
+                                    icon: {
+                                        element: iteneraryHTML.icon.html()
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                dropdownMenu: {
-                    // element: dropdownMenuDiv.html(),
-                    children: {
-                        dropdownContent: {
-                            // element: dropdownContentDiv.html(),
-                            children: {
+                    },
+                    dropdownMenu: {
+                        element: iteneraryHTML.dropdownMenuDiv.html(),
+                        children: {
+                            dropdownContent: {
+                                element: iteneraryHTML.dropdownContent.html(),
+                                children: {
+                                    [id]: {
+                                        element: iteneraryHTML.IteneraryCardDiv.html(),
+                                        children: {
+                                            cardTitle: {
+                                                element: iteneraryHTML.cardTitle.html()
+                                            },
+                                            cardP: {
+                                                element: iteneraryHTML.cardP.html()
+                                            },
+                                            buttonContainer: {
+                                                element: iteneraryHTML.buttonContainer.html(),
+                                                children: {
+                                                    editButton: {
+                                                        element: iteneraryHTML.editButton.html()
+                                                    },
+                                                    deleteButton: {
+                                                        element: iteneraryHTML.deleteButton.html()
+                                                    },
+                                                    cardSearch: {
+                                                        element: iteneraryHTML.cardSearch.html()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
-};
-savedCards.push(container); 
+    };
+    
+    savedCards.push(container);
 }
 
 
@@ -366,9 +375,10 @@ function addIteneraryNum() {
 }
 
 function saveCollection() {
-    var data = savedCards;
-    console.log(getCardsHtml);
+    var data = iteneraryHTML;
     localStorage.setItem('itenerary', JSON.stringify(data));
+    console.log(iteneraryHTML);
+    console.log(data);
     renderSaved();
 }
 
@@ -377,10 +387,29 @@ function renderSaved() {
     var storedData = JSON.parse(localStorage.getItem('itenerary'));
 
 
-    var asideContainer = $('aside');
-    var iteneraryHtml = $(`${storedData[0].element}`);
-    console.log(iteneraryHtml);
-    asideContainer.append(iteneraryHtml)
+    // var asideContainer = $('aside');
+    // var iteneraryHtml = $(`${storedData[0].element}`);
+    // // console.log(iteneraryHtml);
+
+    // var triggerHtml = $(`${storedData[0].children.trigger.element}`);
+    // console.log(triggerHtml);
+
+    // var dropdownMenuHtml = $(`${storedData[0].children.trigger.children.dropdownMenu.element}`);
+    // console.log(dropdownMenuHtml);
+
+
+    // var dropdownMenuHtml = $(`${storedData[0].children.trigger.children.dropdownMenu.children}`);
+    // console.log(dropdownMenuHtml);
+
+
+
+
+    // var iteneraryBtnHtml = $(`${storedData[0].children.trigger.children.iteneraryBtn.element}`);
+    // console.log(iteneraryBtnHtml);
+
+
+
+    // asideContainer.append(iteneraryHtml)
     // console.log(asideContainer);
 
     for (var a = 0; a < storedData.length; a++) {
@@ -444,9 +473,7 @@ window.searchPlace = async function (city) {
         //assigns lat and lon values
         lat = data.results[0].geometry.location.lat;
         lon = data.results[0].geometry.location.lng;
-        //console.log(data.status)
-        //console.log(lat)//these are defined
-        //console.log(lon)//these are defined
+
 
     }
 };
