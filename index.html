@@ -7,13 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itenerary Planner</title>
 
-    <link rel="stylesheet" href="assets/bulma/css/bulma.min.css">
+    <!-- <link rel="stylesheet" href="assets/bulma/css/bulma.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"
-        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/Assets/style.css">
 
 </head>
 
@@ -41,36 +40,6 @@
                 <!--add an onClick event to clear itenerary using the 'clear' class-->
                 <button class="button is-primary clear">Clear</button>
             </div>
-
-            <!-- change the  is-active class for the display options for dropdown menu
-            dynamically add these elements in JS
-        All itenerary dropdown menus should be deleted-->
-            <!-- <div class="dropdown Itenerary Itenerary1">
-                <div class="dropdown-trigger">
-                    <button class="button Itenerary3">
-                        <span id="Itenerary3Title">Itenerary 1</span>
-                        <span class="icon">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu IteneraryCards" id="Itenerary1Cards">
-                        <div class="dropdown-content cardContainer0">
-                             <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard0">
-                                Card 0
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard1">
-                                Card 1
-                            </button>
-                            <button class="dropdown-item button IteneraryCardsBtn" id="IteneraryCard2">
-                                Card 2
-                            </button> -->
-                            <!-- more dropdown items here -->
-                        <!-- </div>
-                    </div>
-                </div>
-            </div> --> 
-
-
         </aside>
 
 
@@ -78,10 +47,12 @@
             <div class="box has-border">
                 <h2 class="has-text-centered is-size-3 ">Location</h2>
                 <section class="section">
+                    <div id="map-container"></div>
+                    <!--
                     <iframe id="map-container" class="embed-responsive-item" width="450" height="450" frameborder="0"
                         style="border:0"
                         src="https://www.google.com/maps/embed/v1/search?key=AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY&q=point+of+interest&zoom=12%22"
-                        allowfullscreen></iframe>
+                        allowfullscreen></iframe>-->
                     <!--src="" allowfullscreen  loading="lazy"-->
             </div>
             </section>
@@ -114,9 +85,9 @@
                     </select>
                     <button class="addItenerary" onclick="addItenerary()">add</button>
                 </div>
-
             </div>
 
+        </main>
     </div>
 
 
@@ -124,17 +95,18 @@
 
 
 
-    </main>
-
-
-    </div>
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script>
-    <script src="script.js"></script>
-    <script async defer
+    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+            ({ key: "AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY", v: "beta" });</script>
+
+    <!--<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace"
         type="text/javascript">
-        </script>
+        </script>-->
+    <script src="/Assets/script.js"></script>
 </body>
 
 </html>
