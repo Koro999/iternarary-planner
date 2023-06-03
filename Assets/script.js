@@ -125,16 +125,14 @@ var IteneraryNum = 0;
 var selectedItenerary;
 
 
+var savedItinerary = [];
+
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
 //if a user adds cards, 
-var savedCards = [
-
-]
+var savedCards = []
 //an object that stores all the itenerary html
-var iteneraryHTML = {
-
-}
+var iteneraryHTML = {}
 
 function addCard() {
     cardId++;
@@ -148,13 +146,18 @@ function addCard() {
 
 }
 
+var dropdownContent;
 function createCardElement(title, content, itenerary) {
     var iteneraryCardsParent = $(`#${itenerary}`);
-    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
-    iteneraryCardsParent.append(cardContainer);
+
+
+
+
+    dropdownContent = $(`<div class="dropdown-content cardContainer${cardId} hello"></div>`);
+    iteneraryCardsParent.append(dropdownContent);
 
     var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
-    cardContainer.append(IteneraryCardDiv);
+    dropdownContent.append(IteneraryCardDiv);
 
     var cardTitle = $(`<h3 class="title">${title}</h3>`);
     IteneraryCardDiv.append(cardTitle);
@@ -180,6 +183,7 @@ function createCardElement(title, content, itenerary) {
     buttonContainer.append(cardSearch);
 
     // stores each element's html to object
+    iteneraryHTML[`dropdownContent`] = dropdownContent;
     iteneraryHTML[`IteneraryCardDiv`] = IteneraryCardDiv;
     iteneraryHTML[`cardTitle`] = cardTitle;
     iteneraryHTML[`cardP`] = cardP;
@@ -188,8 +192,7 @@ function createCardElement(title, content, itenerary) {
     iteneraryHTML[`deleteButton`] = deleteButton;
     iteneraryHTML[`cardSearch`] = cardSearch;
 
-
-    addCardstoArray(IteneraryCardDiv, cardTitle, cardP, buttonContainer, editButton, deleteButton, cardSearch);
+    addItenerarytoArray();
     return iteneraryCardsParent;
 }
 
@@ -280,8 +283,8 @@ function addItenerary() {
     var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
     dropdownTriggerDiv.append(dropdownMenuDiv);
 
-    var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
-    dropdownMenuDiv.append(dropdownContentDiv);
+     var dropdownContent = $(`<div class="dropdown-content cardContainer${cardId} hello"></div>`);
+    dropdownMenuDiv.append(dropdownContent);
 
     iteneraryHTML[`dropdownDiv`] = dropdownDiv;
     iteneraryHTML[`dropdownTriggerDiv`] = dropdownTriggerDiv;
@@ -290,13 +293,12 @@ function addItenerary() {
     iteneraryHTML[`iconSpan`] = iconSpan;
     iteneraryHTML[`icon`] = icon;
     iteneraryHTML[`dropdownMenuDiv`] = dropdownMenuDiv;
-    iteneraryHTML[`dropdownContentDiv`] = dropdownContentDiv;
 
+    saveItinerary();
     addIteneraryNum();
 }
 
-function addItenerarytoArray() {
-    //this stores the whole itenerary html to the savedCards array to be able to save them later.
+function saveItinerary() {
     var container = {
         element: iteneraryHTML.dropdownDiv.html(),
         children: {
@@ -323,42 +325,53 @@ function addItenerarytoArray() {
                         element: iteneraryHTML.dropdownMenuDiv.html(),
                         children: {
                             dropdownContent: {
-                                element: iteneraryHTML.dropdownContent.html(),
-                                children: {
-                                    [id]: {
-                                        element: iteneraryHTML.IteneraryCardDiv.html(),
-                                        children: {
-                                            cardTitle: {
-                                                element: iteneraryHTML.cardTitle.html()
-                                            },
-                                            cardP: {
-                                                element: iteneraryHTML.cardP.html()
-                                            },
-                                            buttonContainer: {
-                                                element: iteneraryHTML.buttonContainer.html(),
-                                                children: {
-                                                    editButton: {
-                                                        element: iteneraryHTML.editButton.html()
-                                                    },
-                                                    deleteButton: {
-                                                        element: iteneraryHTML.deleteButton.html()
-                                                    },
-                                                    cardSearch: {
-                                                        element: iteneraryHTML.cardSearch.html()
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+    savedItinerary.push(container);
+
+}
+
+
+
+
+function addItenerarytoArray() {
+    //this stores the whole itenerary html to the savedCards array to be able to save them later.
+
+    console.log(iteneraryHTML);
+    var container = {
+
+        [`IteneraryCard${cardId}`]: {
+            element: iteneraryHTML.IteneraryCardDiv.html(),
+            children: {
+                cardTitle: {
+                    element: iteneraryHTML.cardTitle.html()
+                },
+                cardP: {
+                    element: iteneraryHTML.cardP.html()
+                },
+                buttonContainer: {
+                    element: iteneraryHTML.buttonContainer.html(),
+                    children: {
+                        editButton: {
+                            element: iteneraryHTML.editButton.html()
+                        },
+                        deleteButton: {
+                            element: iteneraryHTML.deleteButton.html()
+                        },
+                        cardSearch: {
+                            element: iteneraryHTML.cardSearch.html()
+                        }
+                    }
+                }
+            }
+        }
     };
-    
+
     savedCards.push(container);
 }
 
@@ -375,47 +388,52 @@ function addIteneraryNum() {
 }
 
 function saveCollection() {
-    var data = iteneraryHTML;
-    localStorage.setItem('itenerary', JSON.stringify(data));
-    console.log(iteneraryHTML);
-    console.log(data);
+
+    var itineraryData = savedItinerary;
+    localStorage.setItem('itenerary', JSON.stringify(itineraryData));
+
+    var cardsData = savedCards;
+    localStorage.setItem('cards', JSON.stringify(cardsData));
+
     renderSaved();
 }
 
 function renderSaved() {
     //will display all the cards from the local storage
-    var storedData = JSON.parse(localStorage.getItem('itenerary'));
+    var storedcardsData = JSON.parse(localStorage.getItem('cards'));
+    var storeditineraryData = JSON.parse(localStorage.getItem('itenerary'));
 
 
-    // var asideContainer = $('aside');
-    // var iteneraryHtml = $(`${storedData[0].element}`);
-    // // console.log(iteneraryHtml);
+    if (storeditineraryData !== null) {
+        // console.log(storedData);
+        for (var a = 0; a < storeditineraryData.length; a++) {
+            var aside = $('aside');
 
-    // var triggerHtml = $(`${storedData[0].children.trigger.element}`);
-    // console.log(triggerHtml);
+            var itineraryContainer = storeditineraryData[a].element;
+            
+            aside.append(itineraryContainer);
 
-    // var dropdownMenuHtml = $(`${storedData[0].children.trigger.children.dropdownMenu.element}`);
-    // console.log(dropdownMenuHtml);
+            for (var b = 0; b < storedcardsData.length; b++) {
+                var dropdownMenu = storeditineraryData[a].children.trigger.children.dropdownMenu.children.dropdownContent;
+                dropdownMenu[`children`] = storedcardsData[b];
+                dropdownMenu[`element`] = 
+                console.log(storeditineraryData[a].children.trigger.children.dropdownMenu);
+                // console.log(storedcardsData);
+                
+            }
 
 
-    // var dropdownMenuHtml = $(`${storedData[0].children.trigger.children.dropdownMenu.children}`);
-    // console.log(dropdownMenuHtml);
-
-
-
-
-    // var iteneraryBtnHtml = $(`${storedData[0].children.trigger.children.iteneraryBtn.element}`);
-    // console.log(iteneraryBtnHtml);
+        }
+    }
 
 
 
     // asideContainer.append(iteneraryHtml)
     // console.log(asideContainer);
 
-    for (var a = 0; a < storedData.length; a++) {
-    }
-}
 
+}
+renderSaved();
 
 
 
