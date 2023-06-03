@@ -1,4 +1,13 @@
 
+
+
+
+
+
+
+
+
+
 let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
 var IteneraryNum = 0;
@@ -242,7 +251,21 @@ function addIteneraryNum() {
 
 
 
-//_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Working search bar, that interacts with the google API (Carlos)
 // -location is picked. and information can be pulled
 var searchedCity = $('.input'); //listener for the form 
@@ -334,17 +357,10 @@ async function pointsOfInterest(lat,lon){
           map,
           position: place.geometry.location,
         });
-
-        //when the marker is hovered over it should show the name of the location and stuff
-        google.maps.event.addListener(marker, "mouseover", () => {
-            //set the content of the information
-            infoWindow.setContent(place.name || "");
-            infoWindow.open(map, marker);
-        });
-
-        //when the marker is clicked it should save to itinerary
+      
         google.maps.event.addListener(marker, "click", () => {
-            
+          infoWindow.setContent(place.name || "");
+          infoWindow.open(map, marker);
         });
       }
 
@@ -393,7 +409,7 @@ async function initMap () {
         title: 'Toronto'
     });*/
 }
-/*
+
 //function that updates the map when an item is entered into the search bar 
 async function updateMap (lat,lon) {
     const { Map } = await google.maps.importLibrary("maps");
@@ -407,7 +423,9 @@ async function updateMap (lat,lon) {
 
     //calls the map-container element in the html
     map = new Map(document.getElementById('map-container'), options);
-}*/
+
+
+}
 
 
 
