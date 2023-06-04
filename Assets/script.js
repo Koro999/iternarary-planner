@@ -23,7 +23,7 @@ var savedCards = [
 
 function addCard() {
     cardId++;
-    const title = document.getElementById('cardTitleInput').value;
+    var title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
 
@@ -128,13 +128,13 @@ function saveCollection() {
     console.log(data);
     localStorage.setItem('itenerary', JSON.stringify(data));
     renderSaved();
-  }
-  
-  function renderSaved() {
+}
+
+function renderSaved() {
     var storedData = JSON.parse(localStorage.getItem('itenerary'));
     console.log('assa');
     console.log(storedData);
-  }
+}
 
 
 
@@ -295,7 +295,7 @@ $('.search').on('click', async () => {
 //function calls the google geocoder api to grab the lat and lon
 window.searchPlace = async function (city) {
     //api url to search for a location's lat lng
-    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;    
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;
     //calls the google geocoding api to grab lat lon of location searched 
     const response = await fetch(geocodeApiUrl)
     if (!response.ok) {
@@ -303,25 +303,25 @@ window.searchPlace = async function (city) {
     }
     const data = await response.json();
     if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
-                
+
         //assigns lat and lon values
         lat = data.results[0].geometry.location.lat;
         lon = data.results[0].geometry.location.lng;
         //console.log(data.status)
         //console.log(lat)//these are defined
         //console.log(lon)//these are defined
-        
+
     }
 };
 
 //generate points of interest at the location entered in search bar 
-async function pointsOfInterest(lat,lon){
+async function pointsOfInterest(lat, lon) {
     var cityLatLng = new google.maps.LatLng(lat, lon);
     //this syntax loads libraries as you need them https://developers.google.com/maps/documentation/javascript/libraries
     const { places } = await google.maps.importLibrary("places")
     infoWindow = new google.maps.InfoWindow();
     //sets the map element with the latlng grabbed from the geocoder api 
-    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });   
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });
 
     var request = {
         location: cityLatLng,
@@ -336,8 +336,8 @@ async function pointsOfInterest(lat,lon){
     //everything that needs to be done with the callback information must be done within the callback function
     service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            poiArray = results; 
-        //loop through the array 
+            poiArray = results;
+            //loop through the array 
             for (let i = 0; i < results.length; i++) {
                 //console.log all the locations
                 place = results[i]
@@ -352,17 +352,37 @@ async function pointsOfInterest(lat,lon){
 
     function createMarker(place) {
         if (!place.geometry || !place.geometry.location) return;
-      
+
         const marker = new google.maps.Marker({
-          map,
-          position: place.geometry.location,
+            map,
+            position: place.geometry.location,
         });
-      
         google.maps.event.addListener(marker, "click", () => {
-          infoWindow.setContent(place.name || "");
-          infoWindow.open(map, marker);
+
+            var photoUrl = place.photos[0].getUrl({     //retrieve the photo url from api
+                maxWidth: 500, // Adjust the maximum width/height 
+                maxHeight: 100
+            });;    //
+           
+
+            var article = "My Article";     //the wiki article will be stored in this variable
+
+            //will create new elements for when a place is clicked on the map. there will be the place name, the photo url, and an article
+            var content = `<h3>${place.name}</h3>   
+               <img src="${photoUrl}">
+               <p>${article}</p>`;
+
+
+            infoWindow.setContent(content || "");
+            //   infoWindow.setContent(place.name || "");
+            infoWindow.open(map, marker);
         });
-      }
+    }
+
+}
+
+
+function showCardsonMap(place) {
 
 }
 
@@ -387,7 +407,7 @@ $(document).ready(function () {
 });
 
 //initializes the map element in the page 
-async function initMap () {
+async function initMap() {
     //calls the map library
     const { Map } = await google.maps.importLibrary("maps");
     //calls the advancedMarker library 
@@ -396,7 +416,7 @@ async function initMap () {
     //options for the map
     var options = {
         zoom: 8,
-        center: {lat:43.39, lng:-79.23},
+        center: { lat: 43.39, lng: -79.23 },
         mapId: '813a59388c1fe9ed'
     }
 
@@ -411,13 +431,13 @@ async function initMap () {
 }
 
 //function that updates the map when an item is entered into the search bar 
-async function updateMap (lat,lon) {
+async function updateMap(lat, lon) {
     const { Map } = await google.maps.importLibrary("maps");
 
     //options for the map
     var options = {
         zoom: 8,
-        center: {lat:lat, lng:lon},
+        center: { lat: lat, lng: lon },
         mapId: '813a59388c1fe9ed'
     }
 
