@@ -146,7 +146,7 @@ function changeCollection() {
 function removeItenerary(element)
 {
     element.parentElement.parentElement.parentElement.remove();
-    removeIteneraryNum();
+    decreaseIteneraryNum();
 }
 
 //when function is called, another itenerary div will be dynamically added
@@ -248,7 +248,7 @@ function addIteneraryNum() {
     IteneraryNum++;
 }
 
-function removeIteneraryNum() {
+function decreaseIteneraryNum() {
     IteneraryNum--;
 }
 
