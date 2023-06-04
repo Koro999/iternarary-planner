@@ -12,17 +12,21 @@ var savedCards = [
 ]
 
 function addCard() {
-    cardId++;
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
 
+    if(!title || !content)
+        return;
 
+    if(IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
+    {
+        addItenerary();
+    }
+    cardId++;
     createCardElement(title, content, changeCollection());
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
-
-
 }
 
 function createCardElement(title, content, itenerary) {
@@ -279,7 +283,6 @@ var infoWindow;
 var lat;
 var lon;
 var poiArray;
-var storedPlaceName;
 
 //event listener for the search button 
 //you NEED to use async/await here to have the desired order of operations, otherwise everything executes in the wrong order 
@@ -289,9 +292,10 @@ $('.search').on('click', async () => {
     //await pointsOfInterest(lat,lon)
 })
 
-
+var lastPlaceSearched;
 //function calls the google geocoder api to grab the lat and lon
 window.searchPlace = async function (city) {
+    lastPlaceSearched = city;
     //api url to search for a location's lat lng
     var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;    
     //calls the google geocoding api to grab lat lon of location searched 
@@ -367,12 +371,23 @@ async function pointsOfInterest(lat,lon){
 
         //when the marker is clicked it should save to itinerary
         google.maps.event.addListener(marker, "click", () => {
-            storedPlaceName = place.name;
-            
+            addCardOnPOIClick(place.name);
         });
       }
 
 }
+
+function addCardOnPOIClick(placename)
+{
+    document.getElementById('cardTitleInput').value = placename;
+
+    // TODO - Add call to wikipedia API to get the content for this place
+    var wikiContent = lastPlaceSearched + " - "+ placename + "- this content is awesome";
+    document.getElementById('cardContentInput').value = wikiContent; 
+
+    addCard();
+}
+
 
 $(document).ready(function () {
     // Assigns an on click event to the dropdown button
