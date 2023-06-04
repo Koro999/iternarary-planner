@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/Assets/style.css">
+    <link rel="stylesheet" href="./Assets/style.css">
     
 </head>
 
@@ -37,6 +37,10 @@
             <div class="control has-text-centered my-2">
                 <!--add an onClick event to clear itenerary using the 'clear' class-->
                 <button class="button is-primary clear">Clear</button>
+            </div>
+            <hr class="my-4">
+            <div class="control has-text-centered my-4">
+              <button class="button is-primary clear" onclick="addItenerary()">Create Itenerary</button>
             </div>
         </aside>
 
@@ -81,7 +85,6 @@
                         <!-- Add more collections as needed -->
 
                     </select>
-                    <button class="addItenerary" onclick="addItenerary()">add</button>
                 </div>
             </div>
         </main>
@@ -96,7 +99,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace"
         type="text/javascript">
         </script>-->
-   <script src="/Assets/script.js"></script>
+   <script src="./Assets/script.js"></script>
 </body>
 
 </html>

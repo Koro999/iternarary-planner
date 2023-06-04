@@ -140,8 +140,13 @@ function changeCollection() {
     selectedItenerary = val2;
     getIteneraryNum(selectedItenerary);     //if the val1 of the selected option in Itenerary0Cards, the val2 will pass 0 to getIteneraryNum function
     //this is to accurately select the current itenerary from the savedCards array.
-
     return val1;
+}
+
+function removeItenerary(element)
+{
+    element.parentElement.parentElement.parentElement.remove();
+    removeIteneraryNum();
 }
 
 //when function is called, another itenerary div will be dynamically added
@@ -180,6 +185,9 @@ function addItenerary() {
     var icon = $('<i></i>').addClass('fas fa-angle-down');
     iconSpan.append(icon);
 
+    var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
+    button.append(iteneraryDeleteButton);
+
     var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
     dropdownTriggerDiv.append(dropdownMenuDiv);
 
@@ -207,6 +215,9 @@ function addItenerary() {
                                         element: icon.html()
                                     }
                                 }
+                            },
+                            deleteButton: {
+                                element: iteneraryDeleteButton.html()
                             }
                         }
                     },
@@ -235,7 +246,10 @@ function getIteneraryNum(selectedItenerary) {
 }
 function addIteneraryNum() {
     IteneraryNum++;
+}
 
+function removeIteneraryNum() {
+    IteneraryNum--;
 }
 
 //map and API code 
@@ -344,7 +358,7 @@ async function pointsOfInterest(lat,lon){
 
         //when the marker is clicked it should save to itinerary
         google.maps.event.addListener(marker, "click", () => {
-            storedPlaceName =place.name;
+            storedPlaceName = place.name;
             
         });
       }

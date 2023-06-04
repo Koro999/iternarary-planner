@@ -39,8 +39,12 @@ body {
     margin-right: 10px;
   }
   .addItenerary{
-    width: 3rem;
+    width: 5rem;
   }
+
+.deleteButton {
+  width: 3rem;
+}
 
 .Itenerary{
     width: 100%;
