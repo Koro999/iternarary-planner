@@ -42,6 +42,12 @@
             <div class="control has-text-centered my-4">
               <button class="button is-primary clear" onclick="addItenerary()">Create Itenerary</button>
             </div>
+            <div class="control has-text-centered my-4 is-flex-direction-column ">
+                <select id="collectionSelect" onchange="changeCollection()">
+                    <!-- Add more collections as needed -->
+
+                </select>
+            </div>
         </aside>
 
 
@@ -80,12 +86,6 @@
                 <textarea id="cardContentInput" placeholder="Card Content"></textarea>
                 <button onclick="addCard()">Add Card</button>
                 <button onclick="saveCollection()">Save Collection</button>
-                <div class="is-flex-direction-column ">
-                    <select id="collectionSelect" onchange="changeCollection()">
-                        <!-- Add more collections as needed -->
-
-                    </select>
-                </div>
             </div>
         </main>
     </div>
