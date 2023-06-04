@@ -143,6 +143,15 @@ function changeCollection() {
     return val1;
 }
 
+var itenerarySearchInput = document.getElementById("itenerarySearchInput");
+
+itenerarySearchInput.addEventListener("keypress", function(event){
+    if (event.key === "Enter") {
+        searchPlace(searchedCity[0].value);
+    }
+});
+
+
 function removeItenerary(element)
 {
     element.parentElement.parentElement.parentElement.remove();
@@ -277,7 +286,6 @@ var storedPlaceName;
 $('.search').on('click', async () => {
     //searchPlace function called, form input is entered
     await searchPlace(searchedCity[0].value);
-    await pointsOfInterest(lat, lon)
     //await pointsOfInterest(lat,lon)
 })
 
@@ -302,6 +310,7 @@ window.searchPlace = async function (city) {
         //console.log(lon)//these are defined
         
     }
+    await pointsOfInterest(lat, lon);
 };
 
 //generate points of interest at the location entered in search bar 
