@@ -13,11 +13,16 @@ body {
   }
   
   .card {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #ccc;
+    min-height: 15rem;
+    max-width: 30rem;
+    border: 1px solid #cd1414;
     padding: 10px;
     margin: 10px;
+  }
+  .paragraph, .title{
+    border: 1px solid #cd1414;
+    word-wrap: break-word;
+    
   }
   
   #controls {
@@ -33,6 +38,9 @@ body {
   
   #controls button {
     margin-right: 10px;
+  }
+  .addItenerary{
+    width: 3rem;
   }
   
 
