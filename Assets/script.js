@@ -392,6 +392,7 @@ function saveCollection() {
     var itineraryData = savedItinerary;
     localStorage.setItem('itenerary', JSON.stringify(itineraryData));
 
+    console.log(savedCards);
     var cardsData = savedCards;
     localStorage.setItem('cards', JSON.stringify(cardsData));
 
@@ -407,21 +408,162 @@ function renderSaved() {
     if (storeditineraryData !== null) {
         // console.log(storedData);
         for (var a = 0; a < storeditineraryData.length; a++) {
-            var aside = $('aside');
-
-            var itineraryContainer = storeditineraryData[a].element;
             
-            aside.append(itineraryContainer);
+            var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
+            $('aside').append(dropdownDiv);
+        
+            var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
+            dropdownDiv.append(dropdownTriggerDiv);
+        
+            var button = $('<button></button>').addClass(`button  Itenerary${a}`);
+            dropdownTriggerDiv.append(button);
+        
+            var titleSpan = $('<span></span>').attr('id', `Itenerary${a}Title`).text(`Itenerary ${a}`);
+            button.append(titleSpan);
+        
+            var iconSpan = $('<span></span>').addClass('icon');
+            button.append(iconSpan);
+        
+            var icon = $('<i></i>').addClass('fas fa-angle-down');
+            iconSpan.append(icon);
+        
+            var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
+            dropdownTriggerDiv.append(dropdownMenuDiv);
+        
+             var dropdownContent = $(`<div class="dropdown-content cardContainer${a} hello"></div>`);
+            dropdownMenuDiv.append(dropdownContent);
+
 
             for (var b = 0; b < storedcardsData.length; b++) {
-                var dropdownMenu = storeditineraryData[a].children.trigger.children.dropdownMenu.children.dropdownContent;
-                dropdownMenu[`children`] = storedcardsData[b];
-                dropdownMenu[`element`] = 
-                console.log(storeditineraryData[a].children.trigger.children.dropdownMenu);
-                // console.log(storedcardsData);
+                var iteneraryCardsParent = $(`#${itenerary}`);
                 
+
+                dropdownContent = $(`<div class="dropdown-content cardContainer${b} hello"></div>`);
+                iteneraryCardsParent.append(dropdownContent);
+            
+                var IteneraryCardDiv = $(`<div id="IteneraryCard${b}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+                dropdownContent.append(IteneraryCardDiv);
+            
+                var cardTitle = $(`<h3 class="title">${title}</h3>`);
+                IteneraryCardDiv.append(cardTitle);
+            
+                var cardP = $(`<p class="paragraph">${content}</p>`);
+                IteneraryCardDiv.append(cardP);
+            
+                var buttonContainer = $('<div class="buttons has-addons"></div>');
+                IteneraryCardDiv.append(buttonContainer);
+            
+                var editButton = $('<button class="button">Edit</button>');
+                editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
+                buttonContainer.append(editButton);
+            
+                var deleteButton = $('<button class="button">Delete</button>');
+                deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
+                buttonContainer.append(deleteButton);
+            
+                //this search bar has a value of the location name
+                //when search button clicked, will call the google map api and wiki api with its value as a parameter
+                var cardSearch = $('<button class="button">Search</button>');
+                // cardSearch.on('click', () => deleteCard(card.id));
+                buttonContainer.append(cardSearch);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+                // var dropdownMenu = storeditineraryData[a].children.trigger.children.dropdownMenu.children.dropdownContent;
+                // dropdownMenu[`children`] = storedcardsData[b];
+                // dropdownMenu[`element`] = storeditineraryData[a].children.trigger.children.dropdownMenu;
+                
+                // // console.log(dropdownMenu.element.element);
+                // var dropdownContent = $(`${dropdownMenu.element.element}`);
+                // dropdownContent.append(storedcardsData[b]);
+                // var s;
+                // var cardNum = `IteneraryCard${b}`;
+
+
+
+                // var itineraryContainer = $(storeditineraryData[a].element);
+
+                // var trigger = $(storeditineraryData[a].children.trigger.element)
+
+                // var iteneraryBtn = $(storeditineraryData[a].children.trigger.children.iteneraryBtn.element);
+                
+                // var spanTitle =$(storeditineraryData[a].children.trigger.children.iteneraryBtn.children.spanTitle)
+                // var spanTitleTxt = spanTitle[0].element
+
+                // var SpanIcon = $(storeditineraryData[a].children.trigger.children.iteneraryBtn.children.spanIcon.element)
+                // var spanIconIcon =$(storeditineraryData[a].children.trigger.children.iteneraryBtn.children.spanIcon.children.icon.element)
+                
+
+
+                // var dropdownMenu = $(storeditineraryData[a].children.trigger.children.dropdownMenu.element)
+
+
+                // var dropdownContent = $(storeditineraryData[a].children.trigger.children.dropdownMenu.children.dropdownContent.element.element)
+
+               
+                // var cardNum = $(storeditineraryData[a].children.trigger.children.dropdownMenu.children.dropdownContent.children[cardNum].element)
+
+                // var title = cardNum[0];
+                // var paragraph = cardNum[1];
+                // var button = cardNum[2];
+            
+
+                // console.log(spanTitle)
             }
 
+
+
+
+
+
+            // cardNum.append(button);
+            // cardNum.append(paragraph);
+            // // cardNum.append(title);
+            // // dropdownContent.append(cardNum);
+            // // dropdownMenu.append(dropdownContent);
+            // // SpanIcon.append(spanIconIcon);
+            // // iteneraryBtn.append(SpanIcon);
+            // // iteneraryBtn.append(spanTitleTxt);
+            // // trigger.append(dropdownMenu);
+            // // trigger.append(iteneraryBtn);
+            // // itineraryContainer.append(trigger);
+            // aside.append(itineraryContainer);
 
         }
     }
