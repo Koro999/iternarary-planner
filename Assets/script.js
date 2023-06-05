@@ -50,9 +50,14 @@ function createCardElement(content, itenerary, locations, storedWikiLinks) {
         var cardLi = $(`<li class="is-size-5" data-index="${a}">${locations[a]}</li>`);     //creates a li element with the location name as it's text
         cardUl.append(cardLi);
 
-        var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`);     //creates an a element with the href as the link to the location
+
+        if(storedWikiLinks[a]=='') {
+            var cardA = $(`<p>Location has no wiki links</p>`);     //contitional for when location has wiki links or not
+        } else {
+            var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`); 
+        }
+            //creates an a element with the href as the link to the location
         cardUl.append(cardA);
-        console.log(cardA);
     }
 
 
@@ -61,35 +66,6 @@ function createCardElement(content, itenerary, locations, storedWikiLinks) {
     //for ex. savedCards[0] will point to the first itenerary object in the savedCards array.
     // savedCards[1] will point to the second itenerary object in the savedCards object.
 
-
-    var id = `IteneraryCard${cardId}`;
-    savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
-        [id]: {
-            element: IteneraryCardDiv.html(),
-            children: {
-                cardTitle: {
-                    element: cardTitle.html()
-                },
-                cardP: {
-                    element: cardP.html()
-                },
-                buttonContainer: {
-                    element: buttonContainer.html(),
-                    children: {
-                        editButton: {
-                            element: editButton.html()
-                        },
-                        deleteButton: {
-                            element: deleteButton.html()
-                        },
-                        cardSearch: {
-                            element: cardSearch.html()
-                        }
-                    }
-                }
-            }
-        }
-    }
 
 
     return iteneraryCardsParent;
