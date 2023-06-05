@@ -25,25 +25,13 @@ function addCard() {
         addItenerary();
     }
     cardId++;
-
-    
-    // console.log(changeCollection());
-    createCardElement(savedcardList, changeCollection(), storedLocations);
+    createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
     
 }
-
-function test2(savedcardList, y) {
-
-    // console.log('y: ',y);
-    // console.log('savedcardList: ',savedcardList);
-}
-
-
-
-function createCardElement(content, itenerary, locations) {
+function createCardElement(content, itenerary, locations, storedWikiLinks) {
     console.log(content);
     console.log(itenerary);
     var iteneraryCardsParent = $(`#${itenerary}`);
@@ -53,42 +41,20 @@ function createCardElement(content, itenerary, locations) {
     var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
     cardContainer.append(IteneraryCardDiv);
 
-    // var cardTitle = $(`<h3 class="title">${title}</h3>`);
-    // IteneraryCardDiv.append(cardTitle);
-
-    var cardUl = $(`<ul id="cardList"></ul>`);
+    var cardUl = $(`<ul id="cardList"></ul>`);  //creates an ul element for the location list
     IteneraryCardDiv.append(cardUl);
 
 
     // console.log(content.children);
     for (var a =0; a < content.children.length; a++) {
-        var cardLi = $(`<li class="is-size-5" data-index="${a}">${locations[a]}</li>`);
+        var cardLi = $(`<li class="is-size-5" data-index="${a}">${locations[a]}</li>`);     //creates a li element with the location name as it's text
         cardUl.append(cardLi);
-        console.log(cardLi);
-        // console.log(locations[a]);
 
-        // var cardLi = $(`${content.children[a]}`);
-
-        // console.log(content.children[a]);
+        var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`);     //creates an a element with the href as the link to the location
+        cardUl.append(cardA);
+        console.log(cardA);
     }
 
-
-    // var buttonContainer = $('<div class="buttons has-addons"></div>');
-    // IteneraryCardDiv.append(buttonContainer);
-
-    // var editButton = $('<button class="button">Edit</button>');
-    // editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
-    // buttonContainer.append(editButton);
-
-    // var deleteButton = $('<button class="button">Delete</button>');
-    // deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
-    // buttonContainer.append(deleteButton);
-
-    // //this search bar has a value of the location name
-    // //when search button clicked, will call the google map api and wiki api with its value as a parameter
-    // var cardSearch = $('<button class="button">Search</button>');
-    // // cardSearch.on('click', () => deleteCard(card.id));
-    // buttonContainer.append(cardSearch);
 
 
     //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
@@ -540,7 +506,7 @@ function addCardOnPOIClick(placename)
     addCard();
 }
 
-
+*/
 $(document).ready(function () {
     // Assigns an on click event to the dropdown button
     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
@@ -558,4 +524,22 @@ $(document).ready(function () {
         currentItenerary.toggleClass('is-active'); // Toggle the current dropdown
     });
 });
-*/
+
+
+// $(document).ready(function () {
+//     // Assigns an on click event to the dropdown button
+//     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
+//         event.stopPropagation();
+
+//         var allActiveIteneraries = $(".Itenerary.is-active");   // stores all active Itenerary elements in variable
+//         var currentItenerary = $(this).closest('.Itenerary');   // goes through clicked element's parents that matches 'Itenerary'
+
+//         // Remove 'is-active' class from all active Iteneraries that aren't the current one]
+//         allActiveIteneraries.each(function () {  //.each() loops all active itenerary queries
+//             if (!$(this).is(currentItenerary)) {    // checks if if the 'currentItenerary' is not the same as the element in current iteration
+//                 $(this).removeClass('is-active');
+//             }
+//         });
+//         currentItenerary.toggleClass('is-active'); // Toggle the current dropdown
+//     });
+// });
