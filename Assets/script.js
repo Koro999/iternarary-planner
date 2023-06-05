@@ -98,8 +98,6 @@ function saveCollection() {
   
   function renderSaved() {
     var storedData = JSON.parse(localStorage.getItem('itenerary'));
-    console.log('assa');
-    console.log(storedData);
   }
 
 
@@ -179,47 +177,6 @@ function addItenerary() {
     dropdownMenuDiv.append(dropdownContentDiv);
 
 
-    //this stores the whole itenerary html to the savedCards array to be able to save them later.
-    var container = {
-        element: dropdownDiv.html(),
-        children: {
-            trigger: {
-                element: dropdownTriggerDiv.html(),
-                children: {
-                    iteneraryBtn: {
-                        element: button.html(),
-                        children: {
-                            spanTitle: {
-                                element: titleSpan.html()
-                            },
-                            spanIcon: {
-                                element: iconSpan.html(),
-                                children: {
-                                    icon: {
-                                        element: icon.html()
-                                    }
-                                }
-                            },
-                            deleteButton: {
-                                element: iteneraryDeleteButton.html()
-                            }
-                        }
-                    },
-                    dropdownMenu: {
-                        element: dropdownDiv.html(),
-                        children: {
-                            dropdownContent: {
-                                element: dropdownContentDiv.html(),
-                                children: {
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-    savedCards.push(container);
     addIteneraryNum();
 
 }
