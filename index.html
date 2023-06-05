@@ -60,7 +60,7 @@
             </section>
             <h5>Card Collection</h5>
             <!--THIS SHOULD BE THE MAIN CARD CONTAINER WHERE EVERYTHING IS GENERATED-->
-            <div class="p-4 box has-border"id="cardContainer">
+            <div class="p-4 box has-border columns"id="cardContainer">
               <!-- Card elements will be dynamically added here -->
                 <!--1) CREATE A LIST TO ADD ONTO FOR EACH ELEMENT CREATED-->
                 <!--2) CREATE AN EMPHASIZED P ELEMENT WITH THE NAME OF THE LOCATION CLICKED -->
@@ -72,20 +72,11 @@
                 <ul id="wiki-results"></ul>-->
             </div>
             
-            <div class = ''>
+            <div class = 'columns'>
               <!--THIS SHOULD BE THE SAVE ELEMENTS AND CLEAR CARD ELEMENTS -->
               <!--CHANGE THE CONTAINER TO FLEX LOOK AT BULMA DOCUMENTATION-->
-                <button class="column is-2 clear">clear</button>
-                <button class="column is-2 save">save</button>
-            </div>
-
-            
-
-            <div id="controls">
-                <input type="text" id="cardTitleInput" placeholder="Card Title">
-                <textarea id="cardContentInput" placeholder="Card Content"></textarea>
-                <button onclick="addCard()">Add Card</button>
-                <button onclick="saveCollection()">Save Collection</button>
+                <button class="button is-primary clear column is-3" onclick="clearCollection()">Clear</button>
+                <button class="button is-primary save column is-3" onclick="saveCollection()">Save</button>
             </div>
         </main>
     </div>

@@ -1,5 +1,6 @@
 let currentCollection = 1;
-let cardId = -1; //changed from 1 to -1
+let iteneraryCardId = -1; //changed from 1 to -1
+let collectionCardId = -1; //changed from 1 to -1
 var IteneraryNum = 0;
 var selectedItenerary;
 
@@ -7,34 +8,66 @@ var selectedItenerary;
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
 //if a user adds cards, 
-var savedCards = [
+var savedCards = [];
 
-]
+function addCollectionCard(title, description, imgsrc){        
+    if(!title || !description)
+        return;
 
-function addCard() {
-    const title = document.getElementById('cardTitleInput').value;
-    const content = document.getElementById('cardContentInput').value;
+    collectionCardId++;
+    createCollectionCardElement(title, description, imgsrc);
+}
 
+function createCollectionCardElement(title, description, imgsrc) {
+    var collectionCardsParent = $(`#cardContainer`);
+
+    var cardContainer = $(`<div class="card column is-3 cardContainer${collectionCardId}"></div>`);
+    $(`#cardContainer`).append(cardContainer);
+
+    var imageContainer = $(`<div class="card-image"></div>`);
+    cardContainer.append(imageContainer);
+
+    var figureContainer = $(`<div class="image is-4by3"></div>`);
+    imageContainer.append(figureContainer);
+
+    var image = $(`<img class="image" src="${imgsrc}"></div>`);
+    figureContainer.append(image);
+
+    var cardContent = $(`<div class="card-content"></div>`);
+    cardContainer.append(cardContent);
+
+    var content = $(`<div class="content"></div>`);
+    cardContent.append(content);
+
+    var title = $(`<p class="title is-4">${title}</p>`);
+    content.append(title);
+
+    var descriptionLabel = $(`<p class="description">${description}</p>`);
+    content.append(descriptionLabel);
+
+    var deleteButton = $('<button class="button">Delete</button>');
+    deleteButton.on('click', () => deleteCollectionCard(`cardContainer${collectionCardId}`));
+    content.append(deleteButton);
+}
+
+function addIteneraryCard(title, content) {
     if(!title || !content)
         return;
 
-    if(IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
-    {
+    if(IteneraryNum == 0) {//If it is empty we can create one itenerary before doing anything
+    
         addItenerary();
     }
-    cardId++;
-    createCardElement(title, content, changeCollection());
-
-    document.getElementById('cardTitleInput').value = '';
-    document.getElementById('cardContentInput').value = '';
+    iteneraryCardId++;
+    createIteneraryCardElement(title, content, changeCollection());
 }
 
-function createCardElement(title, content, itenerary) {
+function createIteneraryCardElement(title, content, itenerary) {
     var iteneraryCardsParent = $(`#${itenerary}`);
-    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
+    var cardContainer = $(`<div class="dropdown-content cardContainer${iteneraryCardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
 
-    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+    var IteneraryCardDiv = $(`<div id="IteneraryCard${iteneraryCardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
     cardContainer.append(IteneraryCardDiv);
 
     var cardTitle = $(`<h3 class="title">${title}</h3>`);
@@ -47,11 +80,11 @@ function createCardElement(title, content, itenerary) {
     IteneraryCardDiv.append(buttonContainer);
 
     var editButton = $('<button class="button">Edit</button>');
-    editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
+    editButton.on('click', () => editCard(`IteneraryCard${iteneraryCardId}`));
     buttonContainer.append(editButton);
 
     var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
+    deleteButton.on('click', () => deleteItineraryCard(`cardContainer${iteneraryCardId}`));
     buttonContainer.append(deleteButton);
 
     //this search bar has a value of the location name
@@ -66,7 +99,7 @@ function createCardElement(title, content, itenerary) {
     // savedCards[1] will point to the second itenerary object in the savedCards object.
 
 
-    var id = `IteneraryCard${cardId}`;
+    var id = `IteneraryCard${iteneraryCardId}`;
     savedCards[getIteneraryNum(selectedItenerary)].children.trigger.children.dropdownMenu.children.dropdownContent.children = {
         [id]: {
             element: IteneraryCardDiv.html(),
@@ -99,8 +132,8 @@ function createCardElement(title, content, itenerary) {
     return iteneraryCardsParent;
 }
 
-function editCard(cardId) {
-    const card = document.getElementById(cardId);
+function editCard(iteneraryCardId) {
+    const card = document.getElementById(iteneraryCardId);
     const titleElement = card.querySelector('h3');
     const contentElement = card.querySelector('p');
 
@@ -111,10 +144,23 @@ function editCard(cardId) {
     contentElement.textContent = newContent;
 }
 
-function deleteCard(cardsId) {
+function deleteItineraryCard(cardsId) {
     const card = $(`.${cardsId}`);
     card.remove();
-    cardId--;
+    iteneraryCardId--;
+}
+
+function deleteCollectionCard(cardsId) {
+    const card = $(`.${cardsId}`);
+    card.remove();
+    collectionCardId--;
+}
+
+function clearCollection() {
+    var numberOfElements = collectionCardId;
+    for (let index = 0; index <= numberOfElements; index++) {
+        deleteCollectionCard("cardContainer"+index);
+    }
 }
 
 function saveCollection() {
@@ -379,13 +425,13 @@ async function pointsOfInterest(lat,lon){
 
 function addCardOnPOIClick(placename)
 {
-    document.getElementById('cardTitleInput').value = placename;
-
     // TODO - Add call to wikipedia API to get the content for this place
     var wikiContent = lastPlaceSearched + " - "+ placename + "- this content is awesome";
-    document.getElementById('cardContentInput').value = wikiContent; 
 
-    addCard();
+    // TODO - Change imgsrc to whatever we get from the API
+    var imgsrc = "https://bulma.io/images/placeholders/1280x960.png";
+    addCollectionCard(placename, wikiContent, imgsrc);
+    //addIteneraryCard(placename, wikiContent);
 }
 
 
