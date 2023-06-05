@@ -16,11 +16,11 @@ function addCard() {
     // console.log(storedLocations);
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
-    
+
     // if(!title || !content)
     //     return;
 
-    if(IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
+    if (IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
     {
         addItenerary();
     }
@@ -29,7 +29,7 @@ function addCard() {
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
-    
+
 }
 function createCardElement(content, itenerary, locations, storedWikiLinks) {
     console.log(content);
@@ -46,17 +46,17 @@ function createCardElement(content, itenerary, locations, storedWikiLinks) {
 
 
     // console.log(content.children);
-    for (var a =0; a < content.children.length; a++) {
+    for (var a = 0; a < content.children.length; a++) {
         var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as it's text
         cardUl.append(cardLi);
 
 
-        if(storedWikiLinks[a]=='') {
+        if (storedWikiLinks[a] == '') {
             var cardA = $(`<p>Location has no wiki links</p>`);     //contitional for when location has wiki links or not
         } else {
-            var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`); 
+            var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`);
         }
-            //creates an a element with the href as the link to the location
+        //creates an a element with the href as the link to the location
         cardUl.append(cardA);
     }
 
@@ -94,11 +94,11 @@ function saveCollection() {
     console.log(data);
     localStorage.setItem('itenerary', JSON.stringify(data));
     renderSaved();
-  }
-  
-  function renderSaved() {
+}
+
+function renderSaved() {
     var storedData = JSON.parse(localStorage.getItem('itenerary'));
-  }
+}
 
 
 
@@ -119,14 +119,13 @@ function changeCollection() {
 
 
 
-itenerarySearchInput.addEventListener("keypress", function(event){
+itenerarySearchInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
         searchPlace(searchedCity[0].value);
     }
 });
 
-function removeItenerary(element)
-{
+function removeItenerary(element) {
     element.parentElement.parentElement.parentElement.remove();
     decreaseIteneraryNum();
 }
@@ -227,7 +226,7 @@ var lastPlaceSearched;
 window.searchPlace = async function (city) {
     lastPlaceSearched = city;
     //api url to search for a location's lat lng
-    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;    
+    var geocodeApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?key=${Key}&address=${city}`;
     //calls the google geocoding api to grab lat lon of location searched 
     const response = await fetch(geocodeApiUrl)
     if (!response.ok) {
@@ -235,26 +234,26 @@ window.searchPlace = async function (city) {
     }
     const data = await response.json();
     if (data.status === 'OK') { //only if the input is a valid location address, its latitude and longitude will be stored in variable
-                
+
         //assigns lat and lon values
         lat = data.results[0].geometry.location.lat;
         lon = data.results[0].geometry.location.lng;
         //console.log(data.status)
         //console.log(lat)//these are defined
         //console.log(lon)//these are defined
-        
+
     }
     await pointsOfInterest(lat, lon);
 };
 
 //generate points of interest at the location entered in search bar 
-async function pointsOfInterest(lat,lon){
+async function pointsOfInterest(lat, lon) {
     var cityLatLng = new google.maps.LatLng(lat, lon);
     //this syntax loads libraries as you need them https://developers.google.com/maps/documentation/javascript/libraries
     const { places } = await google.maps.importLibrary("places")
     infoWindow = new google.maps.InfoWindow();
     //sets the map element with the latlng grabbed from the geocoder api 
-    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });   
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });
 
     var request = {
         location: cityLatLng,
@@ -269,8 +268,8 @@ async function pointsOfInterest(lat,lon){
     //everything that needs to be done with the callback information must be done within the callback function
     service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            poiArray = results; 
-        //loop through the array 
+            poiArray = results;
+            //loop through the array 
             for (let i = 0; i < results.length; i++) {
                 //console.log all the locations
                 place = results[i]
@@ -286,16 +285,31 @@ async function pointsOfInterest(lat,lon){
     //function creates all the markers of the points of interest into map
     function createMarker(place) {
         if (!place.geometry || !place.geometry.location) return;
-      
+
         const marker = new google.maps.Marker({
-          map,
-          position: place.geometry.location,
+            map,
+            position: place.geometry.location,
         });
 
         //when the marker is hovered over it should show the name of the location and stuff
         google.maps.event.addListener(marker, "mouseover", () => {
+
+
+            var photoUrl = place.photos[0].getUrl({     //retrieve the photo url from api
+                maxWidth: 500, // Adjust the maximum width/height 
+                maxHeight: 100
+            });;    //
+
+
+            var article = "My Article";     //the wiki article will be stored in this variable
+
+            //will create new elements for when a place is clicked on the map. there will be the place name, the photo url, and an article
+            var content = `<h3>${place.name}</h3>   
+               <img src="${photoUrl}">
+               <p>${article}</p>`;
+
             //set the content of the information
-            infoWindow.setContent(place.name || "");
+            infoWindow.setContent(content || "");
             infoWindow.open(map, marker);
         });
 
@@ -306,11 +320,11 @@ async function pointsOfInterest(lat,lon){
             storedLocations.push(place.name)
             wikiHandleSearch(place.name)
         });
-      }
+    }
 
 }
 //initializes the map element in the page 
-async function initMap () {
+async function initMap() {
     //calls the map library
     const { Map } = await google.maps.importLibrary("maps");
     //calls the advancedMarker library 
@@ -319,7 +333,7 @@ async function initMap () {
     //options for the map
     var options = {
         zoom: 8,
-        center: {lat:43.39, lng:-79.23},
+        center: { lat: 43.39, lng: -79.23 },
         mapId: '813a59388c1fe9ed'
     }
 
@@ -356,7 +370,7 @@ var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
     fetch(apiURL)
         .then(function (response) {
             return response.json();
-            
+
         })
         .then(function (data) { //Iterates through data and appends Wikipedia URLs onto page
             //console.log(data)
@@ -372,7 +386,7 @@ var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
 };
 
 function renderCardContent() {
-    
+
     cardList.innerHTML = '';
 
     for (let index = 0; index < storedLocations.length; index++) {
@@ -388,7 +402,7 @@ function renderCardContent() {
 
         // create an a element that contains the link
         var p1El = document.createElement('a')
-        p1El.setAttribute('href',wikiLink )
+        p1El.setAttribute('href', wikiLink)
         p1El.textContent = ' ' + wikiLink;
 
         var deleteButton = document.createElement('button')
@@ -398,10 +412,10 @@ function renderCardContent() {
         //append all new elements to the card 
         cardList.append(liEl)
         liEl.append(p1El)
-        liEl.append(deleteButton) 
-        
-        
-    } 
+        liEl.append(deleteButton)
+
+
+    }
     savedcardList = cardList;
 }
 
@@ -409,23 +423,23 @@ function test(savedcardList) {
     console.log(savedcardList);
 }
 
-$('#cardList').on('click', 'button', function(event) {
+$('#cardList').on('click', 'button', function (event) {
     event.preventDefault();
 
     var element = event.target; //store event data on which element is being clicked on 
 
     if (element.getAttribute('type') === 'button') {  //if the element clicked on is a button do this 
         //pull data attribute index from the elements parent element,
-        var index = element.parentElement.getAttribute("data-index"); 
+        var index = element.parentElement.getAttribute("data-index");
         $('#cardList').children().eq(index).remove();
 
         storedLocations.splice(index, 1); //removes 1 item from the specific index
         storedWikiLinks.splice(index, 1); //removes 1 item from the specific index
-        
+
         renderCardContent()
     }
 })
-    
+
 
 /*
 function addCardOnPOIClick(placename)
