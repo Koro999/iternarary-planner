@@ -54,7 +54,7 @@ function createCardElement(content, itenerary, locations, storedWikiLinks) {
         if (storedWikiLinks[a] == '') {
             var cardA = $(`<p>Location has no wiki links</p>`);     //contitional for when location has wiki links or not
         } else {
-            var cardA = $(`<a href="${storedWikiLinks[a]}">${storedWikiLinks[a]}</a>`);
+            var cardA = $(`<a href="${storedWikiLinks[a]}">Link to ${locations[a]} article</a>`);
         }
         //creates an a element with the href as the link to the location
         cardUl.append(cardA);
