@@ -13,6 +13,7 @@ var savedCards = [
 ]
 
 function addCard() {
+    // console.log(storedLocations);
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
     
@@ -24,12 +25,10 @@ function addCard() {
         addItenerary();
     }
     cardId++;
-    // console.log('fd', cardId);
-    test2(savedcardList,changeCollection());
 
     
     // console.log(changeCollection());
-    // createCardElement(title, content, changeCollection());
+    createCardElement(savedcardList, changeCollection(), storedLocations);
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
@@ -38,13 +37,15 @@ function addCard() {
 
 function test2(savedcardList, y) {
 
-    console.log('y: ',y);
-    console.log('savedcardList: ',savedcardList);
+    // console.log('y: ',y);
+    // console.log('savedcardList: ',savedcardList);
 }
 
 
 
-function createCardElement(title, content, itenerary) {
+function createCardElement(content, itenerary, locations) {
+    console.log(content);
+    console.log(itenerary);
     var iteneraryCardsParent = $(`#${itenerary}`);
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
     iteneraryCardsParent.append(cardContainer);
@@ -52,28 +53,42 @@ function createCardElement(title, content, itenerary) {
     var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
     cardContainer.append(IteneraryCardDiv);
 
-    var cardTitle = $(`<h3 class="title">${title}</h3>`);
-    IteneraryCardDiv.append(cardTitle);
+    // var cardTitle = $(`<h3 class="title">${title}</h3>`);
+    // IteneraryCardDiv.append(cardTitle);
 
-    var cardP = $(`<p class="paragraph">${content}</p>`);
-    IteneraryCardDiv.append(cardP);
+    var cardUl = $(`<ul id="cardList"></ul>`);
+    IteneraryCardDiv.append(cardUl);
 
-    var buttonContainer = $('<div class="buttons has-addons"></div>');
-    IteneraryCardDiv.append(buttonContainer);
 
-    var editButton = $('<button class="button">Edit</button>');
-    editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
-    buttonContainer.append(editButton);
+    // console.log(content.children);
+    for (var a =0; a < content.children.length; a++) {
+        var cardLi = $(`<li class="is-size-5" data-index="${a}">${locations[a]}</li>`);
+        cardUl.append(cardLi);
+        console.log(cardLi);
+        // console.log(locations[a]);
 
-    var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
-    buttonContainer.append(deleteButton);
+        // var cardLi = $(`${content.children[a]}`);
 
-    //this search bar has a value of the location name
-    //when search button clicked, will call the google map api and wiki api with its value as a parameter
-    var cardSearch = $('<button class="button">Search</button>');
-    // cardSearch.on('click', () => deleteCard(card.id));
-    buttonContainer.append(cardSearch);
+        // console.log(content.children[a]);
+    }
+
+
+    // var buttonContainer = $('<div class="buttons has-addons"></div>');
+    // IteneraryCardDiv.append(buttonContainer);
+
+    // var editButton = $('<button class="button">Edit</button>');
+    // editButton.on('click', () => editCard(`IteneraryCard${cardId}`));
+    // buttonContainer.append(editButton);
+
+    // var deleteButton = $('<button class="button">Delete</button>');
+    // deleteButton.on('click', () => deleteCard(`cardContainer${cardId}`));
+    // buttonContainer.append(deleteButton);
+
+    // //this search bar has a value of the location name
+    // //when search button clicked, will call the google map api and wiki api with its value as a parameter
+    // var cardSearch = $('<button class="button">Search</button>');
+    // // cardSearch.on('click', () => deleteCard(card.id));
+    // buttonContainer.append(cardSearch);
 
 
     //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
@@ -149,7 +164,6 @@ function saveCollection() {
 
 
 function changeCollection() {
-    console.log('hi');
     var collectionSelect = $('#collectionSelect');
     var selectedOption = collectionSelect.find(':selected');
 
@@ -272,7 +286,6 @@ function setItineraryNum(num) {
     selectedItenerary = num;
 }
 function getIteneraryNum() {
-    console.log('fer');
     return selectedItenerary;
 }
 function addIteneraryNum() {
