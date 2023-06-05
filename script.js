@@ -1,6 +1,21 @@
 let currentCollection = 1;
 let cardId = 1;
 
+// Load saved cards on page load
+window.onload = function () {
+  const savedCards = localStorage.getItem('cards');
+  if (savedCards) {
+    const parsedCards = JSON.parse(savedCards);
+    parsedCards.forEach(card => {
+      const { title, content } = card;
+      const cardElement = createCardElement(title, content);
+      const cardContainer = document.getElementById('cardContainer');
+      cardContainer.appendChild(cardElement);
+      cardId++;
+    });
+  }
+}
+
 function addCard() {
   const title = document.getElementById('cardTitleInput').value;
   const content = document.getElementById('cardContentInput').value;
@@ -14,6 +29,8 @@ function addCard() {
   document.getElementById('cardContentInput').value = '';
 
   cardId++;
+
+  saveCards(); // Save the updated cards
 }
 
 function createCardElement(title, content) {
@@ -53,25 +70,34 @@ function editCard(cardId) {
 
   titleElement.textContent = newTitle;
   contentElement.textContent = newContent;
+
+  saveCards(); // Save the updated cards
 }
 
 function deleteCard(cardId) {
   const card = document.getElementById(cardId);
   card.remove();
+
+  saveCards(); // Save the updated cards
 }
 
-function saveCollection() {
-  const collectionSelect = document.getElementById('collectionSelect');
-  const selectedCollection = collectionSelect.value;
+function saveCards() {
+  const cards = [];
+  const cardContainer = document.getElementById('cardContainer');
+  const cardElements = cardContainer.getElementsByClassName('card');
 
-  // Code to save the collection goes here...
-  alert(`Collection ${selectedCollection} saved!`);
-}
+  for (let i = 0; i < cardElements.length; i++) {
+    const cardElement = cardElements[i];
+    const titleElement = cardElement.querySelector('h3');
+    const contentElement = cardElement.querySelector('p');
 
-function changeCollection() {
-  const collectionSelect = document.getElementById('collectionSelect');
-  const selectedCollection = collectionSelect.value;
+    const card = {
+      title: titleElement.textContent,
+      content: contentElement.textContent
+    };
 
-  // Code to switch to the selected collection goes here...
-  alert(`Switched to Collection ${selectedCollection}!`);
+    cards.push(card);
+  }
+
+  localStorage.setItem('cards', JSON.stringify(cards));
 }
