@@ -3,6 +3,7 @@ let cardId = -1; //changed from 1 to -1
 var IteneraryNum = 0;
 var selectedItenerary;
 var itenerarySearchInput = document.getElementById("itenerarySearchInput");
+var savedcardList;
 
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
@@ -14,20 +15,34 @@ var savedCards = [
 function addCard() {
     const title = document.getElementById('cardTitleInput').value;
     const content = document.getElementById('cardContentInput').value;
-
-    if(!title || !content)
-        return;
+    
+    // if(!title || !content)
+    //     return;
 
     if(IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
     {
         addItenerary();
     }
     cardId++;
-    createCardElement(title, content, changeCollection());
+    // console.log('fd', cardId);
+    test2(savedcardList,changeCollection());
+
+    
+    // console.log(changeCollection());
+    // createCardElement(title, content, changeCollection());
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
+    
 }
+
+function test2(savedcardList, y) {
+
+    console.log('y: ',y);
+    console.log('savedcardList: ',savedcardList);
+}
+
+
 
 function createCardElement(title, content, itenerary) {
     var iteneraryCardsParent = $(`#${itenerary}`);
@@ -134,6 +149,7 @@ function saveCollection() {
 
 
 function changeCollection() {
+    console.log('hi');
     var collectionSelect = $('#collectionSelect');
     var selectedOption = collectionSelect.find(':selected');
 
@@ -172,8 +188,8 @@ function addItenerary() {
     newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
     newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
 
-    selectedItenerary = newOption.data('value2');
-    getIteneraryNum(selectedItenerary);
+    itineraryVal = newOption.data('value2');
+    setItineraryNum(itineraryVal);
     collectionSelect.append(newOption);
 
 
@@ -252,8 +268,11 @@ function addItenerary() {
 
 }
 //this is for the savedCards array
-//
-function getIteneraryNum(selectedItenerary) {
+function setItineraryNum(num) {
+    selectedItenerary = num;
+}
+function getIteneraryNum() {
+    console.log('fer');
     return selectedItenerary;
 }
 function addIteneraryNum() {
@@ -343,7 +362,7 @@ async function pointsOfInterest(lat,lon){
             for (let i = 0; i < results.length; i++) {
                 //console.log all the locations
                 place = results[i]
-                console.log(place.name)
+                // console.log(place.name)
 
                 createMarker(results[i]);
             }
@@ -441,7 +460,7 @@ var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
 };
 
 function renderCardContent() {
-    console.log(cardList)
+    
     cardList.innerHTML = '';
 
     for (let index = 0; index < storedLocations.length; index++) {
@@ -468,7 +487,14 @@ function renderCardContent() {
         cardList.append(liEl)
         liEl.append(p1El)
         liEl.append(deleteButton) 
+        
+        
     } 
+    savedcardList = cardList;
+}
+
+function test(savedcardList) {
+    console.log(savedcardList);
 }
 
 $('#cardList').on('click', 'button', function(event) {
