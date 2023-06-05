@@ -2,7 +2,7 @@ let currentCollection = 1;
 let cardId = -1; //changed from 1 to -1
 var IteneraryNum = 0;
 var selectedItenerary;
-
+var itenerarySearchInput = document.getElementById("itenerarySearchInput");
 
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
@@ -147,14 +147,13 @@ function changeCollection() {
     return val1;
 }
 
-var itenerarySearchInput = document.getElementById("itenerarySearchInput");
+
 
 itenerarySearchInput.addEventListener("keypress", function(event){
     if (event.key === "Enter") {
         searchPlace(searchedCity[0].value);
     }
 });
-
 
 function removeItenerary(element)
 {
@@ -371,12 +370,106 @@ async function pointsOfInterest(lat,lon){
 
         //when the marker is clicked it should save to itinerary
         google.maps.event.addListener(marker, "click", () => {
-            addCardOnPOIClick(place.name);
+            //addCardOnPOIClick(place.name);
+
+            wikiHandleSearch(place.name)
         });
       }
 
 }
+//initializes the map element in the page 
+async function initMap () {
+    //calls the map library
+    const { Map } = await google.maps.importLibrary("maps");
+    //calls the advancedMarker library 
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
+    //options for the map
+    var options = {
+        zoom: 8,
+        center: {lat:43.39, lng:-79.23},
+        mapId: '813a59388c1fe9ed'
+    }
+
+    //calls the map-container element in the html
+    map = new Map(document.getElementById('map-container'), options);
+
+    /*const marker = new AdvancedMarkerElement({
+        map:map,
+        position: options.center, 
+        title: 'Toronto'
+    });*/
+}
+
+initMap();
+
+
+//MAP TO WIKIPEDIA CARD GENERATION
+
+var cardContainer = $('#cardContainer')
+var cardList = $('#cardList')
+
+var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
+    
+    /*https://en.wikipedia.org/w/api.php
+    ?action=opensearch
+    &search=zyz          # Search query
+    &limit=1             # Return only the first result
+    &namespace=0         # Search only articles, ignoring Talk, Mediawiki, etc.
+    &format=json         # 'jsonfm' prints the JSON in HTML for debugging.
+    */
+
+    if (!placeName) {
+        return;
+    }
+
+    var baseURL = 'https://en.wikipedia.org/w/api.php?origin=*&action=';
+    var apiURL = baseURL + 'opensearch&search=' + placeName + '&limit=1&namespace=0&namespace=0&format=json';
+
+    fetch(apiURL)
+        .then(function (response) {
+            return response.json();
+            
+        })
+        .then(function (data) { //Iterates through data and appends Wikipedia URLs onto page
+            //console.log(data)
+            var link = data[3]; //this saves the wikipedia link 
+            
+            
+
+            // create li element that contains the name of the location
+            var liEl = document.createElement('li')
+            liEl.classList = 'is-size-5'
+            liEl.textContent = placeName + ': '
+
+            // create an a element that contains the link
+            var p1El = document.createElement('a')
+            p1El.setAttribute('href',link )
+            p1El.textContent = ' ' +link;
+
+            //append all new elements to the card 
+            cardList.append(liEl)
+            liEl.append(p1El)
+
+
+
+            /*
+
+            for (var i = 0; i < results.length; i++) {
+                html += `<li><a href="${links[i]}" target="_blank">${results[i]}</a></li>`;
+            }
+            html += '</ul>';
+            wikiResults.innerHTML = html;
+        
+            //localStorage.setItem('wikiResultsData', JSON.stringify(data)); //Sets wiki local storage
+            */
+        })
+        .catch(function (err) { //Catching and console logging errors
+            console.log(err);
+        });
+};
+
+/*
 function addCardOnPOIClick(placename)
 {
     document.getElementById('cardTitleInput').value = placename;
@@ -406,33 +499,4 @@ $(document).ready(function () {
         currentItenerary.toggleClass('is-active'); // Toggle the current dropdown
     });
 });
-
-//initializes the map element in the page 
-async function initMap () {
-    //calls the map library
-    const { Map } = await google.maps.importLibrary("maps");
-    //calls the advancedMarker library 
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-    //options for the map
-    var options = {
-        zoom: 8,
-        center: {lat:43.39, lng:-79.23},
-        mapId: '813a59388c1fe9ed'
-    }
-
-    //calls the map-container element in the html
-    map = new Map(document.getElementById('map-container'), options);
-
-    /*const marker = new AdvancedMarkerElement({
-        map:map,
-        position: options.center, 
-        title: 'Toronto'
-    });*/
-}
-
-initMap();
-
-
-//map and wikipedia generation to card 
-
+*/

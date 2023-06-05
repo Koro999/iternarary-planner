@@ -9,6 +9,7 @@ body {
   #cardContainer {
     display: flex;
     flex-wrap: wrap;
+    height: 400px;
   }
   
   .card {
