@@ -373,7 +373,6 @@ async function pointsOfInterest(lat,lon){
             //addCardOnPOIClick(place.name);
 
             storedLocations.push(place.name)
-            $('#cardList').innerHTML = "";
             wikiHandleSearch(place.name)
         });
       }
@@ -412,7 +411,7 @@ initMap();
 var storedWikiLinks = []
 var storedLocations = []; //an array storing all locations that have been clicked
 var cardContainer = $('#cardContainer')
-var cardList = $('#cardList')
+var cardList = document.querySelector('#cardList')
 
 var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
 
@@ -442,7 +441,8 @@ var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
 };
 
 function renderCardContent() {
-    $('#cardList').innerHTML = "";
+    console.log(cardList)
+    cardList.innerHTML = '';
 
     for (let index = 0; index < storedLocations.length; index++) {
 
