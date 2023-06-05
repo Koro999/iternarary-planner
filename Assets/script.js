@@ -1,7 +1,8 @@
-let currentCollection = 1;
 let iteneraryCardId = -1; //changed from 1 to -1
 let collectionCardId = -1; //changed from 1 to -1
-var IteneraryNum = 0;
+let collectionCardsNum = 0; //changed from 1 to -1
+var iteneraryCardsNum = 0;
+var iteneraryNum = 0;
 var selectedItenerary;
 
 
@@ -14,6 +15,7 @@ function addCollectionCard(title, description, imgsrc){
     if(!title || !description)
         return;
 
+    collectionCardsNum++;
     collectionCardId++;
     createCollectionCardElement(title, description, imgsrc);
 }
@@ -21,8 +23,8 @@ function addCollectionCard(title, description, imgsrc){
 function createCollectionCardElement(title, description, imgsrc) {
     var collectionCardsParent = $(`#cardContainer`);
 
-    var cardContainer = $(`<div class="card column is-3 cardContainer${collectionCardId}"></div>`);
-    $(`#cardContainer`).append(cardContainer);
+    var cardContainer = $(`<div class="card column is-3 collectionCardContainer${collectionCardId}"></div>`);
+    collectionCardsParent.append(cardContainer);
 
     var imageContainer = $(`<div class="card-image"></div>`);
     cardContainer.append(imageContainer);
@@ -45,8 +47,9 @@ function createCollectionCardElement(title, description, imgsrc) {
     var descriptionLabel = $(`<p class="description">${description}</p>`);
     content.append(descriptionLabel);
 
+    let buttonId = collectionCardId;
     var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteCollectionCard(`cardContainer${collectionCardId}`));
+    deleteButton.on('click', () => deleteCollectionCard(`collectionCardContainer${buttonId}`));
     content.append(deleteButton);
 }
 
@@ -54,11 +57,12 @@ function addIteneraryCard(title, content) {
     if(!title || !content)
         return;
 
-    if(IteneraryNum == 0) {//If it is empty we can create one itenerary before doing anything
+    if(iteneraryNum == 0) {//If it is empty we can create one itenerary before doing anything
     
         addItenerary();
     }
     iteneraryCardId++;
+    iteneraryCardsNum++;
     createIteneraryCardElement(title, content, changeCollection());
 }
 
@@ -79,19 +83,20 @@ function createIteneraryCardElement(title, content, itenerary) {
     var buttonContainer = $('<div class="buttons has-addons"></div>');
     IteneraryCardDiv.append(buttonContainer);
 
-    var editButton = $('<button class="button">Edit</button>');
-    editButton.on('click', () => editCard(`IteneraryCard${iteneraryCardId}`));
-    buttonContainer.append(editButton);
+    // var editButton = $('<button class="button">Edit</button>');
+    // editButton.on('click', () => editCard(`IteneraryCard${iteneraryCardId}`));
+    // buttonContainer.append(editButton);
 
     var deleteButton = $('<button class="button">Delete</button>');
-    deleteButton.on('click', () => deleteItineraryCard(`cardContainer${iteneraryCardId}`));
+    var myId = iteneraryCardId;
+    deleteButton.on('click', () => deleteItineraryCard(`cardContainer${myId}`));
     buttonContainer.append(deleteButton);
 
     //this search bar has a value of the location name
     //when search button clicked, will call the google map api and wiki api with its value as a parameter
-    var cardSearch = $('<button class="button">Search</button>');
+    // var cardSearch = $('<button class="button">Search</button>');
     // cardSearch.on('click', () => deleteCard(card.id));
-    buttonContainer.append(cardSearch);
+    // buttonContainer.append(cardSearch);
 
 
     //getIteneraryNum(selectedItenerary) is the number of currently selected itenerary.
@@ -113,15 +118,16 @@ function createIteneraryCardElement(title, content, itenerary) {
                 buttonContainer: {
                     element: buttonContainer.html(),
                     children: {
-                        editButton: {
-                            element: editButton.html()
-                        },
+                        // editButton: {
+                        //     element: editButton.html()
+                        // },
                         deleteButton: {
                             element: deleteButton.html()
-                        },
-                        cardSearch: {
-                            element: cardSearch.html()
                         }
+                        // ,
+                        // cardSearch: {
+                        //     element: cardSearch.html()
+                        // }
                     }
                 }
             }
@@ -147,35 +153,40 @@ function editCard(iteneraryCardId) {
 function deleteItineraryCard(cardsId) {
     const card = $(`.${cardsId}`);
     card.remove();
-    iteneraryCardId--;
+    iteneraryCardsNum--;
 }
 
 function deleteCollectionCard(cardsId) {
     const card = $(`.${cardsId}`);
     card.remove();
-    collectionCardId--;
+    collectionCardsNum--;
 }
 
 function clearCollection() {
-    var numberOfElements = collectionCardId;
-    for (let index = 0; index <= numberOfElements; index++) {
-        deleteCollectionCard("cardContainer"+index);
+    var numberOfElements = collectionCardsNum;
+    var children = document.querySelector(`#cardContainer`).children;
+    for (let index = numberOfElements-1; index >= 0; index--) {
+        console.log(index);
+        children[index].remove();
+        collectionCardsNum--;
     }
 }
 
 function saveCollection() {
-    var data = savedCards;
-    console.log(data);
-    localStorage.setItem('itenerary', JSON.stringify(data));
-    renderSaved();
-  }
-  
-  function renderSaved() {
-    var storedData = JSON.parse(localStorage.getItem('itenerary'));
-    console.log('assa');
-    console.log(storedData);
-  }
+    if(collectionCardId < 0)
+        return;
 
+    var placename;
+    var wikiContent;
+
+    var numberOfElements = collectionCardsNum;
+    var children = document.querySelector(`#cardContainer`).children;
+    for (let index = numberOfElements-1; index >= 0; index--) {
+        placename = children[index].querySelector('.title').innerHTML;
+        wikiContent = children[index].querySelector('.description').innerHTML;
+        addIteneraryCard(placename, wikiContent);
+    }
+}
 
 
 
@@ -214,10 +225,10 @@ function removeItenerary(element)
 function addItenerary() {
 
     var collectionSelect = $('#collectionSelect');
-    var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
-    newOption.val(`Itenerary${IteneraryNum}Cards`);
-    newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
-    newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
+    var newOption = $(`<option>Itenerary ${iteneraryNum}</option>`);
+    newOption.val(`Itenerary${iteneraryNum}Cards`);
+    newOption.data('value1', `Itenerary${iteneraryNum}Cards`);  //newOption's first value is it's id
+    newOption.data('value2', iteneraryNum);     //newOption's secopnd value is itenerary number
 
     selectedItenerary = newOption.data('value2');
     getIteneraryNum(selectedItenerary);
@@ -226,16 +237,16 @@ function addItenerary() {
 
 
     //creates a new Itenerary div
-    var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
+    var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${iteneraryNum}`);
     $('aside').append(dropdownDiv);
 
     var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
     dropdownDiv.append(dropdownTriggerDiv);
 
-    var button = $('<button></button>').addClass(`button  Itenerary${IteneraryNum}`);
+    var button = $('<button></button>').addClass(`button  Itenerary${iteneraryNum}`);
     dropdownTriggerDiv.append(button);
 
-    var titleSpan = $('<span></span>').attr('id', `Itenerary${IteneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
+    var titleSpan = $('<span></span>').attr('id', `Itenerary${iteneraryNum}Title`).text(`Itenerary ${iteneraryNum}`);
     button.append(titleSpan);
 
     var iconSpan = $('<span></span>').addClass('icon');
@@ -247,10 +258,10 @@ function addItenerary() {
     var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
     button.append(iteneraryDeleteButton);
 
-    var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
+    var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${iteneraryNum}Cards`);
     dropdownTriggerDiv.append(dropdownMenuDiv);
 
-    var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
+    var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${iteneraryNum}`);
     dropdownMenuDiv.append(dropdownContentDiv);
 
 
@@ -304,11 +315,11 @@ function getIteneraryNum(selectedItenerary) {
     return selectedItenerary;
 }
 function addIteneraryNum() {
-    IteneraryNum++;
+    iteneraryNum++;
 }
 
 function decreaseIteneraryNum() {
-    IteneraryNum--;
+    iteneraryNum--;
 }
 
 //map and API code 
