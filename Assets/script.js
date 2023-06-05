@@ -47,7 +47,7 @@ function createCardElement(content, itenerary, locations, storedWikiLinks) {
 
     // console.log(content.children);
     for (var a =0; a < content.children.length; a++) {
-        var cardLi = $(`<li class="is-size-5" data-index="${a}">${locations[a]}</li>`);     //creates a li element with the location name as it's text
+        var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as it's text
         cardUl.append(cardLi);
 
 
