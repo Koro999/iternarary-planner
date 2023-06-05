@@ -372,6 +372,8 @@ async function pointsOfInterest(lat,lon){
         google.maps.event.addListener(marker, "click", () => {
             //addCardOnPOIClick(place.name);
 
+            storedLocations.push(place.name)
+            $('#cardList').innerHTML = "";
             wikiHandleSearch(place.name)
         });
       }
@@ -406,18 +408,13 @@ initMap();
 
 //MAP TO WIKIPEDIA CARD GENERATION
 
+//arrays needed to reload information 
+var storedWikiLinks = []
+var storedLocations = []; //an array storing all locations that have been clicked
 var cardContainer = $('#cardContainer')
 var cardList = $('#cardList')
 
 var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
-    
-    /*https://en.wikipedia.org/w/api.php
-    ?action=opensearch
-    &search=zyz          # Search query
-    &limit=1             # Return only the first result
-    &namespace=0         # Search only articles, ignoring Talk, Mediawiki, etc.
-    &format=json         # 'jsonfm' prints the JSON in HTML for debugging.
-    */
 
     if (!placeName) {
         return;
@@ -434,40 +431,63 @@ var wikiHandleSearch = function (placeName) { //Function to fetch from WikiPedia
         .then(function (data) { //Iterates through data and appends Wikipedia URLs onto page
             //console.log(data)
             var link = data[3]; //this saves the wikipedia link 
-            
-            
+            storedWikiLinks.push(link) //push wikipedia link into an array
 
-            // create li element that contains the name of the location
-            var liEl = document.createElement('li')
-            liEl.classList = 'is-size-5'
-            liEl.textContent = placeName + ': '
-
-            // create an a element that contains the link
-            var p1El = document.createElement('a')
-            p1El.setAttribute('href',link )
-            p1El.textContent = ' ' +link;
-
-            //append all new elements to the card 
-            cardList.append(liEl)
-            liEl.append(p1El)
-
-
-
-            /*
-
-            for (var i = 0; i < results.length; i++) {
-                html += `<li><a href="${links[i]}" target="_blank">${results[i]}</a></li>`;
-            }
-            html += '</ul>';
-            wikiResults.innerHTML = html;
-        
-            //localStorage.setItem('wikiResultsData', JSON.stringify(data)); //Sets wiki local storage
-            */
+            //renderCardContent(placeName, link)
+            renderCardContent()
         })
         .catch(function (err) { //Catching and console logging errors
             console.log(err);
         });
 };
+
+function renderCardContent() {
+    $('#cardList').innerHTML = "";
+
+    for (let index = 0; index < storedLocations.length; index++) {
+
+        var location = storedLocations[index]
+        var wikiLink = storedWikiLinks[index]
+
+        // create li element that contains the name of the location
+        var liEl = document.createElement('li')
+        liEl.classList = 'is-size-5'
+        liEl.setAttribute("data-index", index)
+        liEl.textContent = location + ': '
+
+        // create an a element that contains the link
+        var p1El = document.createElement('a')
+        p1El.setAttribute('href',wikiLink )
+        p1El.textContent = ' ' + wikiLink;
+
+        var deleteButton = document.createElement('button')
+        deleteButton.setAttribute('type', 'button')
+        deleteButton.textContent = "Remove";
+
+        //append all new elements to the card 
+        cardList.append(liEl)
+        liEl.append(p1El)
+        liEl.append(deleteButton) 
+    } 
+}
+
+$('#cardList').on('click', 'button', function(event) {
+    event.preventDefault();
+
+    var element = event.target; //store event data on which element is being clicked on 
+
+    if (element.getAttribute('type') === 'button') {  //if the element clicked on is a button do this 
+        //pull data attribute index from the elements parent element,
+        var index = element.parentElement.getAttribute("data-index"); 
+        $('#cardList').children().eq(index).remove();
+
+        storedLocations.splice(index, 1); //removes 1 item from the specific index
+        storedWikiLinks.splice(index, 1); //removes 1 item from the specific index
+        
+        renderCardContent()
+    }
+})
+    
 
 /*
 function addCardOnPOIClick(placename)
