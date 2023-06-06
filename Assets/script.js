@@ -8,7 +8,7 @@ var savedcardList;
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
 //if a user adds cards, 
-var savedCards = [];
+
 
 
 
@@ -182,13 +182,20 @@ function addItenerary() {
 function saveItenerary() {
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
         localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
+        saveCards();
     } else {
 
         localStorage.setItem('itineraryNum', JSON.stringify(localNum));
+        saveCards();
     }
 }
 function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
+    var SavedCards = JSON.parse(localStorage.getItem('savedCards'));
+
+
+
+
     for (var a = 0; a < itineraryNum; a++) {
         var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
         $('aside').append(dropdownDiv);
@@ -213,6 +220,65 @@ function showSaveditinerary() {
 
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);   
+
+
+
+
+        for(var b = 0; b <SavedCards.length;  b++ ){
+            var iteneraryCardsParent = $(`#${SavedCards[b][1]}`);
+            var cardContainer = $(`<div class="dropdown-content cardContainer${b}"></div>`);
+            iteneraryCardsParent.append(cardContainer);
+          
+            var IteneraryCardDiv = $(`<div id="IteneraryCard${b}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+            cardContainer.append(IteneraryCardDiv);
+          
+            var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
+            IteneraryCardDiv.append(cardUl);
+
+            var tempUl = $('<ul id="cardList">');
+            tempUl.html(SavedCards[0][0]);
+
+            console.log(SavedCards[0]);
+            for (var c = 0; a < tempUl.children.length; a++) {
+              var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
+              cardUl.append(cardLi);
+          
+              if (SavedCards[0][3][c] === '') {
+                var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
+              } else {
+                var cardA = $(`<a href="${SavedCards[0][3][c]}">Link to ${SavedCards[0][2][c]} article</a>`);     //creates an a element with the href as the link to the location
+              }
+          
+              cardUl.append(cardA);
+          
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     var collectionSelect = $('#collectionSelect');
             //for loop to render select options from previous itineraries on load.
@@ -228,58 +294,58 @@ function showSaveditinerary() {
             }
 }
 showSaveditinerary();
-showSavedCards();
-
-
-function showSavedCards() {//savedcardList, changeCollection(), storedLocations, storedWikiLinks
-
+// showSavedCards();
+function saveCards() {
+        localStorage.setItem('savedCards', JSON.stringify(savedCards));
+    
 }
 
-var savedLocationsArray = [];
-var savedContentArray = [];
-var savedItineraryArray = [];
-var savedWikiArray = [];
 
-function createCardElement(content, itenerary, locations, storedWikiLinks) {
-    var iteneraryCardsParent = $(`#${itenerary}`);
-    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
-    iteneraryCardsParent.append(cardContainer);
-
-    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
-    cardContainer.append(IteneraryCardDiv);
-
-    var cardUl = $(`<ul id="cardList"></ul>`);  //creates an ul element for the location list
-    IteneraryCardDiv.append(cardUl);
+//savedCards array is an array of cards that have been saved. 
+var savedCards = [];
+function StoreCards(content, itinerary, locations, storedWikiLinks) {   //takes parameters from the cards that have been added into a cards array. 
+    //each card contains data from these parameters.
+    //we push each card to an array that stores multiple cards
+    // console.log(content);
+  var cards = [content.outerHTML, itinerary, locations, storedWikiLinks];
+//   console.log(cards[0]);
+  savedCards.push(cards);
+}
 
 
-    // console.log(content.children);
-    for (var a = 0; a < content.children.length; a++) {
-        var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as it's text
-        cardUl.append(cardLi);
+function createCardElement(content, itinerary, locations, storedWikiLinks) {
+    
 
+  var iteneraryCardsParent = $(`#${itinerary}`);
+  var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
+  iteneraryCardsParent.append(cardContainer);
 
-        if (storedWikiLinks[a] == '') {
-            var cardA = $(`<p>Location has no wiki links</p>`);     //contitional for when location has wiki links or not
-        } else {
-            var cardA = $(`<a href="${storedWikiLinks[a]}">Link to ${locations[a]} article</a>`);
-        }
-        //creates an a element with the href as the link to the location
-        cardUl.append(cardA);
+  var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+  cardContainer.append(IteneraryCardDiv);
 
+  var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
+  IteneraryCardDiv.append(cardUl);
 
-        //stored all card info to an array to be saved
-        savedLocationsArray.push(locations[a]);
-        savedContentArray.push(content);
-        savedItineraryArray.push(itenerary);
-        savedWikiArray.push(storedWikiLinks[a])
+  for (var a = 0; a < content.children.length; a++) {
+    var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as its text
+    cardUl.append(cardLi);
 
-        console.log(savedLocationsArray);
-        console.log(savedContentArray);
-        console.log(savedItineraryArray);
-        console.log(savedWikiArray);
+    if (storedWikiLinks[a] === '') {
+      var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
+    } else {
+      var cardA = $(`<a href="${storedWikiLinks[a]}">Link to ${locations[a]} article</a>`);     //creates an a element with the href as the link to the location
     }
-    return iteneraryCardsParent;
+
+    cardUl.append(cardA);
+
+  }
+//   console.log(content);
+  StoreCards(content, itinerary, locations, storedWikiLinks)
+
+  return iteneraryCardsParent;
 }
+
+
 
 
 
@@ -530,9 +596,6 @@ function renderCardContent() {
     savedcardList = cardList;
 }
 
-function test(savedcardList) {
-    console.log(savedcardList);
-}
 
 $('#cardList').on('click', 'button', function (event) {
     event.preventDefault();
