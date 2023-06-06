@@ -176,8 +176,6 @@ function addItenerary() {
     getIteneraryNum(selectedItenerary);
     collectionSelect.append(newOption);
 
-
-
     //creates a new Itenerary div
     var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
     $('aside').append(dropdownDiv);
@@ -323,12 +321,12 @@ async function pointsOfInterest(lat,lon){
     const { places } = await google.maps.importLibrary("places")
     infoWindow = new google.maps.InfoWindow();
     //sets the map element with the latlng grabbed from the geocoder api 
-    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });   
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 14 });   
 
     var request = {
         location: cityLatLng,
-        radius: '500', //radius of location in m
-        types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
+        radius: '20000', //radius of location in m
+        types: ['tourist_attraction','museum','shopping_mall'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
     };
     //console.log('trainStart')
     service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
@@ -484,7 +482,7 @@ $('#cardList').on('click', 'button', function(event) {
         storedLocations.splice(index, 1); //removes 1 item from the specific index
         storedWikiLinks.splice(index, 1); //removes 1 item from the specific index
         
-        renderCardContent()
+        renderCardContent();
     }
 })
     
@@ -500,7 +498,6 @@ function addCardOnPOIClick(placename)
 
     addCard();
 }
-
 
 $(document).ready(function () {
     // Assigns an on click event to the dropdown button
