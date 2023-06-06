@@ -148,14 +148,16 @@ function showSavedCards() {
 
 }
 function saveItenerary() {
-localStorage.setItem('itineraryNum', IteneraryNum);
+localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
+
 
 }
 function showSaveditinerary(){
+    var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
+    console.log(itineraryNum)
 
 
-    console.log('hi');
-    for (var a = 0; a< IteneraryNum; a++) {
+    for (var a = 0; a< itineraryNum; a++) {
         var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
         $('aside').append(dropdownDiv);
     
@@ -182,9 +184,8 @@ function showSaveditinerary(){
 
         console.log(a);
     }
-    
-
 }
+showSaveditinerary();
 
 function createCardElement(content, itenerary, locations, storedWikiLinks) {
     var iteneraryCardsParent = $(`#${itenerary}`);
