@@ -8,75 +8,26 @@ var savedcardList;
 //will be an object of objects.
 //if the user adds an itenerary, a new itenerary property will be created
 //if a user adds cards, 
-
-
-
-
 function addCard() {
-
-    
     //if there is saved data, addItenerary() wont be called
-if(JSON.parse(localStorage.getItem('itineraryNum')) === null) {
-    if (IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
-    {
-        addItenerary();
+    if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
+        if (IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
+        {
+            addItenerary();
+        }
+        cardId++;
+        createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
+
+        document.getElementById('cardTitleInput').value = '';
+        document.getElementById('cardContentInput').value = '';
+    } else {
+        cardId++;
+        createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
+
+        document.getElementById('cardTitleInput').value = '';
+        document.getElementById('cardContentInput').value = '';
     }
-    cardId++;
-    createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
-
-    document.getElementById('cardTitleInput').value = '';
-    document.getElementById('cardContentInput').value = '';
-} else {
-    cardId++;
-    createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
-
-    document.getElementById('cardTitleInput').value = '';
-    document.getElementById('cardContentInput').value = '';
 }
-
-
-    
-
-}
-
-
-
-
-function editCard(cardId) {
-    const card = document.getElementById(cardId);
-    const titleElement = card.querySelector('h3');
-    const contentElement = card.querySelector('p');
-
-    const newTitle = prompt('Enter a new title:', titleElement.textContent);
-    const newContent = prompt('Enter new content:', contentElement.textContent);
-
-    titleElement.textContent = newTitle;
-    contentElement.textContent = newContent;
-}
-
-function deleteCard(cardsId) {
-    const card = $(`.${cardsId}`);
-    card.remove();
-    cardId--;
-}
-
-
-
-function changeCollection() {
-    var collectionSelect = $('#collectionSelect');
-    var selectedOption = collectionSelect.find(':selected');
-
-    var val1 = selectedOption.data('value1');
-    var val2 = selectedOption.data('value2');
-
-
-    selectedItenerary = val2;
-    getIteneraryNum(selectedItenerary);     //if the val1 of the selected option in Itenerary0Cards, the val2 will pass 0 to getIteneraryNum function
-    //this is to accurately select the current itenerary from the savedCards array.
-    return val1;
-}
-
-
 
 itenerarySearchInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
@@ -85,6 +36,7 @@ itenerarySearchInput.addEventListener("keypress", function (event) {
 });
 
 function removeItenerary(element) {
+    console.log(element.parentElement.parentElement.parentElement);
     element.parentElement.parentElement.parentElement.remove();
     decreaseIteneraryNum();
 }
@@ -95,9 +47,6 @@ var localNum = parseInt(JSON.parse(localStorage.getItem('itineraryNum')));
 
 
 function addItenerary() {
-
-
-
 
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
         console.log('itin ', IteneraryNum);
@@ -219,19 +168,19 @@ function showSaveditinerary() {
         button.append(iteneraryDeleteButton);
 
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
-        dropdownTriggerDiv.append(dropdownMenuDiv);   
+        dropdownTriggerDiv.append(dropdownMenuDiv);
 
 
 
 
-        for(var b = 0; b <SavedCards.length;  b++ ){
+        for (var b = 0; b < SavedCards.length; b++) {
             var iteneraryCardsParent = $(`#${SavedCards[b][1]}`);
             var cardContainer = $(`<div class="dropdown-content cardContainer${b}"></div>`);
             iteneraryCardsParent.append(cardContainer);
-          
+
             var IteneraryCardDiv = $(`<div id="IteneraryCard${b}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
             cardContainer.append(IteneraryCardDiv);
-          
+
             var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
             IteneraryCardDiv.append(cardUl);
 
@@ -240,64 +189,40 @@ function showSaveditinerary() {
 
             console.log(SavedCards[0]);
             for (var c = 0; a < tempUl.children.length; a++) {
-              var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
-              cardUl.append(cardLi);
-          
-              if (SavedCards[0][3][c] === '') {
-                var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
-              } else {
-                var cardA = $(`<a href="${SavedCards[0][3][c]}">Link to ${SavedCards[0][2][c]} article</a>`);     //creates an a element with the href as the link to the location
-              }
-          
-              cardUl.append(cardA);
-          
+                var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
+                cardUl.append(cardLi);
+
+                if (SavedCards[0][3][c] === '') {
+                    var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
+                } else {
+                    var cardA = $(`<a href="${SavedCards[0][3][c]}">Link to ${SavedCards[0][2][c]} article</a>`);     //creates an a element with the href as the link to the location
+                }
+
+                cardUl.append(cardA);
+
             }
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     var collectionSelect = $('#collectionSelect');
-            //for loop to render select options from previous itineraries on load.
-            for (var a = 0; a < localNum; a++) {
-                var newOption = $(`<option>Itenerary ${a}</option>`);
-                newOption.val(`Itenerary${a}Cards`);
-                newOption.data('value1', `Itenerary${a}Cards`);  //newOption's first value is it's id
-                newOption.data('value2', a);     //newOption's secopnd value is itenerary number
-    
-                itineraryVal = newOption.data('value2');
-                setItineraryNum(itineraryVal);
-                collectionSelect.append(newOption);
-            }
+    //for loop to render select options from previous itineraries on load.
+    for (var a = 0; a < localNum; a++) {
+        var newOption = $(`<option>Itenerary ${a}</option>`);
+        newOption.val(`Itenerary${a}Cards`);
+        newOption.data('value1', `Itenerary${a}Cards`);  //newOption's first value is it's id
+        newOption.data('value2', a);     //newOption's secopnd value is itenerary number
+
+        itineraryVal = newOption.data('value2');
+        setItineraryNum(itineraryVal);
+        collectionSelect.append(newOption);
+    }
 }
 showSaveditinerary();
 // showSavedCards();
 function saveCards() {
-        localStorage.setItem('savedCards', JSON.stringify(savedCards));
-    
+    localStorage.setItem('savedCards', JSON.stringify(savedCards));
+
 }
 
 
@@ -307,50 +232,43 @@ function StoreCards(content, itinerary, locations, storedWikiLinks) {   //takes 
     //each card contains data from these parameters.
     //we push each card to an array that stores multiple cards
     // console.log(content);
-  var cards = [content.outerHTML, itinerary, locations, storedWikiLinks];
-//   console.log(cards[0]);
-  savedCards.push(cards);
+    var cards = [content.outerHTML, itinerary, locations, storedWikiLinks];
+    //   console.log(cards[0]);
+    savedCards.push(cards);
 }
 
 
 function createCardElement(content, itinerary, locations, storedWikiLinks) {
-    
 
-  var iteneraryCardsParent = $(`#${itinerary}`);
-  var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
-  iteneraryCardsParent.append(cardContainer);
 
-  var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
-  cardContainer.append(IteneraryCardDiv);
+    var iteneraryCardsParent = $(`#${itinerary}`);
+    var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
+    iteneraryCardsParent.append(cardContainer);
 
-  var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
-  IteneraryCardDiv.append(cardUl);
+    var IteneraryCardDiv = $(`<div id="IteneraryCard${cardId}" class="dropdown-item IteneraryCardsBtn card is-flex-direction-column"></div>`);
+    cardContainer.append(IteneraryCardDiv);
 
-  for (var a = 0; a < content.children.length; a++) {
-    var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as its text
-    cardUl.append(cardLi);
+    var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
+    IteneraryCardDiv.append(cardUl);
 
-    if (storedWikiLinks[a] === '') {
-      var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
-    } else {
-      var cardA = $(`<a href="${storedWikiLinks[a]}">Link to ${locations[a]} article</a>`);     //creates an a element with the href as the link to the location
+    for (var a = 0; a < content.children.length; a++) {
+        var cardLi = $(`<li class="is-size-5" data-index="${a}"> <strong>${locations[a]}</strong></li>`);     //creates a li element with the location name as its text
+        cardUl.append(cardLi);
+
+        if (storedWikiLinks[a] === '') {
+            var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
+        } else {
+            var cardA = $(`<a href="${storedWikiLinks[a]}">Link to ${locations[a]} article</a>`);     //creates an a element with the href as the link to the location
+        }
+
+        cardUl.append(cardA);
+
     }
+    //   console.log(content);
+    StoreCards(content, itinerary, locations, storedWikiLinks)
 
-    cardUl.append(cardA);
-
-  }
-//   console.log(content);
-  StoreCards(content, itinerary, locations, storedWikiLinks)
-
-  return iteneraryCardsParent;
+    return iteneraryCardsParent;
 }
-
-
-
-
-
-
-
 //this is for the savedCards array
 function setItineraryNum(num) {
     selectedItenerary = num;
@@ -369,6 +287,39 @@ function addIteneraryNum() {
 
 function decreaseIteneraryNum() {
     IteneraryNum--;
+}
+function editCard(cardId) {
+    const card = document.getElementById(cardId);
+    const titleElement = card.querySelector('h3');
+    const contentElement = card.querySelector('p');
+
+    const newTitle = prompt('Enter a new title:', titleElement.textContent);
+    const newContent = prompt('Enter new content:', contentElement.textContent);
+
+    titleElement.textContent = newTitle;
+    contentElement.textContent = newContent;
+}
+function changeCollection() {
+    var collectionSelect = $('#collectionSelect');
+    var selectedOption = collectionSelect.find(':selected');
+
+    var val1 = selectedOption.data('value1');
+    var val2 = selectedOption.data('value2');
+
+
+    selectedItenerary = val2;
+    getIteneraryNum(selectedItenerary);     //if the val1 of the selected option in Itenerary0Cards, the val2 will pass 0 to getIteneraryNum function
+    //this is to accurately select the current itenerary from the savedCards array.
+    return val1;
+}
+function clearItinerary() {
+
+    var collectionSelect = $('aside');
+    var children = collectionSelect.children();
+
+    children.slice(5).remove();
+    IteneraryNum = 0;
+    localNum = 0;
 }
 
 //map and API code 
@@ -415,9 +366,6 @@ window.searchPlace = async function (city) {
         //assigns lat and lon values
         lat = data.results[0].geometry.location.lat;
         lon = data.results[0].geometry.location.lng;
-        //console.log(data.status)
-        //console.log(lat)//these are defined
-        //console.log(lon)//these are defined
 
     }
     await pointsOfInterest(lat, lon);
@@ -437,7 +385,6 @@ async function pointsOfInterest(lat, lon) {
         radius: '500', //radius of location in m
         types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
     };
-    //console.log('trainStart')
     service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
     //WHY IS THIS FUNCTION SPECIFICALLY ACTIVATING AFTER
     //the 2nd parameter is the callback
