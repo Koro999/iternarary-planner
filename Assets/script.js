@@ -96,10 +96,16 @@ function removeItenerary(element) {
 
 //when function is called, another itenerary div will be dynamically added
 //the value of an option is the id of the itenerary div
-
+var localNum =parseInt(JSON.parse(localStorage.getItem('itineraryNum')));
 function addItenerary() {
+    
+    
+     
 
-    var collectionSelect = $('#collectionSelect');
+    if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
+        console.log('itin ', IteneraryNum);
+        
+        var collectionSelect = $('#collectionSelect');
     var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
     newOption.val(`Itenerary${IteneraryNum}Cards`);
     newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
@@ -108,9 +114,6 @@ function addItenerary() {
     itineraryVal = newOption.data('value2');
     setItineraryNum(itineraryVal);
     collectionSelect.append(newOption);
-
-
-
     //creates a new Itenerary div
     var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
     $('aside').append(dropdownDiv);
@@ -135,54 +138,87 @@ function addItenerary() {
 
     var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
     dropdownTriggerDiv.append(dropdownMenuDiv);
-
-    // var dropdownContentDiv = $('<div></div>').addClass(`dropdown-content cardContainer${IteneraryNum}`);
-    // dropdownMenuDiv.append(dropdownContentDiv);
-
-    // var iteneraryCardsParent = $(`#${itenerary}`);
-    // Itenerary${IteneraryNum}Cards
     addIteneraryNum();
+    } else {
+        
+        console.log('localNum ', localNum);
+        var collectionSelect = $('#collectionSelect');
+    var newOption = $(`<option>Itenerary ${localNum}</option>`);
+    newOption.val(`Itenerary${localNum}Cards`);
+    newOption.data('value1', `Itenerary${localNum}Cards`);  //newOption's first value is it's id
+    newOption.data('value2', localNum);     //newOption's secopnd value is itenerary number
 
+    itineraryVal = newOption.data('value2');
+    setItineraryNum(itineraryVal);
+    collectionSelect.append(newOption);
+    //creates a new Itenerary div
+    var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${localNum}`);
+    $('aside').append(dropdownDiv);
+
+    var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
+    dropdownDiv.append(dropdownTriggerDiv);
+
+    var button = $('<button></button>').addClass(`button  Itenerary${localNum}`);
+    dropdownTriggerDiv.append(button);
+
+    var titleSpan = $('<span></span>').attr('id', `Itenerary${localNum}Title`).text(`Itenerary ${localNum}`);
+    button.append(titleSpan);
+
+    var iconSpan = $('<span></span>').addClass('icon');
+    button.append(iconSpan);
+
+    var icon = $('<i></i>').addClass('fas fa-angle-down');
+    iconSpan.append(icon);
+
+    var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
+    button.append(iteneraryDeleteButton);
+
+    var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${localNum}Cards`);
+    dropdownTriggerDiv.append(dropdownMenuDiv);
+    addIteneraryNum();
+        
+    }
 }
+
 function showSavedCards() {
 
 }
 function saveItenerary() {
-localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
-
-
+    if(JSON.parse(localStorage.getItem('itineraryNum')) === null) {
+        localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
+    } else {
+        
+        localStorage.setItem('itineraryNum', JSON.stringify(localNum));
+    }
 }
-function showSaveditinerary(){
+function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
-    console.log(itineraryNum)
-
-
-    for (var a = 0; a< itineraryNum; a++) {
-        var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${IteneraryNum}`);
+    for (var a = 0; a < itineraryNum; a++) {
+        var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
         $('aside').append(dropdownDiv);
-    
+
         var dropdownTriggerDiv = $('<div></div>').addClass('dropdown-trigger');
         dropdownDiv.append(dropdownTriggerDiv);
-    
-        var button = $('<button></button>').addClass(`button  Itenerary${IteneraryNum}`);
+
+        var button = $('<button></button>').addClass(`button  Itenerary${a}`);
         dropdownTriggerDiv.append(button);
-    
-        var titleSpan = $('<span></span>').attr('id', `Itenerary${IteneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
+
+        var titleSpan = $('<span></span>').attr('id', `Itenerary${a}Title`).text(`Itenerary ${a}`);
         button.append(titleSpan);
-    
+
         var iconSpan = $('<span></span>').addClass('icon');
         button.append(iconSpan);
-    
+
         var icon = $('<i></i>').addClass('fas fa-angle-down');
         iconSpan.append(icon);
-    
+
         var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
         button.append(iteneraryDeleteButton);
-    
-        var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
+
+        var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
 
-        console.log(a);
+        // console.log(a);
     }
 }
 showSaveditinerary();
@@ -228,7 +264,12 @@ function getIteneraryNum() {
     return selectedItenerary;
 }
 function addIteneraryNum() {
-    IteneraryNum++;
+    // IteneraryNum++;
+    if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
+        IteneraryNum++;
+    } else {
+        localNum++;
+    }
 }
 
 function decreaseIteneraryNum() {
