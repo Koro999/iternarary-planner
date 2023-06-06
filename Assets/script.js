@@ -14,9 +14,9 @@ var savedCards = [];
 
 function addCard() {
 
-    // if(!title || !content)
-    //     return;
-
+    
+    //if there is saved data, addItenerary() wont be called
+if(JSON.parse(localStorage.getItem('itineraryNum')) === null) {
     if (IteneraryNum == 0)//If it is empty we can create one itenerary before doing anything
     {
         addItenerary();
@@ -26,6 +26,16 @@ function addCard() {
 
     document.getElementById('cardTitleInput').value = '';
     document.getElementById('cardContentInput').value = '';
+} else {
+    cardId++;
+    createCardElement(savedcardList, changeCollection(), storedLocations, storedWikiLinks);
+
+    document.getElementById('cardTitleInput').value = '';
+    document.getElementById('cardContentInput').value = '';
+}
+
+
+    
 
 }
 
@@ -168,12 +178,7 @@ function addItenerary() {
     }
 }
 
-function showSavedCards() {//savedcardList, changeCollection(), storedLocations, storedWikiLinks
 
-    console.log(`savedcardList`, savedcardList)
-    var savedCardArray = [];
-
-}
 function saveItenerary() {
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
         localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
@@ -226,6 +231,9 @@ showSaveditinerary();
 showSavedCards();
 
 
+function showSavedCards() {//savedcardList, changeCollection(), storedLocations, storedWikiLinks
+
+}
 
 var savedLocationsArray = [];
 var savedContentArray = [];
