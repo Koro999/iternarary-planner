@@ -222,10 +222,12 @@ function showSaveditinerary() {
         dropdownTriggerDiv.append(dropdownMenuDiv);   
 
 
-
-
-        for(var b = 0; b <SavedCards.length;  b++ ){
+// console.log(`a`, a)
+        for(var b = a; b <SavedCards.length;  b++ ){
+            console.log(SavedCards[b])
             var iteneraryCardsParent = $(`#${SavedCards[b][1]}`);
+            // console.log(SavedCards[0]);
+            // console.log(`a`,a , ` b `, SavedCards[b][1])
             var cardContainer = $(`<div class="dropdown-content cardContainer${b}"></div>`);
             iteneraryCardsParent.append(cardContainer);
           
@@ -234,12 +236,12 @@ function showSaveditinerary() {
           
             var cardUl = $(`<ul id="cardList"></ul>`);  //creates a ul element for the location list
             IteneraryCardDiv.append(cardUl);
-
+            
             var tempUl = $('<ul id="cardList">');
             tempUl.html(SavedCards[0][0]);
 
-            console.log(SavedCards[0]);
-            for (var c = 0; a < tempUl.children.length; a++) {
+            console.log(tempUl.length);
+            for (var c = 0; c < tempUl.length; c++) {
               var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
               cardUl.append(cardLi);
           
@@ -253,33 +255,9 @@ function showSaveditinerary() {
           
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
+
+
     var collectionSelect = $('#collectionSelect');
             //for loop to render select options from previous itineraries on load.
             for (var a = 0; a < localNum; a++) {
