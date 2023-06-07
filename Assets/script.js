@@ -142,7 +142,7 @@ function saveItenerary() {
 
 function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
-    var SavedCards = JSON.parse(localStorage.getItem('savedCards'));
+    
     for (var a = 0; a < itineraryNum; a++) {
         var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
         $('aside').append(dropdownDiv);
@@ -168,9 +168,8 @@ function showSaveditinerary() {
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
 
-
-
-
+        var SavedCards = JSON.parse(localStorage.getItem('savedCards'));
+        console.log(SavedCards);
         for (var b = a; b < SavedCards.length; b++) {
             var iteneraryCardsParent = $(`#${SavedCards[b][1]}`);
             var cardContainer = $(`<div class="dropdown-content cardContainer${b}"></div>`);
@@ -183,21 +182,19 @@ function showSaveditinerary() {
             IteneraryCardDiv.append(cardUl);
 
             var tempUl = $('<ul id="cardList">');
-            tempUl.html(SavedCards[0][0]);
+            tempUl.html(SavedCards[b][0]);
 
-            console.log(SavedCards[0]);
-            for (var c = 0; c < tempUl.length; c++) {
-                var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
+            // console.log(SavedCards[0]);
+            for (var c = 0; c < SavedCards[b][2].length; c++) {
+                var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[b][2][c]}</strong></li>`);     // Use the 'b' index to refer to the current card
                 cardUl.append(cardLi);
 
-                if (SavedCards[0][3][c] === '') {
+                if (SavedCards[b][3][c] === '') {
                     var cardA = $(`<p>Location has no wiki links</p>`);     //conditional for when the location has no wiki links
                 } else {
-                    var cardA = $(`<a href="${SavedCards[0][3][c]}">Link to ${SavedCards[0][2][c]} article</a>`);     //creates an a element with the href as the link to the location
+                    var cardA = $(`<a href="${SavedCards[b][3][c]}">Link to ${SavedCards[b][2][c]} article</a>`);     //creates an a element with the href as the link to the location
                 }
-
                 cardUl.append(cardA);
-
             }
         }
     }
@@ -215,23 +212,22 @@ function showSaveditinerary() {
     }
 }
 
-
-// showSavedCards();
+// Get the current savedCards from the local storage
+var savedCards = JSON.parse(localStorage.getItem('savedCards')) || [];
 function saveCards() {
+    console.log(savedCards);
+    // This will save the current state of savedCards to local storage
     localStorage.setItem('savedCards', JSON.stringify(savedCards));
-
 }
 
-
-//savedCards array is an array of cards that have been saved. 
-var savedCards = [];
 function StoreCards(content, itinerary, locations, storedWikiLinks) {   //takes parameters from the cards that have been added into a cards array. 
     //each card contains data from these parameters.
     //we push each card to an array that stores multiple cards
     // console.log(content);
     var cards = [content.outerHTML, itinerary, locations, storedWikiLinks];
-    //   console.log(cards[0]);
     savedCards.push(cards);
+    // Immediately save the updated array back to local storage
+    localStorage.setItem('savedCards', JSON.stringify(savedCards));
 }
 
 
