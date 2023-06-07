@@ -79,8 +79,8 @@ function addItenerary() {
         var icon = $('<i></i>').addClass('fas fa-angle-down');
         iconSpan.append(icon);
 
-        var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
-        button.append(iteneraryDeleteButton);
+//         var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
+//         button.append(iteneraryDeleteButton);
 
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${IteneraryNum}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
