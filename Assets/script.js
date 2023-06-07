@@ -138,13 +138,10 @@ function saveItenerary() {
         saveCards();
     }
 }
+
 function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
     var SavedCards = JSON.parse(localStorage.getItem('savedCards'));
-
-
-
-
     for (var a = 0; a < itineraryNum; a++) {
         var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
         $('aside').append(dropdownDiv);
@@ -378,11 +375,11 @@ async function pointsOfInterest(lat, lon) {
     const { places } = await google.maps.importLibrary("places")
     infoWindow = new google.maps.InfoWindow();
     //sets the map element with the latlng grabbed from the geocoder api 
-    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 16 });
+    map = new google.maps.Map(document.getElementById('map-container'), { center: cityLatLng, zoom: 14 });
 
     var request = {
         location: cityLatLng,
-        radius: '500', //radius of location in m
+        radius: '1000000', //radius of location in m
         types: ['tourist_attraction'] //enter a specified type of location. visit https://developers.google.com/maps/documentation/javascript/supported_types to see a list of supported place types.
     };
     service = new google.maps.places.PlacesService(map);    //  creates a new instance of the PlacesService object provided by the Google Maps Places library, and associating it with the map
@@ -477,7 +474,7 @@ initMap();
 //MAP TO WIKIPEDIA CARD GENERATION
 
 //arrays needed to reload information 
-var storedWikiLinks = []
+var storedWikiLinks = []; //an array storing all the wikiLinks as they are generated
 var storedLocations = []; //an array storing all locations that have been clicked
 var cardContainer = $('#cardContainer')
 var cardList = document.querySelector('#cardList')
@@ -531,6 +528,7 @@ function renderCardContent() {
 
         var deleteButton = document.createElement('button')
         deleteButton.setAttribute('type', 'button')
+        deleteButton.classList = 'column is-4'
         deleteButton.textContent = "Remove";
 
         //append all new elements to the card 
@@ -561,20 +559,6 @@ $('#cardList').on('click', 'button', function (event) {
     }
 })
 
-
-/*
-function addCardOnPOIClick(placename)
-{
-    document.getElementById('cardTitleInput').value = placename;
-
-    // TODO - Add call to wikipedia API to get the content for this place
-    var wikiContent = lastPlaceSearched + " - "+ placename + "- this content is awesome";
-    document.getElementById('cardContentInput').value = wikiContent; 
-
-    addCard();
-}
-
-*/
 $(document).ready(function () {
     // Assigns an on click event to the dropdown button
     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
@@ -593,21 +577,8 @@ $(document).ready(function () {
     });
 });
 
-
-// $(document).ready(function () {
-//     // Assigns an on click event to the dropdown button
-//     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
-//         event.stopPropagation();
-
-//         var allActiveIteneraries = $(".Itenerary.is-active");   // stores all active Itenerary elements in variable
-//         var currentItenerary = $(this).closest('.Itenerary');   // goes through clicked element's parents that matches 'Itenerary'
-
-//         // Remove 'is-active' class from all active Iteneraries that aren't the current one]
-//         allActiveIteneraries.each(function () {  //.each() loops all active itenerary queries
-//             if (!$(this).is(currentItenerary)) {    // checks if if the 'currentItenerary' is not the same as the element in current iteration
-//                 $(this).removeClass('is-active');
-//             }
-//         });
-//         currentItenerary.toggleClass('is-active'); // Toggle the current dropdown
-//     });
-// });
+$('.clear').on('click', function() {
+    cardList.innerHTML = '';
+    storedWikiLinks = []
+    storedLocations = [];  
+})

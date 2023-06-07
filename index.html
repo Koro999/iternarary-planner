@@ -19,7 +19,7 @@
     <div class="columns">
         <aside class="menu px-4 column is-4">
             <div class="content my-0 searchDiv">
-                <h1 class="is-size-4 has-text-centered">Itinerary Planner</h1>
+                <h1 class="is-size-4 has-text-centered mt-5 mb-5">Itinerary Planner</h1>
                 <div class="field">
                     <div class="control">
                         <!--store the value of the .input class for locations-->
@@ -33,21 +33,21 @@
                     </div>
                 </div>
             </div>
-            <hr class="my-2">
-            <div class="control has-text-centered my-2">
-                <!--add an onClick event to clear itenerary using the 'clear' class-->
-                <button class="button is-primary clear" onclick="clearItinerary()">Clear</button>
-            </div>
             <hr class="my-4">
             <div class="control has-text-centered my-4">
-              <button class="button is-primary clear" onclick="addItenerary()">Create Itenerary</button>
-              <button class="button is-primary clear my-2" onclick="saveItenerary()">Save Itenerary</button>
+              <button class="button is-primary clear" onclick="addItenerary()">Create Itinerary</button>
+              <button class="button is-primary clear my-2" onclick="saveItenerary()">Save Itinerary</button>
             </div>
             <div class="control has-text-centered my-4 is-flex-direction-column ">
                 <select id="collectionSelect" onchange="changeCollection()">
                     <!-- Add more collections as needed -->
 
                 </select>
+            </div>
+            <hr class="my-2">
+            <div class="control has-text-centered my-2">
+                <!--add an onClick event to clear itenerary using the 'clear' class-->
+                <button class="button is-primary is-danger clear" onclick="clearItinerary()">Clear</button>
             </div>
         </aside>
 
@@ -73,20 +73,11 @@
                 <ul id="wiki-results"></ul>-->
             </div>
             
-            <div class = ''>
+            <div class = 'is-flex'>
               <!--THIS SHOULD BE THE SAVE ELEMENTS AND CLEAR CARD ELEMENTS -->
               <!--CHANGE THE CONTAINER TO FLEX LOOK AT BULMA DOCUMENTATION-->
                 <button class="column is-2 clear">clear</button>
                 <button class="column is-2 save" onclick="addCard()">save</button>
-            </div>
-
-            
-
-            <div id="controls">
-                <input type="text" id="cardTitleInput" placeholder="Card Title">
-                <textarea id="cardContentInput" placeholder="Card Content"></textarea>
-                <button onclick="addCard()">Add Card</button>
-                <button onclick="saveCollection()">Save Collection</button>
             </div>
         </main>
     </div>
