@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itenerary Planner</title>
+    <title>Itinerary Planner</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -38,6 +38,11 @@
               <button class="button is-primary clear" onclick="addItenerary()">Create Itinerary</button>
               <button class="button is-primary clear my-2" onclick="saveItenerary()">Save Itinerary</button>
             </div>
+            <hr class="my-2">
+            <div class="control has-text-centered my-2">
+                <!--add an onClick event to clear itinerary using the 'clear' class-->
+                <button class="button is-primary is-danger clear" onclick="clearItinerary()">Clear</button>
+            </div>
             <div class="control has-text-centered my-4 is-flex-direction-column ">
                 <select id="collectionSelect" onchange="changeCollection()">
                     <!-- Add more collections as needed -->
@@ -45,10 +50,7 @@
                 </select>
             </div>
             <hr class="my-2">
-            <div class="control has-text-centered my-2">
-                <!--add an onClick event to clear itenerary using the 'clear' class-->
-                <button class="button is-primary is-danger clear" onclick="clearItinerary()">Clear</button>
-            </div>
+            
         </aside>
 
 
@@ -63,34 +65,20 @@
             <div class="p-4 box has-border" id="cardContainer" style="overflow:scroll;">
               <ul id = 'cardList'></ul>
               <!-- Card elements will be dynamically added here -->
-                <!--1) CREATE A LIST TO ADD ONTO FOR EACH ELEMENT CREATED-->
-                <!--2) CREATE AN EMPHASIZED P ELEMENT WITH THE NAME OF THE LOCATION CLICKED -->
-                <!--3) CREATE A LIST WITH THE WIKIPEDIA INFORMATION SNIPPET-->
-                <!--4) THERE IS A DELETE ITEM BUTTON, MY GUESS IS THIS WOULD MEAN YOUD NEED EVERYTHING WITHIN A DIV -->
-
-                <!--EXAMPLE-->
-                <!--<p class="column is-one-third" id="wikipediaDiv"></p>
-                <ul id="wiki-results"></ul>-->
             </div>
             
             <div class = 'is-flex'>
-              <!--THIS SHOULD BE THE SAVE ELEMENTS AND CLEAR CARD ELEMENTS -->
-              <!--CHANGE THE CONTAINER TO FLEX LOOK AT BULMA DOCUMENTATION-->
                 <button class="column is-2 clear">clear</button>
                 <button class="column is-2 save" onclick="addCard()">save</button>
             </div>
         </main>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script>
     <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
       ({key: "AIzaSyBXBCuWudNwESA8LytkWrXJ4DQMYvpIWiY", v: "beta"});</script>
-      
-    <!--<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfijwlDdGDJ2LiGaA6IL5b1wOf0a1PPsE&&libraries=places&callback=searchPlace"
-        type="text/javascript">
-        </script>-->
    <script src="./Assets/script.js"></script>
 </body>
 
