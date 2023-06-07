@@ -6,7 +6,8 @@ var itenerarySearchInput = document.getElementById("itenerarySearchInput");
 var savedcardList;
 
 //will be an object of objects.
-//if the user adds an itinerary, a new itinerary property will be created 
+//if the user adds an itenerary, a new itenerary property will be created
+//if a user adds cards, 
 function addCard() {
     //if there is saved data, addItenerary() wont be called
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
@@ -44,7 +45,7 @@ function removeItenerary(element) {
 //the value of an option is the id of the itenerary div
 var localNum = parseInt(JSON.parse(localStorage.getItem('itineraryNum')));
 
-//creates the itinerary on the left 
+
 function addItenerary() {
 
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
@@ -54,7 +55,7 @@ function addItenerary() {
         var newOption = $(`<option>Itenerary ${IteneraryNum}</option>`);
         newOption.val(`Itenerary${IteneraryNum}Cards`);
         newOption.data('value1', `Itenerary${IteneraryNum}Cards`);  //newOption's first value is it's id
-        newOption.data('value2', IteneraryNum);     //newOption's second value is itenerary number
+        newOption.data('value2', IteneraryNum);     //newOption's secopnd value is itenerary number
 
         itineraryVal = newOption.data('value2');
         setItineraryNum(itineraryVal);
@@ -69,7 +70,7 @@ function addItenerary() {
         var button = $('<button></button>').addClass(`button  Itenerary${IteneraryNum}`);
         dropdownTriggerDiv.append(button);
 
-        var titleSpan = $('<span></span>').attr('id', `Itenerary${ItneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
+        var titleSpan = $('<span></span>').attr('id', `Itenerary${IteneraryNum}Title`).text(`Itenerary ${IteneraryNum}`);
         button.append(titleSpan);
 
         var iconSpan = $('<span></span>').addClass('icon');
@@ -89,9 +90,9 @@ function addItenerary() {
         console.log('localNum ', localNum);
         var collectionSelect = $('#collectionSelect');
 
-        var newOption = $(`<option>Itinerary ${localNum}</option>`);
-        newOption.val(`Itinerary${localNum}Cards`);
-        newOption.data('value1', `Itenirary${localNum}Cards`);  //newOption's first value is it's id
+        var newOption = $(`<option>Itenerary ${localNum}</option>`);
+        newOption.val(`Itenerary${localNum}Cards`);
+        newOption.data('value1', `Itenerary${localNum}Cards`);  //newOption's first value is it's id
         newOption.data('value2', localNum);     //newOption's secopnd value is itenerary number
 
         itineraryVal = newOption.data('value2');
@@ -122,11 +123,10 @@ function addItenerary() {
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${localNum}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
         addIteneraryNum();
-
     }
 }
 
-//saves itinerary to local storage
+
 function saveItenerary() {
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
         localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
@@ -138,7 +138,7 @@ function saveItenerary() {
     }
 }
 
-//generate saved Itinerary
+
 function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
     
@@ -160,6 +160,9 @@ function showSaveditinerary() {
 
         var icon = $('<i></i>').addClass('fas fa-angle-down');
         iconSpan.append(icon);
+
+        //var iteneraryDeleteButton = $('<button>Delete</button>').addClass(`button  is-danger is-small deleteButton`).attr("onclick", "removeItenerary(this)");
+        //button.append(iteneraryDeleteButton);
 
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${a}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
@@ -197,10 +200,10 @@ function showSaveditinerary() {
     var collectionSelect = $('#collectionSelect');
     //for loop to render select options from previous itineraries on load.
     for (var a = 0; a < localNum; a++) {
-        var newOption = $(`<option>Itinerary ${a}</option>`);
+        var newOption = $(`<option>Collection ${a}</option>`);
         newOption.val(`Itenerary${a}Cards`);
         newOption.data('value1', `Itenerary${a}Cards`);  //newOption's first value is it's id
-        newOption.data('value2', a);     //newOption's second value is itenerary number
+        newOption.data('value2', a);     //newOption's secopnd value is itenerary number
 
         itineraryVal = newOption.data('value2');
         setItineraryNum(itineraryVal);
@@ -216,7 +219,6 @@ function saveCards() {
     localStorage.setItem('savedCards', JSON.stringify(savedCards));
 }
 
-//store all the information from the cards
 function StoreCards(content, itinerary, locations, storedWikiLinks) {   //takes parameters from the cards that have been added into a cards array. 
     //each card contains data from these parameters.
     //we push each card to an array that stores multiple cards
@@ -227,8 +229,9 @@ function StoreCards(content, itinerary, locations, storedWikiLinks) {   //takes 
     localStorage.setItem('savedCards', JSON.stringify(savedCards));
 }
 
-//create the card element in the aside
+
 function createCardElement(content, itinerary, locations, storedWikiLinks) {
+
 
     var iteneraryCardsParent = $(`#${itinerary}`);
     var cardContainer = $(`<div class="dropdown-content cardContainer${cardId}"></div>`);
@@ -258,17 +261,13 @@ function createCardElement(content, itinerary, locations, storedWikiLinks) {
 
     return iteneraryCardsParent;
 }
-
-//set the number for the Itinerary, in which to save to
+//this is for the savedCards array
 function setItineraryNum(num) {
     selectedItenerary = num;
 }
-//get the Itinerary number
 function getIteneraryNum() {
     return selectedItenerary;
 }
-
-//increase the Itinerary Number by 1 every time this function is called. Used to go to next collection
 function addIteneraryNum() {
     // IteneraryNum++;
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
@@ -305,8 +304,6 @@ function changeCollection() {
     //this is to accurately select the current itenerary from the savedCards array.
     return val1;
 }
-
-//clear all the itinerary collections open
 function clearItinerary() {
 
     var collectionSelect = $('aside');
@@ -315,7 +312,13 @@ function clearItinerary() {
     children.slice(5).remove();
     IteneraryNum = 0;
     localNum = 0;
+
     savedCards.length=0;
+    var emptyArray=[];
+    if(savedCards){
+        emptyArray = JSON.parse(savedCards);
+    }
+    // savedCards=[];
 }
 
 //map and API code 
