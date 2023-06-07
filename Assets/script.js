@@ -173,7 +173,7 @@ function showSaveditinerary() {
 
 
 
-        for (var b = 0; b < SavedCards.length; b++) {
+        for (var b = a; b < SavedCards.length; b++) {
             var iteneraryCardsParent = $(`#${SavedCards[b][1]}`);
             var cardContainer = $(`<div class="dropdown-content cardContainer${b}"></div>`);
             iteneraryCardsParent.append(cardContainer);
@@ -188,7 +188,7 @@ function showSaveditinerary() {
             tempUl.html(SavedCards[0][0]);
 
             console.log(SavedCards[0]);
-            for (var c = 0; a < tempUl.children.length; a++) {
+            for (var c = 0; c < tempUl.length; c++) {
                 var cardLi = $(`<li class="is-size-5" data-index="${c}"> <strong>${SavedCards[0][2][c]}</strong></li>`);     //creates a li element with the location name as its text
                 cardUl.append(cardLi);
 
