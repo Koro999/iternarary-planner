@@ -197,7 +197,7 @@ function showSaveditinerary() {
     var collectionSelect = $('#collectionSelect');
     //for loop to render select options from previous itineraries on load.
     for (var a = 0; a < localNum; a++) {
-        var newOption = $(`<option>Itinerary ${a}</option>`);
+        var newOption = $(`<option>Itenerary ${a}</option>`);
         newOption.val(`Itenerary${a}Cards`);
         newOption.data('value1', `Itenerary${a}Cards`);  //newOption's first value is it's id
         newOption.data('value2', a);     //newOption's second value is itenerary number
