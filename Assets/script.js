@@ -138,13 +138,11 @@ function saveItenerary() {
         saveCards();
     }
 }
+
+
 function showSaveditinerary() {
     var itineraryNum = JSON.parse(localStorage.getItem('itineraryNum'));
     var SavedCards = JSON.parse(localStorage.getItem('savedCards'));
-
-
-
-
     for (var a = 0; a < itineraryNum; a++) {
         var dropdownDiv = $('<div></div>').addClass(`dropdown Itenerary Itenerary${a}`);
         $('aside').append(dropdownDiv);
@@ -202,8 +200,6 @@ function showSaveditinerary() {
 
             }
         }
-
-
     }
     var collectionSelect = $('#collectionSelect');
     //for loop to render select options from previous itineraries on load.
@@ -218,7 +214,8 @@ function showSaveditinerary() {
         collectionSelect.append(newOption);
     }
 }
-showSaveditinerary();
+
+
 // showSavedCards();
 function saveCards() {
     localStorage.setItem('savedCards', JSON.stringify(savedCards));
@@ -576,6 +573,7 @@ function addCardOnPOIClick(placename)
 
 */
 $(document).ready(function () {
+    showSaveditinerary();
     // Assigns an on click event to the dropdown button
     $(document).on('click', '.Itenerary .dropdown-trigger button', function (event) {
         event.stopPropagation();
