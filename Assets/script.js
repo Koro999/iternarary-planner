@@ -123,7 +123,6 @@ function addItenerary() {
         var dropdownMenuDiv = $('<div></div>').addClass('dropdown-menu IteneraryCards').attr('id', `Itenerary${localNum}Cards`);
         dropdownTriggerDiv.append(dropdownMenuDiv);
         addIteneraryNum();
-
     }
 }
 
@@ -201,7 +200,7 @@ function showSaveditinerary() {
     var collectionSelect = $('#collectionSelect');
     //for loop to render select options from previous itineraries on load.
     for (var a = 0; a < localNum; a++) {
-        var newOption = $(`<option>Itenerary ${a}</option>`);
+        var newOption = $(`<option>Collection ${a}</option>`);
         newOption.val(`Itenerary${a}Cards`);
         newOption.data('value1', `Itenerary${a}Cards`);  //newOption's first value is it's id
         newOption.data('value2', a);     //newOption's secopnd value is itenerary number
@@ -313,6 +312,13 @@ function clearItinerary() {
     children.slice(5).remove();
     IteneraryNum = 0;
     localNum = 0;
+
+    savedCards.length=0;
+    var emptyArray=[];
+    if(savedCards){
+        emptyArray = JSON.parse(savedCards);
+    }
+    // savedCards=[];
 }
 
 //map and API code 
