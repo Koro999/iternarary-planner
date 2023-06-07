@@ -126,7 +126,6 @@ function addItenerary() {
     }
 }
 
-
 function saveItenerary() {
     if (JSON.parse(localStorage.getItem('itineraryNum')) === null) {
         localStorage.setItem('itineraryNum', JSON.stringify(IteneraryNum));
@@ -578,3 +577,5 @@ $('.clear').on('click', function() {
     storedWikiLinks = []
     storedLocations = [];  
 })
+
+//wow
